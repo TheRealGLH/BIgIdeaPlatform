@@ -16,9 +16,10 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-  include:
-      stage: test
-      script: ./test 1
+  test:
+    steps:
+        stage: test
+        script: "mvm test"
     #- script: ./integration-tests
     #  name: "Integration Tests"     # names the second Tests stage job
     #- stage: deploy
