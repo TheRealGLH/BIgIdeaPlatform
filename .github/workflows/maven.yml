@@ -16,12 +16,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-  test:
-    steps:
-        stage: test
-        script: "mvm test"
-    #- script: ./integration-tests
-    #  name: "Integration Tests"     # names the second Tests stage job
-    #- stage: deploy
-    #  name: "Deploy to GCP"
-    #  script: ./deploy
+  include:
+    - stage: test
+      env: TEST_SUITE=none
+      install: skip # bundle install is not required
+      script: "mvn test"
