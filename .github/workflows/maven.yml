@@ -17,9 +17,8 @@ jobs:
       run: mvn -B package --file pom.xml
 
   include:
-    - stage: "Tests"                # naming the Tests stage
-      name: "Unit Tests"            # names the first Tests stage job
-      script: "mvn test"
+    - stage: test
+      script: ./test 1
     #- script: ./integration-tests
     #  name: "Integration Tests"     # names the second Tests stage job
     #- stage: deploy
