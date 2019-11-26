@@ -17,5 +17,4 @@ public interface IPlatformGameClient {
     public List<SpriteUpdate> getAllSprites();
 
 
-
 }
