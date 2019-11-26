@@ -22,18 +22,18 @@ public class Vector2Test {
         Assert.assertEquals(a, b);
     }
 
-    @Test
+    @Test(expected = ClassCastException.class)
     public void testEqualsDifferentType(){
         Vector2 a = new Vector2(10,10);
         Object b = new Object();
         Assert.assertNotEquals(a, b);
     }
 
-    @Test(expected = ClassCastException.class)
+    @Test
     public void testEqualsNull(){
         Vector2 a = new Vector2(10,10);
         Vector2 b = null;
-        a.equals(b);
+        Assert.assertNotEquals(a, b);
     }
 
     @Test
