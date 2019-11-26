@@ -1,5 +1,6 @@
 package models.classes.objects;
 
+import SharedClasses.Vector2;
 import models.classes.GameObject;
 
 public abstract class MovableObject extends GameObject {
@@ -7,7 +8,9 @@ public abstract class MovableObject extends GameObject {
         super(xPosition, yPosition, width, height);
     }
 
-    public void update(){
+    public abstract void onCollide(GameObject other, Vector2 collidePoint);
+
+    public void update() {
         throw new UnsupportedOperationException("MovableObject update() not yet implemented");
     }
 }

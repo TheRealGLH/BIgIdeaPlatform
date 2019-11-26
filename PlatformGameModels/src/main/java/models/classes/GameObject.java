@@ -17,7 +17,7 @@ public abstract class GameObject {
         throw new UnsupportedOperationException("The method collidesWith() has not yet been implemented");
     }
 
-    public abstract void onCollide(GameObject other, Vector2 collidePoint);
+
 
     public Vector2 getPosition() {
         return position;
