@@ -1,4 +1,4 @@
-package Classes;
+package SharedClasses;
 
 public class Vector2 {
 

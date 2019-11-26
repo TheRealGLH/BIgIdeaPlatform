@@ -1,4 +1,4 @@
-package Classes;
+package SharedClasses;
 
 import Enums.SpriteType;
 import Enums.SpriteUpdateType;
