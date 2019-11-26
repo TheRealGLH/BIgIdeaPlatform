@@ -17,7 +17,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
   include:
-    - stage: test
+      stage: test
       script: ./test 1
     #- script: ./integration-tests
     #  name: "Integration Tests"     # names the second Tests stage job
