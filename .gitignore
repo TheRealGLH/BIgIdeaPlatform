@@ -88,3 +88,5 @@ fabric.properties
 
 seabattleclient/target/generated-sources/
 seabattleclient/target/generated-test-sources/
+
+*/target/*
