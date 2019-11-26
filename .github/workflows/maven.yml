@@ -15,5 +15,13 @@ jobs:
         java-version: 1.9
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Unit Tests
+
+  include:
+    - stage: "Tests"                # naming the Tests stage
+      name: "Unit Tests"            # names the first Tests stage job
       script: "mvn test"
+    #- script: ./integration-tests
+    #  name: "Integration Tests"     # names the second Tests stage job
+    #- stage: deploy
+    #  name: "Deploy to GCP"
+    #  script: ./deploy
