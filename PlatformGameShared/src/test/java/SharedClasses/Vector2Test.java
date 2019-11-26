@@ -1,11 +1,13 @@
 package SharedClasses;
 
-import org.junit.*;
 
-class Vector2Test {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class Vector2Test {
 
     @Test
-    void testConstruction() {
+    public void testConstruction() {
         float x = 10;
         float y = 15;
         Vector2 vector2 = new Vector2(x, y);
@@ -14,35 +16,35 @@ class Vector2Test {
     }
 
     @Test
-    void testEqualsSameObject() {
+    public void testEqualsSameObject() {
         Vector2 a = new Vector2(10,10);
         Vector2 b = a;
         Assert.assertEquals(a, b);
     }
 
     @Test
-    void testEqualsDifferentType(){
+    public void testEqualsDifferentType(){
         Vector2 a = new Vector2(10,10);
         Object b = new Object();
         Assert.assertNotEquals(a, b);
     }
 
-    @Test
-    void testEqualsNull(){
+    @Test(expected = ClassCastException.class)
+    public void testEqualsNull(){
         Vector2 a = new Vector2(10,10);
         Vector2 b = null;
-        Assert.assertNotEquals(a, b);
+        a.equals(b);
     }
 
     @Test
-    void testEqualsCoordinatesMatch(){
+    public void testEqualsCoordinatesMatch(){
         Vector2 a = new Vector2(10,10);
         Vector2 b = new Vector2(10,10);
         Assert.assertEquals(a,b);
     }
 
     @Test
-    void testEqualsCoordinatesDoNotMatch(){
+    public void testEqualsCoordinatesDoNotMatch(){
         Vector2 a = new Vector2(10,10);
         Vector2 b = new Vector2(11,11);
         Assert.assertNotEquals(a,b);
