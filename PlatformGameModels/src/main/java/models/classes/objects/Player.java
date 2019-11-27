@@ -31,10 +31,8 @@ public class Player extends MovableObject {
         this.currentWeapon = weaponType;
     }
 
-    public boolean isGrounded() {
-        //TODO proper implementation
-        return this.getPosition().getY() <= 0;
-    }
+    public WeaponType getCurrentWeapon(){return this.currentWeapon;}
+
 
     @Override
     public void update() {

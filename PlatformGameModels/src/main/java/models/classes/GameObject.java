@@ -26,4 +26,10 @@ public abstract class GameObject {
     public Vector2 getSize() {
         return size;
     }
+
+    public Vector2 getTopRight(){
+        float x = position.getX() + size.getX();
+        float y = position.getY() + size.getY();
+        return new Vector2(x,y);
+    }
 }
