@@ -52,4 +52,22 @@ public class SpriteUpdateTest {
     public void isFacingLeft() {
         Assert.assertEquals(isFacingLeft, sprite.isFacingLeft());
     }
+
+    @Test
+    public void testEqualsDifferentType(){
+        Object other = new Object();
+        Assert.assertNotEquals(sprite, other);
+    }
+
+    @Test
+    public void testEqualsSameId(){
+        SpriteUpdate other = new SpriteUpdate(sprite.getObjectNr(),Vector2.Zero(),Vector2.Zero(),SpriteUpdateType.CREATE,SpriteType.PLATFORM,true);
+        Assert.assertEquals(sprite, other);
+    }
+
+    @Test
+    public void testEqualsDifferentId(){
+        SpriteUpdate other = new SpriteUpdate(sprite.getObjectNr()+2,Vector2.Zero(),Vector2.Zero(),SpriteUpdateType.CREATE,SpriteType.PLATFORM,true);
+        Assert.assertNotEquals(sprite, other);
+    }
 }
