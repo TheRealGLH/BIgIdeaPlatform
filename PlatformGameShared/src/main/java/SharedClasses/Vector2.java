@@ -68,4 +68,8 @@ public class Vector2 {
 
         return new Vector2(x, y);
     }
+
+    public static Vector2 Zero(){
+        return new Vector2(0,0);
+    }
 }

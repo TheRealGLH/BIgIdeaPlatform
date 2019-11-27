@@ -9,13 +9,19 @@ public class Player extends MovableObject {
 
 
     private WeaponType currentWeapon = WeaponType.NONE;
+    private boolean hasUsedInput = false;
+    private InputType lastInput;
+
+
+    private float walkAcceleration = 15;
 
     public Player(float xPos, float yPos) {
         super(xPos, yPos, 10, 10);
-
     }
 
     public void handleInput(InputType inputType) {
+        hasUsedInput = true;
+        lastInput = inputType;
         throw new UnsupportedOperationException("Method handleInput() has not yet been implemented");
     }
 
@@ -31,11 +37,44 @@ public class Player extends MovableObject {
         this.currentWeapon = weaponType;
     }
 
-    public WeaponType getCurrentWeapon(){return this.currentWeapon;}
+    public WeaponType getCurrentWeapon() {
+        return this.currentWeapon;
+    }
 
+    /**
+     * @return The amount of acceleration we have when we're walking
+     */
+    public float getWalkAcceleration() {
+        return walkAcceleration;
+    }
+
+    /**
+     * Sets the amount of acceleration when walking.
+     *
+     * @param walkAcceleration The amount to set.
+     */
+    public void setWalkAcceleration(float walkAcceleration) {
+        this.walkAcceleration = walkAcceleration;
+    }
 
     @Override
     public void update() {
+        if (hasUsedInput) {
+            switch (lastInput) {
+                case MOVELEFT:
+                    addAcceleration(-walkAcceleration, 0);
+                    break;
+                case MOVERIGHT:
+                    addAcceleration(walkAcceleration, 0);
+                    break;
+                case JUMP:
+                case SHOOT:
+                case DUCK:
+                    System.out.println("[Player.java] Input has not yet been handled: " + lastInput);
+                    break;
+            }
+        }
+        hasUsedInput = false;
         super.update();
     }
 

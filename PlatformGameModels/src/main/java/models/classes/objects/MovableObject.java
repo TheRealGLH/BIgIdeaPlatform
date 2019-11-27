@@ -6,11 +6,13 @@ import models.classes.GameObject;
 public abstract class MovableObject extends GameObject {
     private Vector2 acceleration;
     private Vector2 velocity;
-    private float maxHorizontalVelocity, maxVerticalVelocity = 20;
+    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 20;
     private Vector2 maxVelocity = new Vector2(maxHorizontalVelocity, maxVerticalVelocity);
+    private boolean useGravity;
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
+        useGravity = true;
     }
 
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
@@ -44,8 +46,19 @@ public abstract class MovableObject extends GameObject {
         velocity = new Vector2(x, y);
     }
 
+    public Vector2 getVelocity(){
+        return velocity;
+    }
+
     public float getVelocity(boolean isUpward) {
         return (isUpward) ? velocity.getY() : velocity.getX();
     }
 
+    public boolean isUseGravity() {
+        return useGravity;
+    }
+
+    public void setUseGravity(boolean useGravity) {
+        this.useGravity = useGravity;
+    }
 }

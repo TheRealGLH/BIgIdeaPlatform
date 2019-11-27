@@ -26,6 +26,24 @@ public class MovableObjectTest {
     }
 
     @Test
+    public void getAccelerationUpward() {
+        float x = 3;
+        float y = 5;
+        movableObject.setAcceleration(x, y);
+        float actual = movableObject.getAcceleration(true);
+        Assert.assertEquals(y, actual, 1);
+    }
+
+    @Test
+    public void getAccelerationSideways() {
+        float x = 3;
+        float y = 5;
+        movableObject.setAcceleration(x, y);
+        float actual = movableObject.getAcceleration(false);
+        Assert.assertEquals(x, actual, 1);
+    }
+
+    @Test
     public void addAcceleration() {
         float x = 3;
         float y = 0;
@@ -43,21 +61,51 @@ public class MovableObjectTest {
         float y = 15;
         float expectedX = movableObject.getPosition().getX() + x;
         float expectedY = movableObject.getPosition().getY() + y;
-        Vector2 expected = new Vector2(expectedX,expectedY);
-        movableObject.setVelocity(x,y);
+        Vector2 expected = new Vector2(expectedX, expectedY);
+        movableObject.setVelocity(x, y);
         movableObject.update();
         Vector2 actual = movableObject.getPosition();
-        Assert.assertEquals(expected,actual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void testPositionChangeAfterAcceleration() {
 
+        float xAcc = 5;
+        float yAcc = 12;
+        movableObject.setAcceleration(xAcc, yAcc);
+        movableObject.update();
+        Vector2 expected = Vector2.Zero();
+        Vector2 actual = movableObject.getPosition();
+        Assert.assertEquals(expected,actual);
+        throw new UnsupportedOperationException("This test needs to be finished to determine what the position is " +
+                "going to be");
     }
 
 
     @Test
-    public void getVelocity() {
+    public void setVelocity() {
+        Vector2 expected = new Vector2(10, 10);
+        movableObject.setVelocity(expected.getX(), expected.getY());
+        Vector2 actual = movableObject.getVelocity();
+        Assert.assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void notUsingGravitySetter() {
+        boolean expected = false;
+        movableObject.setUseGravity(expected);
+        Assert.assertEquals(expected,movableObject.isUseGravity());
+    }
+
+    @Test
+    public void notFallingNoGravity(){
+        movableObject.setUseGravity(false);
+        Vector2 expected = new Vector2(movableObject.getPosition());
+        movableObject.update();
+        Vector2 actual = new Vector2(movableObject.getPosition());
+        Assert.assertEquals(expected,actual);
     }
 }
 
