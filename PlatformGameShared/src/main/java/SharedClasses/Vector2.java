@@ -14,6 +14,11 @@ public class Vector2 {
         this.y = y;
     }
 
+    public Vector2(Vector2 vector2){
+        this.x = vector2.getX();
+        this.y = vector2.getY();
+    }
+
     /**
      * @return The X coordinate
      */

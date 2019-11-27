@@ -21,6 +21,9 @@ public class WeaponPickupTest{
 
     @Test
     public void testGetWeaponType() {
+        WeaponType expected = WeaponType.GUN;
+        pickup = new WeaponPickup(0,0,expected);
+        Assert.assertEquals(expected,pickup.getWeaponType());
     }
 
     @Test
