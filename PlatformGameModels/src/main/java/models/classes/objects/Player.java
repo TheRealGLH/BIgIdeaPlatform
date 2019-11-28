@@ -68,6 +68,7 @@ public class Player extends MovableObject {
                     addAcceleration(walkAcceleration, 0);
                     break;
                 case JUMP:
+                    jump();
                 case SHOOT:
                 case DUCK:
                     System.out.println("[Player.java] Input has not yet been handled: " + lastInput);

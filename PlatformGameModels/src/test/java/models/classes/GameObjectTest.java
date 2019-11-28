@@ -11,91 +11,100 @@ public class GameObjectTest {
     GameObject collide;
 
 
-
     @Test
     public void collidesWithSameSpace() {
         float x = 2;
         float y = 3;
         float width = 10;
         float height = 20;
-        mock = new GameObjectMock(x,y,width,height);
-        collide = new GameObjectMock(x,y,width,height);
+        mock = new GameObjectMock(x, y, width, height);
+        collide = new GameObjectMock(x, y, width, height);
         Assert.assertTrue(mock.collidesWith(collide));
     }
 
     @Test
-    public void collidesWithOriginPoint(){
-        mock = new GameObjectMock(5,5,10,10);
-        collide = new GameObjectMock(0,0,10,10);
+    public void collidesWithOriginPoint() {
+        mock = new GameObjectMock(5, 5, 10, 10);
+        collide = new GameObjectMock(0, 0, 10, 10);
         Assert.assertTrue(mock.collidesWith(collide));
     }
 
 
     @Test
-    public void collidesWithTopRight(){
-        mock = new GameObjectMock(0,0,10,10);
-        collide = new GameObjectMock(5,5,10,10);
+    public void collidesWithTopRight() {
+        mock = new GameObjectMock(0, 0, 10, 10);
+        collide = new GameObjectMock(5, 5, 10, 10);
         Assert.assertTrue(mock.collidesWith(collide));
     }
 
     @Test
-    public void collisionXCoordinatesMatchOrigin(){
+    public void collisionXCoordinatesMatchOrigin() {
         //test when origin x coords are in bounds but y coords aren't
-        mock = new GameObjectMock(0,0,10,10);
-        collide = new GameObjectMock(5,15,10,10);
+        mock = new GameObjectMock(0, 0, 10, 10);
+        collide = new GameObjectMock(5, 15, 10, 10);
         Assert.assertFalse(mock.collidesWith(collide));
     }
 
     @Test
-    public void collisionYCoordinatesMatchOrigin(){
+    public void collisionYCoordinatesMatchOrigin() {
         //test when origin y coords are in bounds but x coords aren't
-        mock = new GameObjectMock(0,0,10,10);
-        collide = new GameObjectMock(15,5,10,10);
+        mock = new GameObjectMock(0, 0, 10, 10);
+        collide = new GameObjectMock(15, 5, 10, 10);
         Assert.assertFalse(mock.collidesWith(collide));
     }
 
     @Test
-    public void collisionXCoordinatesMatchTopRight(){
+    public void collisionXCoordinatesMatchTopRight() {
         //test when top right x coords are in bounds but y coords aren't
-        mock = new GameObjectMock(5,15,10,10);
-        collide = new GameObjectMock(0,0,10,10);
+        mock = new GameObjectMock(5, 15, 10, 10);
+        collide = new GameObjectMock(0, 0, 10, 10);
         Assert.assertFalse(mock.collidesWith(collide));
     }
 
     @Test
-    public void collisionYCoordinatesMatchTopRight(){
+    public void collisionYCoordinatesMatchTopRight() {
         //test when top right y coords are in bounds but x coords aren't
-        mock = new GameObjectMock(15,5,10,10);
-        collide = new GameObjectMock(0,0,10,10);
+        mock = new GameObjectMock(15, 5, 10, 10);
+        collide = new GameObjectMock(0, 0, 10, 10);
         Assert.assertFalse(mock.collidesWith(collide));
     }
 
     @Test
-    public void collisionNoPointsInSquare(){
-        mock = new GameObjectMock(0,0,10,10);
-        collide = new GameObjectMock(15,15,10,10);
+    public void collisionNoPointsInSquare() {
+        mock = new GameObjectMock(0, 0, 10, 10);
+        collide = new GameObjectMock(15, 15, 10, 10);
         Assert.assertFalse(mock.collidesWith(collide));
     }
-
-
 
 
     @Test
     public void getPosition() {
         float x = 3;
         float y = 17;
-        Vector2 expected = new Vector2(x,y);
-        mock = new GameObjectMock(x,y,5,5);
-        Assert.assertEquals(expected,mock.getPosition());
+        Vector2 expected = new Vector2(x, y);
+        mock = new GameObjectMock(x, y, 5, 5);
+        Assert.assertEquals(expected, mock.getPosition());
     }
 
     @Test
     public void getSize() {
         float x = 3;
         float y = 17;
-        Vector2 expected = new Vector2(x,y);
-        mock = new GameObjectMock(14,40,x,y);
-        Assert.assertEquals(expected,mock.getSize());
+        Vector2 expected = new Vector2(x, y);
+        mock = new GameObjectMock(14, 40, x, y);
+        Assert.assertEquals(expected, mock.getSize());
+    }
+
+    @Test
+    public void testTopRight() {
+        float width = 20;
+        float height = 30;
+        float x = 10;
+        float y = 15;
+        Vector2 expected = new Vector2(x + width, y + height);
+        mock = new GameObjectMock(x,y,width,height);
+        Vector2 actual = mock.getTopRight();
+        Assert.assertEquals(expected,actual);
     }
 }
 

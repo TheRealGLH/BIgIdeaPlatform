@@ -27,7 +27,12 @@ public abstract class MovableObject extends GameObject {
     }
 
     public void addAcceleration(float x, float y) {
-        throw new UnsupportedOperationException("Method addAcceleration() has not yet been implemented");
+        acceleration = new Vector2(acceleration.getX() + x, acceleration.getY() + y);
+    }
+
+    public void Kill(){
+        //Send delete spriteupdate and event notification
+        throw new UnsupportedOperationException("Method Kill() has not yet been implemented");
     }
 
     public void setAcceleration(float x, float y) {
@@ -46,7 +51,7 @@ public abstract class MovableObject extends GameObject {
         velocity = new Vector2(x, y);
     }
 
-    public Vector2 getVelocity(){
+    public Vector2 getVelocity() {
         return velocity;
     }
 
