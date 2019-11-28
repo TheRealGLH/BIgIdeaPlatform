@@ -11,12 +11,15 @@ public class Player extends MovableObject {
     private WeaponType currentWeapon = WeaponType.NONE;
     private boolean hasUsedInput = false;
     private InputType lastInput;
+    private float startX, startY;
 
 
     private float walkAcceleration = 15;
 
     public Player(float xPos, float yPos) {
         super(xPos, yPos, 10, 10);
+        this.startX = xPos;
+        this.startY = yPos;
     }
 
     public void handleInput(InputType inputType) {
@@ -27,6 +30,12 @@ public class Player extends MovableObject {
 
     public void useWeapon() {
         throw new UnsupportedOperationException("Method useWeapon() has not yet been implemented");
+    }
+
+    public void Kill() {
+        setAcceleration(0, 0);
+        setVelocity(0, 0);
+        setPosition(startX,startY);
     }
 
     public void jump() {

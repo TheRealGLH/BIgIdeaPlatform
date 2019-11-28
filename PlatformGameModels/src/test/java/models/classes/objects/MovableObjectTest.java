@@ -2,11 +2,10 @@ package models.classes.objects;
 
 import SharedClasses.Vector2;
 import models.classes.GameObject;
+import models.classes.MockGame;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class MovableObjectTest {
 
@@ -40,6 +39,24 @@ public class MovableObjectTest {
         float y = 5;
         movableObject.setAcceleration(x, y);
         float actual = movableObject.getAcceleration(false);
+        Assert.assertEquals(x, actual, 1);
+    }
+
+    @Test
+    public void getVelocityUpward() {
+        float x = 3;
+        float y = 5;
+        movableObject.setVelocity(x, y);
+        float actual = movableObject.getVelocity(true);
+        Assert.assertEquals(y, actual, 1);
+    }
+
+    @Test
+    public void getVelocitySideways() {
+        float x = 3;
+        float y = 5;
+        movableObject.setVelocity(x, y);
+        float actual = movableObject.getVelocity(false);
         Assert.assertEquals(x, actual, 1);
     }
 
@@ -106,6 +123,22 @@ public class MovableObjectTest {
         movableObject.update();
         Vector2 actual = new Vector2(movableObject.getPosition());
         Assert.assertEquals(expected,actual);
+    }
+
+    @Test
+    public void testObjectAdding(){
+        MockGame game = new MockGame();
+        game.addObject(movableObject);
+        Assert.assertTrue(game.objectStillInList(movableObject));
+    }
+
+    @Test
+    public void kill() {
+        MockGame game = new MockGame();
+        game.addObject(movableObject);
+        movableObject.Delete();
+        game.update();
+        Assert.assertFalse(game.objectStillInList(movableObject));
     }
 }
 

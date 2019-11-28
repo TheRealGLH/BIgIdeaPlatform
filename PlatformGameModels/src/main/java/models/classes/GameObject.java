@@ -20,7 +20,12 @@ public abstract class GameObject {
 
 
     public Vector2 getPosition() {
-        return position;
+        return new Vector2(position);
+    }
+
+    public void setPosition(float x, float y){
+        position.setX(x);
+        position.setY(y);
     }
 
     public Vector2 getSize() {

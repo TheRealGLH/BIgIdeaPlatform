@@ -9,6 +9,7 @@ public abstract class MovableObject extends GameObject {
     private float maxHorizontalVelocity = 20, maxVerticalVelocity = 20;
     private Vector2 maxVelocity = new Vector2(maxHorizontalVelocity, maxVerticalVelocity);
     private boolean useGravity;
+    private boolean shouldBeCleaned = false;
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
@@ -30,9 +31,9 @@ public abstract class MovableObject extends GameObject {
         acceleration = new Vector2(acceleration.getX() + x, acceleration.getY() + y);
     }
 
-    public void Kill(){
-        //Send delete spriteupdate and event notification
-        throw new UnsupportedOperationException("Method Kill() has not yet been implemented");
+    public void Delete() {
+        shouldBeCleaned = true;
+        System.out.println("Send event for DELETE SpriteUpdate");
     }
 
     public void setAcceleration(float x, float y) {
@@ -65,5 +66,9 @@ public abstract class MovableObject extends GameObject {
 
     public void setUseGravity(boolean useGravity) {
         this.useGravity = useGravity;
+    }
+
+    public boolean isShouldBeCleaned() {
+        return shouldBeCleaned;
     }
 }
