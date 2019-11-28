@@ -27,7 +27,7 @@ public class SpriteUpdate {
     }
 
     public Vector2 getPosition() {
-        return position;
+        return new Vector2(position);
     }
 
     public Vector2 getSize() {
