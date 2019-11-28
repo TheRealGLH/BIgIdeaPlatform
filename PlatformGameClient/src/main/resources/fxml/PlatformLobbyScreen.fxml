@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gamegui.controllers.PlatformLobbyScreenController"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="gamegui.controllers.PlatformLobbyScreenController"
+      prefHeight="400.0" prefWidth="600.0">
     <children>
         <Label layoutX="55.0" layoutY="174.0" text="PlatformLobbyScreen to be made">
             <font>
-                <Font size="36.0" />
+                <Font size="36.0"/>
             </font>
         </Label>
     </children>
-</AnchorPane>
+</VBox>

@@ -8,7 +8,8 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gamegui.controllers.PlatformRegisterScreenController">
+<?import javafx.scene.layout.VBox?>
+<VBox prefHeight="400.0" prefWidth="600.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="gamegui.controllers.PlatformRegisterScreenController">
     <Region layoutX="17.0" layoutY="19.0" prefHeight="358.0" prefWidth="564.0" />
     <Label layoutX="182.0" layoutY="42.0" text="Register">
         <font>
@@ -22,4 +23,4 @@
     <Button fx:id="BtnRegister" layoutX="191.0" layoutY="188.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="110.0" text="Register" />
     <Button fx:id="BtnMainMenu" layoutX="503.0" layoutY="339.0" mnemonicParsing="false" text="Back" />
 
-</AnchorPane>
+</VBox>

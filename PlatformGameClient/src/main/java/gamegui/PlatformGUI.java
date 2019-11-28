@@ -48,7 +48,7 @@ public class PlatformGUI extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-       // showMainMenu();
+        showMainMenu();
         GUISceneController.getInstance().setPlatformGUI(this);
     }
 
