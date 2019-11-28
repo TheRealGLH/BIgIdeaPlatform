@@ -3,8 +3,8 @@ package SharedClasses;
 import Enums.SpriteType;
 import Enums.SpriteUpdateType;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.Before;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,9 +18,9 @@ public class SpriteUpdateTest {
     SpriteType spriteType = SpriteType.PLATFORM;
     boolean isFacingLeft = false;
 
-    @BeforeEach
+    @Before
     public void setUp() {
-        System.out.println("Setting up...");
+        System.out.println("Setting up a SpriteUpdate test...");
         sprite = new SpriteUpdate(objectNr, position, size, updateType, spriteType, isFacingLeft);
     }
 
