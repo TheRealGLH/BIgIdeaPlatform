@@ -72,4 +72,9 @@ public class Vector2 {
     public static Vector2 Zero(){
         return new Vector2(0,0);
     }
+
+    @Override
+    public String toString(){
+        return "Point {"+x+","+y+"}";
+    }
 }
