@@ -15,6 +15,7 @@ public class PlayerTest {
 
     @Before
     public void setUp() {
+        System.out.println("Setting up a Player test...");
         player = new Player(20, 20);
     }
 
@@ -34,6 +35,7 @@ public class PlayerTest {
 
     @Test
     public void setCurrentWeapon() {
+        System.out.println("Testing Player setting weapontype");
         WeaponType expected = WeaponType.GUN;
         player.setCurrentWeapon(expected);
         WeaponType actual = player.getCurrentWeapon();
@@ -44,6 +46,7 @@ public class PlayerTest {
 
     @Test
     public void setWalkAcceleration() {
+        System.out.println("Testing Player setting walk acceleration");
         float expected = player.getWalkAcceleration() + 30;
         player.setWalkAcceleration(expected);
         float actual = player.getWalkAcceleration();
@@ -53,6 +56,7 @@ public class PlayerTest {
 
     @Test
     public void killTestPosition() {
+        System.out.println("Testing Player resetting position on death");
         Vector2 expected = player.getPosition();
         player.setPosition(expected.getX() + 30, expected.getY() + 40);
         player.Kill();
@@ -61,6 +65,7 @@ public class PlayerTest {
 
     @Test
     public void killTestAcceleration() {
+        System.out.println("Testing Player resetting acceleration on death");
         Vector2 expected = player.getAcceleration();
         player.setAcceleration(expected.getX() + 30, expected.getY() + 40);
         player.Kill();
@@ -69,6 +74,7 @@ public class PlayerTest {
 
     @Test
     public void killTestVelocity() {
+        System.out.println("Testing Player resetting velocity on death");
         Vector2 expected = player.getVelocity();
         player.setVelocity(expected.getX() + 30, expected.getY() + 40);
         player.Kill();
