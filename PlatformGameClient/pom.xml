@@ -7,6 +7,11 @@
     <groupId>MartijnD</groupId>
     <artifactId>PlatformGameClient</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <codeVersion>11</codeVersion>
+        <openfxVersion>11.0.2</openfxVersion>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -23,8 +28,23 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.5</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>gamegui.PlatformGUI</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+
+    </dependencies>
 
 
 </project>
