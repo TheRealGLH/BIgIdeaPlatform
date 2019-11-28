@@ -15,6 +15,7 @@ public class PlatformTest {
 
     @Test
     public void isSolid() {
+        System.out.println("Testing Platform solidness");
         platform = new Platform(10,10,10,10,false);
         platform.setSolid(true);
         assertTrue(platform.isSolid());
