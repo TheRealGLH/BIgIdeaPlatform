@@ -1,4 +1,4 @@
-name: JaCOCo CI
+name: JaCoCo CI
 
 on: [push]
 
