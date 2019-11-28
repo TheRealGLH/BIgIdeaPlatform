@@ -140,6 +140,12 @@ public class MovableObjectTest {
         game.update();
         Assert.assertFalse(game.objectStillInList(movableObject));
     }
+
+    @Test
+    public void isShouldBeCleaned() {
+        movableObject.Delete();
+        Assert.assertTrue(movableObject.isShouldBeCleaned());
+    }
 }
 
 class MockMovableObject extends MovableObject {
