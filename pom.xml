@@ -17,6 +17,25 @@
         <module>PlatformLoginShared</module>
         <module>PlatformLoginServer</module>
     </modules>
+<build>
+<plugins>
+    <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version>
+    </plugin>
+</plugins>
+</build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 
     
 </project>
