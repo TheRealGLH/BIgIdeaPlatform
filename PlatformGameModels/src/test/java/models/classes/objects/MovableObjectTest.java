@@ -125,6 +125,16 @@ public class MovableObjectTest {
         Assert.assertEquals(expected,actual);
     }
 
+    /*
+    @Test
+    public void notFallingGrounded(){
+        movableObject.setPosition(40,40);
+        Vector2 expected = new Vector2(movableObject.getPosition());
+        movableObject.update();
+        Vector2 actual = new Vector2(movableObject.getPosition());
+        Assert.assertEquals(expected,actual);
+    }
+     */
     @Test
     public void testObjectAdding(){
         MockGame game = new MockGame();
