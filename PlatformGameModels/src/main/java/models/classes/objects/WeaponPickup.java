@@ -21,13 +21,14 @@ public class WeaponPickup extends MovableObject {
         return weaponType;
     }
 
+   /*
     @Override
     public void update() {
         super.update();
     }
-
+*/
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-        throw new UnsupportedOperationException("Method onCollide has not yet been implemented");
+        if(other instanceof Player) pickUp((Player) other);
     }
 }

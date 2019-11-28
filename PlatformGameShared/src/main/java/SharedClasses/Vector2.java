@@ -14,6 +14,11 @@ public class Vector2 {
         this.y = y;
     }
 
+    public Vector2(Vector2 vector2){
+        this.x = vector2.getX();
+        this.y = vector2.getY();
+    }
+
     /**
      * @return The X coordinate
      */
@@ -62,5 +67,14 @@ public class Vector2 {
         float y = (this.y + other.getY()) / 2;
 
         return new Vector2(x, y);
+    }
+
+    public static Vector2 Zero(){
+        return new Vector2(0,0);
+    }
+
+    @Override
+    public String toString(){
+        return "Point {"+x+","+y+"}";
     }
 }
