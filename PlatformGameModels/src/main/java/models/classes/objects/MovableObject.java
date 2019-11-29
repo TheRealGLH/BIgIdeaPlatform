@@ -56,7 +56,7 @@ public abstract class MovableObject extends GameObject {
 
     public void Delete() {
         shouldBeCleaned = true;
-        System.out.println("Send event for DELETE SpriteUpdate");
+        System.out.println("[MovableObject.java] Send event for DELETE SpriteUpdate");
     }
 
     public void setAcceleration(float x, float y) {

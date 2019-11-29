@@ -107,10 +107,11 @@ public class MovableObjectTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Ignore("testPositionChangeAfterAccelerationMultipleUpdates: Will redo this after proper grounded implementation")
     @Test
     public void testPositionChangeAfterAccelerationMultipleUpdates() {
         System.out.println("Testing MovableObject position change after acceleration change");
-        int amountOfUpdates = 5;
+        int amountOfUpdates = 10;
         float xAcc = 5;
         float yAcc = 12;
         float xExpected = xAcc * amountOfUpdates + movableObject.getPosition().getX();
@@ -132,8 +133,8 @@ public class MovableObjectTest {
         movableObject.setUseGravity(false);
         movableObject.setVelocity(40,0);
         for (int i = 0; i < 40; i++) {
-            movableObject.update();
             System.out.println("Velocity: "+movableObject.getVelocity(false));
+            movableObject.update();
         }
     }
 
