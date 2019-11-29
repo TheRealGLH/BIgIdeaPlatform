@@ -10,7 +10,7 @@
 
     <properties>
         <codeVersion>11</codeVersion>
-        <openfxVersion>11.0.2</openfxVersion>
+        <openfxVersion>11.0.1</openfxVersion>
     </properties>
     <build>
         <plugins>
@@ -49,6 +49,23 @@
             <artifactId>PlatformGameShared</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- (open)Java FX -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${openfxVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${openfxVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${openfxVersion}</version>
         </dependency>
     </dependencies>
 
