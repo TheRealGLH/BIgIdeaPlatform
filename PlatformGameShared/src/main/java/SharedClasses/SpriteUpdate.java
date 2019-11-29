@@ -54,4 +54,9 @@ public class SpriteUpdate {
         return false;
     }
 
+    @Override
+    public String toString(){
+        return "SpriteUpdate: "+updateType+" "+spriteType;
+    }
+
 }

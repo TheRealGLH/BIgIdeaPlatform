@@ -1,11 +1,11 @@
 package gamegui.controllers;
 
-import gamegui.GUISceneController;
+import gamegui.GUIScreenController;
 import javafx.fxml.FXML;
 
 public class PlatformMainMenuController {
 
-    GUISceneController sceneController = GUISceneController.getInstance();
+    GUIScreenController sceneController = GUIScreenController.getInstance();
 
     @FXML
     void LoginPressed(){
@@ -16,4 +16,7 @@ public class PlatformMainMenuController {
     void RegisterPressed(){
         sceneController.showRegisterScreen();
     }
+
+    @FXML
+    void debugGameView() {sceneController.showGameView();}
 }

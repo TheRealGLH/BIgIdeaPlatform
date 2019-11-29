@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
-
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<VBox prefHeight="400.0" prefWidth="600.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="gamegui.controllers.PlatformGameViewController">
+
+<VBox onKeyReleased="#handleKeyInput" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gamegui.controllers.PlatformGameViewController">
    <children>
-      <Label layoutX="55.0" layoutY="174.0" text="PlatformGameView to be made">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
+      <Pane fx:id="gamePane" prefHeight="359.0" prefWidth="600.0" />
    </children>
 </VBox>

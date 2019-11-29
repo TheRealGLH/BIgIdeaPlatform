@@ -1,10 +1,10 @@
 package gamegui.controllers;
 
-import gamegui.GUISceneController;
+import gamegui.GUIScreenController;
 import javafx.fxml.FXML;
 
 public class PlatformLoginScreenController {
-    GUISceneController sceneController = GUISceneController.getInstance();
+    GUIScreenController sceneController = GUIScreenController.getInstance();
     @FXML
     void LoginPressed(){
         //TODO add login methods to IPlatformGameClient interface

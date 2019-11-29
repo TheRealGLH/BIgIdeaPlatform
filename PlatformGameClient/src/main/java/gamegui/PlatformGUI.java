@@ -6,7 +6,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 
-import java.io.File;
 import java.io.IOException;
 
 public class PlatformGUI extends Application {
@@ -47,8 +46,8 @@ public class PlatformGUI extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        GUISceneController.getInstance().setPlatformGUI(this);
-        GUISceneController.getInstance().showMainMenu();
+        GUIScreenController.getInstance().setPlatformGUI(this);
+        GUIScreenController.getInstance().showMainMenu();
         System.out.println("Game started.");
     }
 
@@ -56,29 +55,34 @@ public class PlatformGUI extends Application {
         primaryStage.setTitle("Platform Wars!");
         primaryStage.setScene(mainScreen);
         primaryStage.show();
+        loginScreen.getRoot().requestFocus();
     }
 
     void showLoginScreen() {
         primaryStage.setTitle("Platform Wars Login");
         primaryStage.setScene(loginScreen);
         primaryStage.show();
+        loginScreen.getRoot().requestFocus();
     }
 
     void showRegisterScreen() {
         primaryStage.setTitle("Register a new Platform Wars account.");
         primaryStage.setScene(registerScreen);
         primaryStage.show();
+        registerScreen.getRoot().requestFocus();
     }
 
     void showLobbyScreen() {
         primaryStage.setTitle("Platform Wars: In Lobby");
         primaryStage.setScene(lobbyScreen);
         primaryStage.show();
+        lobbyScreen.getRoot().requestFocus();
     }
 
     void showGameViewScreen() {
         primaryStage.setTitle("Platform Wars!");
         primaryStage.setScene(gameViewScreen);
         primaryStage.show();
+        gameViewScreen.getRoot().requestFocus();
     }
 }

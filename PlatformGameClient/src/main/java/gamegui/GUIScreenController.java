@@ -2,25 +2,27 @@ package gamegui;
 
 import Enums.GameState;
 import Enums.InputType;
-import Interfaces.IPlatformGameClient;
 import SharedClasses.SpriteUpdate;
+import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class GUISceneController implements IPlatformGameClient {
+public class GUIScreenController extends ScreenController {
 
-    private static final GUISceneController instance = new GUISceneController();
+    private static final GUIScreenController instance = new GUIScreenController();
 
     private PlatformGUI platformGUI;
     private GUIState guiState;
-    private GUISceneController() {
+    private List<ISpriteUpdateEventListener> spriteUpdateEventListeners = new ArrayList<>();
+    private GUIScreenController() {
 
     }
 
     //We use a so called 'Eager' Singleton pattern here, because it supposedly goes nicer with a multithreaded environment (Such as JavaFX)
-    public static GUISceneController getInstance() {
+    public static GUIScreenController getInstance() {
         return instance;
     }
 
@@ -56,7 +58,9 @@ public class GUISceneController implements IPlatformGameClient {
     @Override
     public void updateScreen(List<SpriteUpdate> positions) {
         if(guiState != GUIState.Game) return;
-        throw new UnsupportedOperationException("updateScreen has not yet been implemented.");
+        for (ISpriteUpdateEventListener listener : spriteUpdateEventListeners){
+            listener.handleSpriteUpdate(positions);
+        }
     }
 
     @Override
@@ -83,6 +87,11 @@ public class GUISceneController implements IPlatformGameClient {
             throw new UnsupportedOperationException("updateScreen has not yet been implemented.");
         }
         throw new InvalidParameterException("You're not allowed to call getAllSprites when not in the game view.");
+    }
+
+    @Override
+    public void addEventListener(ISpriteUpdateEventListener listener) {
+        spriteUpdateEventListeners.add(listener);
     }
 }
 

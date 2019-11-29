@@ -1,10 +1,10 @@
 package gamegui.controllers;
 
-import gamegui.GUISceneController;
+import gamegui.GUIScreenController;
 import javafx.fxml.FXML;
 
 public class PlatformRegisterScreenController {
-    GUISceneController sceneController = GUISceneController.getInstance();
+    GUIScreenController sceneController = GUIScreenController.getInstance();
 
     @FXML
     void registerPressed() {

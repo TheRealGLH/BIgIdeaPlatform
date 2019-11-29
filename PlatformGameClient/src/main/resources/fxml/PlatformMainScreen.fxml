@@ -9,10 +9,11 @@
     <children>
         <ImageView fitHeight="150.0" fitWidth="593.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../Images/logo.png" />
+                <Image url="@../images/logo.png" />
             </image>
         </ImageView>
         <Button fx:id="BtnLogIn" mnemonicParsing="false" onAction="#LoginPressed" text="Log in" />
         <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#RegisterPressed" text="Register" />
+        <Button fx:id="btnDebug" mnemonicParsing="false" onAction="#debugGameView" text="Debug" />
     </children>
 </VBox>
