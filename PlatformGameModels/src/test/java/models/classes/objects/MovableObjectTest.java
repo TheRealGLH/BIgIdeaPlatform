@@ -89,22 +89,53 @@ public class MovableObjectTest {
         float expectedY = movableObject.getPosition().getY() + y;
         Vector2 expected = new Vector2(expectedX, expectedY);
         movableObject.setVelocity(x, y);
+        movableObject.setUseGravity(false);
         movableObject.update();
         Vector2 actual = movableObject.getPosition();
         Assert.assertEquals(expected, actual);
     }
 
-    @Ignore("This test needs to be finished to determine what the position is going to be")
     @Test
     public void testPositionChangeAfterAcceleration() {
         System.out.println("Testing MovableObject position change after acceleration change");
         float xAcc = 5;
         float yAcc = 12;
+        Vector2 expected = new Vector2(movableObject.getPosition().getX() + xAcc, movableObject.getPosition().getY() + yAcc);
         movableObject.setAcceleration(xAcc, yAcc);
         movableObject.update();
-        Vector2 expected = Vector2.Zero();
         Vector2 actual = movableObject.getPosition();
-        Assert.assertEquals(expected,actual);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Ignore("testPositionChangeAfterAccelerationMultipleUpdates: Will redo this after proper grounded implementation")
+    @Test
+    public void testPositionChangeAfterAccelerationMultipleUpdates() {
+        System.out.println("Testing MovableObject position change after acceleration change");
+        int amountOfUpdates = 10;
+        float xAcc = 5;
+        float yAcc = 12;
+        float xExpected = xAcc * amountOfUpdates + movableObject.getPosition().getX();
+        float yExpected = yAcc * amountOfUpdates + movableObject.getPosition().getY();
+        movableObject.setFriction(1);
+        movableObject.setAcceleration(xAcc, yAcc);
+        for (int i = 0; i < amountOfUpdates; i++) {
+            movableObject.update();
+        }
+
+        Vector2 expected = new Vector2(xExpected,yExpected);
+        Vector2 actual = movableObject.getPosition();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void showFrictionEffect(){
+        System.out.println("Showing MovableObject friction effect");
+        movableObject.setUseGravity(false);
+        movableObject.setVelocity(40,0);
+        for (int i = 0; i < 40; i++) {
+            System.out.println("Velocity: "+movableObject.getVelocity(false));
+            movableObject.update();
+        }
     }
 
 
@@ -123,33 +154,33 @@ public class MovableObjectTest {
         System.out.println("Testing MovableObject disabling gravity");
         boolean expected = false;
         movableObject.setUseGravity(expected);
-        Assert.assertEquals(expected,movableObject.isUseGravity());
+        Assert.assertEquals(expected, movableObject.isUseGravity());
     }
 
     @Test
-    public void notFallingNoGravity(){
+    public void notFallingNoGravity() {
         System.out.println("Testing MovableObject not falling when there is no gravity");
         movableObject.setUseGravity(false);
         Vector2 expected = new Vector2(movableObject.getPosition());
         movableObject.update();
         Vector2 actual = new Vector2(movableObject.getPosition());
-        Assert.assertEquals(expected,actual);
+        Assert.assertEquals(expected, actual);
     }
 
 
     @Ignore("MovableObject notFallingGrounded test skipped until grounded implementation will be determined")
     @Test
-    public void notFallingGrounded(){
+    public void notFallingGrounded() {
         System.out.println("Testing MovableObject not falling when its grounded");
-        movableObject.setPosition(40,40);
+        movableObject.setPosition(40, 40);
         Vector2 expected = new Vector2(movableObject.getPosition());
         movableObject.update();
         Vector2 actual = new Vector2(movableObject.getPosition());
-        Assert.assertEquals(expected,actual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testObjectAdding(){
+    public void testObjectAdding() {
         System.out.println("Testing MockGame adding of object");
         MockGame game = new MockGame();
         game.addObject(movableObject);

@@ -1,9 +1,8 @@
 package models.classes;
 
 import SharedClasses.Vector2;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class GameObjectTest {
 
@@ -84,6 +83,12 @@ public class GameObjectTest {
         Assert.assertFalse(mock.collidesWith(collide));
     }
 
+    @Test
+    public void collisionSameInstance() {
+        mock = new GameObjectMock(10, 10, 10, 10);
+        Assert.assertFalse(mock.collidesWith(mock));
+    }
+
 
     @Test
     public void getPosition() {
@@ -113,10 +118,12 @@ public class GameObjectTest {
         float x = 10;
         float y = 15;
         Vector2 expected = new Vector2(x + width, y + height);
-        mock = new GameObjectMock(x,y,width,height);
+        mock = new GameObjectMock(x, y, width, height);
         Vector2 actual = mock.getTopRight();
-        Assert.assertEquals(expected,actual);
+        Assert.assertEquals(expected, actual);
     }
+
+
 }
 
 

@@ -10,10 +10,16 @@ public abstract class MovableObject extends GameObject {
     private Vector2 maxVelocity = new Vector2(maxHorizontalVelocity, maxVerticalVelocity);
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
+    private int timeInAir = 0;
+    private int maxTimeInAir = 70;
+    private float weight = 4;
+    private float friction = .75f;//the lower, the faster you'll stop!
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
         useGravity = true;
+        velocity = Vector2.Zero();
+        acceleration = Vector2.Zero();
     }
 
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
@@ -24,7 +30,24 @@ public abstract class MovableObject extends GameObject {
     }
 
     public void update() {
-        throw new UnsupportedOperationException("MovableObject update() not yet implemented");
+        if (isGrounded() && isUseGravity()) doGravity();
+        else timeInAir = 0;
+
+        //add acceleration
+        velocity.setX(velocity.getX()+acceleration.getX());
+        velocity.setY(velocity.getY()+acceleration.getY());
+
+        Vector2 pos = getPosition();
+        setPosition(pos.getX()+velocity.getX(),pos.getY()+velocity.getY());
+
+        //friction
+        velocity.setX(velocity.getX()*friction);
+        if(velocity.getX() < 0.001f) velocity.setX(0);
+    }
+
+    private void doGravity() {
+        if (timeInAir < maxTimeInAir) timeInAir++;
+            addAcceleration(0, weight * timeInAir * 9.81f);//make this increase or something
     }
 
     public void addAcceleration(float x, float y) {
@@ -33,7 +56,7 @@ public abstract class MovableObject extends GameObject {
 
     public void Delete() {
         shouldBeCleaned = true;
-        System.out.println("Send event for DELETE SpriteUpdate");
+        System.out.println("[MovableObject.java] Send event for DELETE SpriteUpdate");
     }
 
     public void setAcceleration(float x, float y) {
@@ -47,6 +70,10 @@ public abstract class MovableObject extends GameObject {
     public float getAcceleration(boolean isUpward) {
         return (isUpward) ? acceleration.getY() : acceleration.getX();
     }
+
+    public float getFriction(){return friction;}
+
+    public void setFriction(float friction){this.friction = friction;}
 
     public void setVelocity(float x, float y) {
         velocity = new Vector2(x, y);

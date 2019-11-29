@@ -6,7 +6,6 @@ import SharedClasses.Vector2;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javax.imageio.ImageIO;
 import java.security.InvalidParameterException;
 
 public class SpriteFactory {

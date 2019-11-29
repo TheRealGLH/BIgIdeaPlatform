@@ -1,8 +1,8 @@
 package models.classes.objects;
 
 import models.enums.WeaponType;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class WeaponPickupTest{
 

@@ -15,7 +15,8 @@ public class WeaponPickup extends MovableObject {
     }
 
     public void pickUp(Player player){
-        throw new UnsupportedOperationException("Method pickUp() has not yet been implemented");
+        player.setCurrentWeapon(this.weaponType);
+        this.Delete();
     }
     public WeaponType getWeaponType() {
         return weaponType;

@@ -25,7 +25,6 @@ public class Player extends MovableObject {
     public void handleInput(InputType inputType) {
         hasUsedInput = true;
         lastInput = inputType;
-        throw new UnsupportedOperationException("Method handleInput() has not yet been implemented");
     }
 
     public void useWeapon() {
@@ -35,7 +34,7 @@ public class Player extends MovableObject {
     public void Kill() {
         setAcceleration(0, 0);
         setVelocity(0, 0);
-        setPosition(startX,startY);
+        setPosition(startX, startY);
     }
 
     public void jump() {
@@ -83,6 +82,9 @@ public class Player extends MovableObject {
                     System.out.println("[Player.java] Input has not yet been handled: " + lastInput);
                     break;
             }
+        } else {
+            //if we're not walking, we don't want to have any more X acceleration.
+            setAcceleration(0, getAcceleration().getY());
         }
         hasUsedInput = false;
         super.update();
