@@ -5,14 +5,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="gamegui.controllers.PlatformMainMenuController">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gamegui.controllers.PlatformMainMenuController">
     <children>
         <ImageView fitHeight="150.0" fitWidth="593.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../Images/logo.png" />
             </image>
         </ImageView>
-        <Button fx:id="BtnLogIn" mnemonicParsing="false" text="Log in" />
-        <Button fx:id="btnRegister" mnemonicParsing="false" text="Register" />
+        <Button fx:id="BtnLogIn" mnemonicParsing="false" onAction="#LoginPressed" text="Log in" />
+        <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#RegisterPressed" text="Register" />
     </children>
 </VBox>

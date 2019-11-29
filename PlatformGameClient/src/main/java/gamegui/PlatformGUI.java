@@ -33,7 +33,6 @@ public class PlatformGUI extends Application {
         VBox registerRoot;
         VBox lobbyRoot;
         VBox gameViewRoot;
-        File f = new File(fxmlpath + "PlatformMainMenu.fxml");
         try {
             mainRoot = FXMLLoader.load(getClass().getResource(fxmlpath + "PlatformMainScreen.fxml"));
             loginRoot = FXMLLoader.load(getClass().getResource(fxmlpath + "PlatformLoginScreen.fxml"));
@@ -48,35 +47,36 @@ public class PlatformGUI extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        showMainMenu();
         GUISceneController.getInstance().setPlatformGUI(this);
+        GUISceneController.getInstance().showMainMenu();
+        System.out.println("Game started.");
     }
 
-    public void showMainMenu() {
+    void showMainMenu() {
         primaryStage.setTitle("Platform Wars!");
         primaryStage.setScene(mainScreen);
         primaryStage.show();
     }
 
-    public void showLoginScreen() {
+    void showLoginScreen() {
         primaryStage.setTitle("Platform Wars Login");
         primaryStage.setScene(loginScreen);
         primaryStage.show();
     }
 
-    public void showRegisterScreen() {
+    void showRegisterScreen() {
         primaryStage.setTitle("Register a new Platform Wars account.");
         primaryStage.setScene(registerScreen);
         primaryStage.show();
     }
 
-    public void showLobbyScreen() {
+    void showLobbyScreen() {
         primaryStage.setTitle("Platform Wars: In Lobby");
         primaryStage.setScene(lobbyScreen);
         primaryStage.show();
     }
 
-    public void showGameViewScreen() {
+    void showGameViewScreen() {
         primaryStage.setTitle("Platform Wars!");
         primaryStage.setScene(gameViewScreen);
         primaryStage.show();

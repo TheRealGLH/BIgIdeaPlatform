@@ -1,10 +1,20 @@
 package gamegui;
 
-public class GUISceneController {
+import Enums.GameState;
+import Enums.InputType;
+import Interfaces.IPlatformGameClient;
+import SharedClasses.SpriteUpdate;
+import gamegui.enums.GUIState;
+
+import java.security.InvalidParameterException;
+import java.util.List;
+
+public class GUISceneController implements IPlatformGameClient {
 
     private static final GUISceneController instance = new GUISceneController();
 
     private PlatformGUI platformGUI;
+    private GUIState guiState;
     private GUISceneController() {
 
     }
@@ -19,22 +29,61 @@ public class GUISceneController {
     }
 
     public void showMainMenu(){
+        guiState = GUIState.MainMenu;
         platformGUI.showMainMenu();
     }
 
     public void showLoginScreen(){
+        guiState = GUIState.Login;
         platformGUI.showLoginScreen();
     }
 
     public void showRegisterScreen(){
+        guiState = GUIState.Register;
         platformGUI.showRegisterScreen();
     }
 
     public void showLobbyScreen(){
+        guiState = GUIState.Lobby;
         platformGUI.showLobbyScreen();
     }
 
     public void showGameView(){
+        guiState = GUIState.Game;
         platformGUI.showGameViewScreen();
     }
+
+    @Override
+    public void updateScreen(List<SpriteUpdate> positions) {
+        if(guiState != GUIState.Game) return;
+        throw new UnsupportedOperationException("updateScreen has not yet been implemented.");
+    }
+
+    @Override
+    public void joinGame() {
+        if(guiState != GUIState.Lobby) return;
+        throw new UnsupportedOperationException("joinGame has not yet been implemented.");
+    }
+
+    @Override
+    public void receiveGameState(GameState gameState) {
+        if(guiState != GUIState.Game) return;
+        throw new UnsupportedOperationException("receiveGameState has not yet been implemented.");
+    }
+
+    @Override
+    public void sendInput(InputType inputType) {
+        if(guiState != GUIState.Game) return;
+        throw new UnsupportedOperationException("sendInput has not yet been implemented.");
+    }
+
+    @Override
+    public List<SpriteUpdate> getAllSprites() {
+        if(guiState == GUIState.Game) {
+            throw new UnsupportedOperationException("updateScreen has not yet been implemented.");
+        }
+        throw new InvalidParameterException("You're not allowed to call getAllSprites when not in the game view.");
+    }
 }
+
+
