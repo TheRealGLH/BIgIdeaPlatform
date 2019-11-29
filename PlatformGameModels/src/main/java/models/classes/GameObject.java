@@ -14,10 +14,8 @@ public abstract class GameObject {
 
     public boolean collidesWith(GameObject other) {
         if (this.equals(other)) return false;
-        Vector2 otherTopRight = other.getTopRight();
         if (between(position, getTopRight(), other.getPosition())) return true;
-        if (between(position, getTopRight(), other.getTopRight())) return true;
-        return false;
+        return between(position, getTopRight(), other.getTopRight());
     }
 
 

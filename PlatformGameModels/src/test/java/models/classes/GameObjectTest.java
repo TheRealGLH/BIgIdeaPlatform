@@ -1,9 +1,8 @@
 package models.classes;
 
 import SharedClasses.Vector2;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class GameObjectTest {
 
