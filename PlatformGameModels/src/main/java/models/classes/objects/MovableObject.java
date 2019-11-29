@@ -10,10 +10,16 @@ public abstract class MovableObject extends GameObject {
     private Vector2 maxVelocity = new Vector2(maxHorizontalVelocity, maxVerticalVelocity);
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
+    private int timeInAir = 0;
+    private int maxTimeInAir = 70;
+    private float weight = 4;
+    private float friction = .75f;//the lower, the faster you'll stop!
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
         useGravity = true;
+        velocity = Vector2.Zero();
+        acceleration = Vector2.Zero();
     }
 
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
@@ -24,7 +30,20 @@ public abstract class MovableObject extends GameObject {
     }
 
     public void update() {
-        throw new UnsupportedOperationException("MovableObject update() not yet implemented");
+        if (isGrounded() && isUseGravity()) doGravity();
+        else timeInAir = 0;
+
+        //add acceleration
+        velocity.setX(velocity.getX()+acceleration.getX());
+        velocity.setY(velocity.getY()+acceleration.getY());
+
+        //friction
+        velocity.setX(velocity.getX()*friction);
+    }
+
+    private void doGravity() {
+        if (timeInAir < maxTimeInAir) timeInAir++;
+            addAcceleration(0, weight * timeInAir * 9.81f);//make this increase or something
     }
 
     public void addAcceleration(float x, float y) {
