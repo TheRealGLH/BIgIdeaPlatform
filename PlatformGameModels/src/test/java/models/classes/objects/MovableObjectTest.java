@@ -94,7 +94,6 @@ public class MovableObjectTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Ignore("This test needs to be finished to determine what the position is going to be")
     @Test
     public void testPositionChangeAfterAcceleration() {
         System.out.println("Testing MovableObject position change after acceleration change");
