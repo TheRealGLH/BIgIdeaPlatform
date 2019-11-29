@@ -51,8 +51,8 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 Random random1 = new Random();
                 List<SpriteUpdate> spriteMove = new ArrayList<>();
                 for (int nr : spriteMap.keySet()) {
-                    float x = (float) random1.nextInt(100);
-                    float y = (float) random1.nextInt(100);
+                    float x = (float) random1.nextInt(400);
+                    float y = (float) random1.nextInt(200);
                     SpriteUpdate m = new SpriteUpdate(nr, new Vector2(x, y), size, SpriteUpdateType.MOVE, SpriteType.NONE, false);
                     spriteMove.add(m);
                 }
