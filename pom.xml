@@ -17,6 +17,19 @@
         <module>PlatformLoginShared</module>
         <module>PlatformLoginServer</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <modules>
+                <module>PlatformGameModels</module>
+                <module>PlatformGameServer</module>
+                <module>PlatformGameShared</module>
+                <module>PlatformLoginShared</module>
+                <module>PlatformLoginServer</module>
+            </modules>
+        </profile>
+    </profiles>
 <build>
 <plugins>
     <plugin>
