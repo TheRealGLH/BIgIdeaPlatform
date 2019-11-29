@@ -51,9 +51,9 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 Random random1 = new Random();
                 List<SpriteUpdate> spriteMove = new ArrayList<>();
                 for (int nr : spriteMap.keySet()) {
-                    float x = (float) random1.nextInt(400);
-                    float y = (float) random1.nextInt(200);
-                    SpriteUpdate m = new SpriteUpdate(nr, new Vector2(x, y), size, SpriteUpdateType.MOVE, SpriteType.NONE, false);
+                    float xPos = (float) random1.nextInt(1270);
+                    float yPos = (float) random1.nextInt(720);
+                    SpriteUpdate m = new SpriteUpdate(nr, new Vector2(xPos, yPos), size, SpriteUpdateType.MOVE, SpriteType.NONE, (Math.random() < 0.5));
                     spriteMove.add(m);
                 }
                 controller.updateScreen(spriteMove);
@@ -62,7 +62,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             case R:
                 List<SpriteUpdate> spritesDelete = new ArrayList<>();
                 for (int nr : spriteMap.keySet()) {
-                    SpriteUpdate d = new SpriteUpdate(nr, Vector2.Zero(), Vector2.Zero(), SpriteUpdateType.DESTROY, SpriteType.NONE, (Math.random() < 0.5));
+                    SpriteUpdate d = new SpriteUpdate(nr, Vector2.Zero(), Vector2.Zero(), SpriteUpdateType.DESTROY, SpriteType.NONE, false);
                     spritesDelete.add(d);
                 }
                 controller.updateScreen(spritesDelete);
@@ -79,7 +79,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             switch (updateType) {
                 case MOVE:
                     ImageView imageView = spriteMap.get((Integer) spriteUpdate.getObjectNr());
-                    System.out.println("[PlatformGamesViewController] Moving image " + imageView);
+                    System.out.println("[PlatformGameViewController] Moving image " + imageView);
                     SpriteFactory.updateImage(imageView,spriteUpdate);
                     break;
                 case CREATE:

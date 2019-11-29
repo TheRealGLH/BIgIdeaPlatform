@@ -42,25 +42,24 @@ public class SpriteFactory {
                 break;
         }
         imageView.setImage(image);
-        Vector2 size = spriteUpdate.getSize();
-        Vector2 pos = spriteUpdate.getPosition();
-        imageView.setFitWidth(spriteWidth * size.getX());
-        imageView.setFitHeight(spriteHeight * size.getY());
-        imageView.setX(pos.getX());
-        imageView.setY(pos.getY());
-        if (spriteUpdate.isFacingLeft()) imageView.setFitWidth(-imageView.getFitWidth());//this will flip the image around
+        prepareImage(imageView,spriteUpdate);
         return imageView;
     }
 
     public static void updateImage(ImageView imageView, SpriteUpdate spriteUpdate) {
         if (spriteUpdate.getUpdateType() != SpriteUpdateType.MOVE)
             throw new InvalidParameterException("Only SpriteUpdates of type MOVE are allowed");
+        prepareImage(imageView,spriteUpdate);
+    }
+
+    private static void prepareImage(ImageView imageView, SpriteUpdate spriteUpdate){
         Vector2 size = spriteUpdate.getSize();
         Vector2 pos = spriteUpdate.getPosition();
         imageView.setFitWidth(spriteWidth * size.getX());
         imageView.setFitHeight(spriteHeight * size.getY());
         imageView.setX(pos.getX());
         imageView.setY(pos.getY());
-        if (spriteUpdate.isFacingLeft()) imageView.setFitWidth(-imageView.getFitWidth());//this will flip the image around
+        double x = (spriteUpdate.isFacingLeft()) ? -imageView.getScaleX() : imageView.getScaleX() ;
+        imageView.setScaleX(x);
     }
 }
