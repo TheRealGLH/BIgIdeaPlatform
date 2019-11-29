@@ -37,8 +37,12 @@ public abstract class MovableObject extends GameObject {
         velocity.setX(velocity.getX()+acceleration.getX());
         velocity.setY(velocity.getY()+acceleration.getY());
 
+        Vector2 pos = getPosition();
+        setPosition(pos.getX()+velocity.getX(),pos.getY()+velocity.getY());
+
         //friction
         velocity.setX(velocity.getX()*friction);
+        if(velocity.getX() < 0.001f) velocity.setX(0);
     }
 
     private void doGravity() {
@@ -66,6 +70,10 @@ public abstract class MovableObject extends GameObject {
     public float getAcceleration(boolean isUpward) {
         return (isUpward) ? acceleration.getY() : acceleration.getX();
     }
+
+    public float getFriction(){return friction;}
+
+    public void setFriction(float friction){this.friction = friction;}
 
     public void setVelocity(float x, float y) {
         velocity = new Vector2(x, y);
