@@ -51,13 +51,17 @@ public class Game implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-
+        if(o instanceof SpriteUpdate){
+            spriteUpdates.add((SpriteUpdate) o);
+        }
     }
 
     private void createSprite(GameObject gameObject){
         Vector2 pos = gameObject.getPosition();
         Vector2 scale = gameObject.getSize();
         spriteUpdates.add(new SpriteUpdate(spriteCount,pos,scale, SpriteUpdateType.CREATE,gameObject.getSpriteType(),false));
+        gameObject.addObserver(this);
+        gameObject.setObjectNr(spriteCount);
         spriteCount++;
     }
 }

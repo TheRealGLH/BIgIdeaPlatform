@@ -1,5 +1,7 @@
 package models.classes.objects;
 
+import Enums.SpriteUpdateType;
+import SharedClasses.SpriteUpdate;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 
@@ -57,8 +59,11 @@ public abstract class MovableObject extends GameObject {
         velocity.setX(velocity.getX() * friction);
         if (velocity.getX() < 0.001f) velocity.setX(0);
         Vector2 endpos = getPosition();
-        if (!startPos.equals(endpos))
+        if (!startPos.equals(endpos)) {
             System.out.println("[MovableObject.java] Moved to " + endpos + " with velocity " + velocity);
+            setChanged();
+            notifyObservers(new SpriteUpdate(getObjectNr(),endpos,getSize(), SpriteUpdateType.MOVE,getSpriteType(),(velocity.getX()<0)));
+        }
     }
 
     private void doGravity() {
@@ -118,4 +123,5 @@ public abstract class MovableObject extends GameObject {
     public boolean isShouldBeCleaned() {
         return shouldBeCleaned;
     }
+
 }
