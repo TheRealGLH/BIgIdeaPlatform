@@ -25,7 +25,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
     @FXML
     protected void initialize() {
-        controller.addEventListener(this);
+        controller.addSpriteEventListener(this);
     }
 
 
@@ -78,25 +78,25 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             SpriteUpdateType updateType = spriteUpdate.getUpdateType();
             switch (updateType) {
                 case MOVE:
-                    ImageView imageView = spriteMap.get((Integer) spriteUpdate.getObjectNr());
-                    System.out.println("[PlatformGameViewController] Moving image " + imageView);
+                    ImageView imageView = spriteMap.get(spriteUpdate.getObjectNr());
+                    System.out.println("[PlatformGameViewController.java] Moving image " + imageView);
                     SpriteFactory.updateImage(imageView,spriteUpdate);
                     break;
                 case CREATE:
-                    System.out.println("[PlatformGameViewController] Creating sprite " + spriteUpdate);
+                    System.out.println("[PlatformGameViewController.java] Creating sprite " + spriteUpdate);
                     ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate);
-                    spriteMap.put((Integer) spriteUpdate.getObjectNr(), imageCreate);
+                    spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
                     gamePane.getChildren().add(imageCreate);
                     break;
                 case DESTROY:
-                    Integer nrToDelete = (Integer) spriteUpdate.getObjectNr();
+                    Integer nrToDelete = spriteUpdate.getObjectNr();
                     ImageView imageViewToDelete = spriteMap.get(nrToDelete);
-                    System.out.println("[PlatformGameViewController] Destroying ImageView " + imageViewToDelete);
+                    System.out.println("[PlatformGameViewController.java] Destroying ImageView " + imageViewToDelete +" for object nr "+nrToDelete);
                     gamePane.getChildren().remove(imageViewToDelete);
-                    spriteMap.remove((Integer) spriteUpdate.getObjectNr());
+                    spriteMap.remove(spriteUpdate.getObjectNr());
                     break;
             }
         }
-        System.out.println("[PlatformGameViewController] Finished updating sprites");
+        System.out.println("[PlatformGameViewController.java] Finished updating sprites");
     }
 }

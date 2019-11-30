@@ -17,7 +17,7 @@ public class Game {
 
     public void setUpGame() {
         movableObjects = new ArrayList<>();
-        for (int i = 1; i <= 1; i++) {
+        for (int i = 1; i <= 5; i++) {
             movableObjects.add(new Player(10 * i, 100 * i));
         }
     }

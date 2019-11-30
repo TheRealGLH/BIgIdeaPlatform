@@ -90,7 +90,7 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
-    public void addEventListener(ISpriteUpdateEventListener listener) {
+    public void addSpriteEventListener(ISpriteUpdateEventListener listener) {
         spriteUpdateEventListeners.add(listener);
     }
 }
