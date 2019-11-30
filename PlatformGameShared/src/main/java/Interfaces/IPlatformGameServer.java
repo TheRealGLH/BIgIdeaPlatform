@@ -1,6 +1,9 @@
 package Interfaces;
 
 import Enums.InputType;
+import SharedClasses.SpriteUpdate;
+
+import java.util.List;
 
 public interface IPlatformGameServer {
 
@@ -12,4 +15,5 @@ public interface IPlatformGameServer {
 
     public void receiveInput(InputType type);
 
+    void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList);
 }

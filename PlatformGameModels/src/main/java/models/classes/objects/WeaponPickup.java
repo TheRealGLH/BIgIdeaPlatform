@@ -1,5 +1,6 @@
 package models.classes.objects;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
@@ -32,4 +33,7 @@ public class WeaponPickup extends MovableObject {
     public void onCollide(GameObject other, Vector2 collidePoint) {
         if(other instanceof Player) pickUp((Player) other);
     }
+
+    @Override
+    public SpriteType getSpriteType() {return SpriteType.WEAPONPICKUP;}
 }

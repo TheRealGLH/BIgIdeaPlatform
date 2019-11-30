@@ -1,6 +1,7 @@
 package models.classes.objects;
 
 import Enums.InputType;
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
@@ -23,6 +24,7 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
+        System.out.println("[Player.java] got input "+inputType);
         hasUsedInput = true;
         lastInput = inputType;
     }
@@ -94,4 +96,7 @@ public class Player extends MovableObject {
     public void onCollide(GameObject other, Vector2 collidePoint) {
         throw new UnsupportedOperationException("Method onCollide has not yet been implemented");
     }
+
+    @Override
+    public SpriteType getSpriteType() {return SpriteType.PLAYER;}
 }

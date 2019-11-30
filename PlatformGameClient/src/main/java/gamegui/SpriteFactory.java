@@ -18,7 +18,7 @@ public class SpriteFactory {
     private static double spriteWidth = 2;
     private static double spriteHeight = 2;
 
-    public static ImageView drawSprite(SpriteUpdate spriteUpdate) {
+    public static ImageView drawSprite(SpriteUpdate spriteUpdate, double screenWidth, double screenHeight) {
         if (spriteUpdate.getUpdateType() != SpriteUpdateType.CREATE)
             throw new InvalidParameterException("Only SpriteUpdates of type CREATE are allowed");
         ImageView imageView = new ImageView();
@@ -41,23 +41,23 @@ public class SpriteFactory {
                 break;
         }
         imageView.setImage(image);
-        prepareImage(imageView,spriteUpdate);
+        prepareImage(imageView,spriteUpdate, screenWidth, screenHeight);
         return imageView;
     }
 
-    public static void updateImage(ImageView imageView, SpriteUpdate spriteUpdate) {
+    public static void updateImage(ImageView imageView, SpriteUpdate spriteUpdate, double screenWidth, double screenHeight) {
         if (spriteUpdate.getUpdateType() != SpriteUpdateType.MOVE)
             throw new InvalidParameterException("Only SpriteUpdates of type MOVE are allowed");
-        prepareImage(imageView,spriteUpdate);
+        prepareImage(imageView,spriteUpdate, screenWidth, screenHeight);
     }
 
-    private static void prepareImage(ImageView imageView, SpriteUpdate spriteUpdate){
+    private static void prepareImage(ImageView imageView, SpriteUpdate spriteUpdate, double screenWidth, double screenHeight){
         Vector2 size = spriteUpdate.getSize();
         Vector2 pos = spriteUpdate.getPosition();
         imageView.setFitWidth(spriteWidth * size.getX());
         imageView.setFitHeight(spriteHeight * size.getY());
         imageView.setX(pos.getX());
-        imageView.setY(pos.getY());
+        imageView.setY(screenHeight - pos.getY());
         double x = (spriteUpdate.isFacingLeft()) ? -imageView.getScaleX() : imageView.getScaleX() ;
         imageView.setScaleX(x);
     }

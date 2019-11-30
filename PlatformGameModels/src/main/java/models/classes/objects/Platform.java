@@ -1,5 +1,6 @@
 package models.classes.objects;
 
+import Enums.SpriteType;
 import models.classes.GameObject;
 
 public class Platform extends GameObject {
@@ -17,4 +18,7 @@ public class Platform extends GameObject {
     public void setSolid(boolean isSolid){
         this.isSolid = isSolid;
     }
+
+    @Override
+    public SpriteType getSpriteType() {return SpriteType.PLATFORM;}
 }

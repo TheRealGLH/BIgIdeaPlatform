@@ -80,18 +80,18 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 case MOVE:
                     ImageView imageView = spriteMap.get(spriteUpdate.getObjectNr());
                     System.out.println("[PlatformGameViewController.java] Moving image " + imageView);
-                    SpriteFactory.updateImage(imageView,spriteUpdate);
+                    SpriteFactory.updateImage(imageView, spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
                     break;
                 case CREATE:
                     System.out.println("[PlatformGameViewController.java] Creating sprite " + spriteUpdate);
-                    ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate);
+                    ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
                     spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
                     gamePane.getChildren().add(imageCreate);
                     break;
                 case DESTROY:
                     Integer nrToDelete = spriteUpdate.getObjectNr();
                     ImageView imageViewToDelete = spriteMap.get(nrToDelete);
-                    System.out.println("[PlatformGameViewController.java] Destroying ImageView " + imageViewToDelete +" for object nr "+nrToDelete);
+                    System.out.println("[PlatformGameViewController.java] Destroying ImageView " + imageViewToDelete + " for object nr " + nrToDelete);
                     gamePane.getChildren().remove(imageViewToDelete);
                     spriteMap.remove(spriteUpdate.getObjectNr());
                     break;

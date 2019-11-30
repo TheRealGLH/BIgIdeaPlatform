@@ -1,5 +1,6 @@
 package models.classes;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 
 public abstract class GameObject {
@@ -37,6 +38,8 @@ public abstract class GameObject {
         float y = position.getY() + size.getY();
         return new Vector2(x, y);
     }
+
+    public abstract SpriteType getSpriteType();
 
     private static boolean between(Vector2 origin, Vector2 topRight, Vector2 toCompare) {
         return between(origin.getX(), topRight.getY(), toCompare.getX()) && between(origin.getY(), topRight.getY(), toCompare.getY());

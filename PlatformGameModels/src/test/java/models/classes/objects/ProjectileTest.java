@@ -1,5 +1,6 @@
 package models.classes.objects;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import models.classes.MockGame;
 import org.junit.Assert;
@@ -58,5 +59,10 @@ class MockProjectile extends Projectile{
 
     public MockProjectile(float xPosition, float yPosition, float width, float height, int maxLife) {
         super(xPosition, yPosition, width, height, maxLife, null);
+    }
+
+    @Override
+    public SpriteType getSpriteType() {
+        return SpriteType.NONE;
     }
 }
