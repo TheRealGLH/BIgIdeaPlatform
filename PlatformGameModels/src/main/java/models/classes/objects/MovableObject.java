@@ -64,7 +64,7 @@ public abstract class MovableObject extends GameObject {
         if (!startPos.equals(endPos)) {
             System.out.println("[MovableObject.java] Moved to " + endPos + " with velocity " + velocity);
             setChanged();
-            notifyObservers(new SpriteUpdate(getObjectNr(),endPos,getSize(), SpriteUpdateType.MOVE,getSpriteType(),(velocity.getX()<0)));
+            notifyObservers(new SpriteUpdate(getObjectNr(),endPos,getSize(), SpriteUpdateType.MOVE,getSpriteType(),(velocity.getX()<0),toString()));
         }
     }
 
@@ -124,6 +124,11 @@ public abstract class MovableObject extends GameObject {
 
     public boolean isShouldBeCleaned() {
         return shouldBeCleaned;
+    }
+
+    @Override
+    public String toString(){
+        return this.getClass().toString();
     }
 
 }

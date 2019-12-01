@@ -10,14 +10,20 @@ public class SpriteUpdate {
     private SpriteUpdateType updateType;
     private SpriteType spriteType;
     private boolean isFacingLeft;
+    private String label;
 
-    public SpriteUpdate(int objectNr, Vector2 position, Vector2 size, SpriteUpdateType updateType, SpriteType spriteType, boolean isFacingLeft) {
+    public SpriteUpdate(int objectNr, Vector2 position, Vector2 size, SpriteUpdateType updateType, SpriteType spriteType, boolean isFacingLeft, String label) {
         this.objectNr = objectNr;
         this.position = position;
         this.size = size;
         this.updateType = updateType;
         this.spriteType = spriteType;
         this.isFacingLeft = isFacingLeft;
+        this.label = label;
+    }
+
+    public SpriteUpdate(int objectNr, Vector2 position, Vector2 size, SpriteUpdateType updateType, SpriteType spriteType, boolean isFacingLeft){
+        this(objectNr,position,size,updateType,spriteType,isFacingLeft,"");
     }
 
     private int objectNr;
@@ -45,6 +51,8 @@ public class SpriteUpdate {
     public boolean isFacingLeft() {
         return isFacingLeft;
     }
+
+    public String getLabel(){ return label;}
 
     @Override
     public boolean equals(Object other){

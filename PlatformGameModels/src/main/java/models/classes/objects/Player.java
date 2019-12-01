@@ -94,9 +94,14 @@ public class Player extends MovableObject {
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-        throw new UnsupportedOperationException("Method onCollide has not yet been implemented");
+       //Nobody here but us chickens
     }
 
     @Override
     public SpriteType getSpriteType() {return SpriteType.PLAYER;}
+
+    @Override
+    public String toString(){
+        return "V "+getVelocity()+" A "+getAcceleration() + getCurrentWeapon();
+    }
 }
