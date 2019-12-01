@@ -1,5 +1,6 @@
 package gamegui.controllers;
 
+import Enums.InputType;
 import Enums.SpriteType;
 import Enums.SpriteUpdateType;
 import SharedClasses.SpriteUpdate;
@@ -30,7 +31,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
 
     @FXML
-    void handleKeyInput(KeyEvent event) {
+    void handleKeyReleased(KeyEvent event) {
         KeyCode keyCode = event.getCode();
         float widthHeight = 10;
         Vector2 size = new Vector2(widthHeight, widthHeight);
@@ -68,8 +69,30 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 controller.updateScreen(spritesDelete);
                 lastId = 1;
                 break;
+            //Game inputs
+            case A:
+                controller.sendInput(InputType.MOVELEFT);
+                break;
+            case D:
+                controller.sendInput(InputType.MOVERIGHT);
+                break;
+            case SPACE:
+                controller.sendInput(InputType.JUMP);
         }
 
+    }
+
+    @FXML
+    void handleKeyDown(KeyEvent e) {
+        KeyCode keyCode = e.getCode();
+        switch (keyCode) {
+            case A:
+                controller.sendInput(InputType.MOVELEFT);
+                break;
+            case D:
+                controller.sendInput(InputType.MOVERIGHT);
+                break;
+        }
     }
 
     @Override
@@ -79,8 +102,15 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             switch (updateType) {
                 case MOVE:
                     ImageView imageView = spriteMap.get(spriteUpdate.getObjectNr());
-                    System.out.println("[PlatformGameViewController.java] Moving image " + imageView);
-                    SpriteFactory.updateImage(imageView, spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                    if (imageView != null) {
+                        System.out.println("[PlatformGameViewController.java] Moving image " + imageView);
+                        SpriteFactory.updateImage(imageView, spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                    } else {
+                        System.out.println("[PlatformGameViewController.java] Image didn't exist for nr " + spriteUpdate.getObjectNr() + " creating new one");
+                        ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                        spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
+                        gamePane.getChildren().add(imageCreate);
+                    }
                     break;
                 case CREATE:
                     System.out.println("[PlatformGameViewController.java] Creating sprite " + spriteUpdate);

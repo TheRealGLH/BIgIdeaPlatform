@@ -18,7 +18,7 @@ public class Player extends MovableObject {
     private float walkAcceleration = 15;
 
     public Player(float xPos, float yPos) {
-        super(xPos, yPos, 10, 10);
+        super(xPos, yPos, 20, 20);
         this.startX = xPos;
         this.startY = yPos;
     }
@@ -40,7 +40,7 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        throw new UnsupportedOperationException("Method jump() has not yet been implemented");
+        addAcceleration(0,5);
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {

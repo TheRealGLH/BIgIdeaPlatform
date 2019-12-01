@@ -46,9 +46,9 @@ public class PlatformGUI extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.setWidth(1270);
-        primaryStage.setHeight(720);
+        primaryStage.setHeight(800);
         GUIScreenController.getInstance().setPlatformGUI(this);
         GUIScreenController.getInstance().showMainMenu();
         System.out.println("Game started.");

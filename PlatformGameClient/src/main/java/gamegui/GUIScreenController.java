@@ -2,9 +2,13 @@ package gamegui;
 
 import Enums.GameState;
 import Enums.InputType;
+import Interfaces.IPlatformGameServer;
 import SharedClasses.SpriteUpdate;
+import gameclient.GameServer;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
+import javafx.application.Platform;
+import models.classes.Game;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -16,9 +20,10 @@ public class GUIScreenController extends ScreenController {
 
     private PlatformGUI platformGUI;
     private GUIState guiState;
+    private IPlatformGameServer gameServer;// message creator
     private List<ISpriteUpdateEventListener> spriteUpdateEventListeners = new ArrayList<>();
     private GUIScreenController() {
-
+        gameServer = new GameServer();
     }
 
     //We use a so called 'Eager' Singleton pattern here, because it supposedly goes nicer with a multithreaded environment (Such as JavaFX)
@@ -59,14 +64,18 @@ public class GUIScreenController extends ScreenController {
     public void updateScreen(List<SpriteUpdate> positions) {
         if(guiState != GUIState.Game) return;
         for (ISpriteUpdateEventListener listener : spriteUpdateEventListeners){
-            listener.handleSpriteUpdate(positions);
+            Platform.runLater(() -> {
+                        listener.handleSpriteUpdate(positions);
+                    }
+            );
         }
     }
 
     @Override
     public void joinGame() {
-        if(guiState != GUIState.Lobby) return;
-        throw new UnsupportedOperationException("joinGame has not yet been implemented.");
+        if(guiState != GUIState.MainMenu) return;
+        gameServer.loginPlayer("REMOVE THIS LATER","123",this);
+        gameServer.startGame();
     }
 
     @Override
@@ -78,7 +87,7 @@ public class GUIScreenController extends ScreenController {
     @Override
     public void sendInput(InputType inputType) {
         if(guiState != GUIState.Game) return;
-        throw new UnsupportedOperationException("sendInput has not yet been implemented.");
+        gameServer.receiveInput(inputType);
     }
 
     @Override

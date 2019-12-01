@@ -14,7 +14,9 @@ public abstract class MovableObject extends GameObject {
     private boolean shouldBeCleaned = false;
     private int timeInAir = 0;
     private int maxTimeInAir = 70; //the amount of update cycles it will take for us to reach terminal velocity
-    private float weight = 2;
+    private float weight = 0.2f;
+    //private final float gravity = -9.81f;
+    private final float gravity = -0.1f;
     private float friction = .75f;//the lower, the faster you'll stop!
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
@@ -57,18 +59,18 @@ public abstract class MovableObject extends GameObject {
 
         //friction
         velocity.setX(velocity.getX() * friction);
-        if (velocity.getX() < 0.001f) velocity.setX(0);
-        Vector2 endpos = getPosition();
-        if (!startPos.equals(endpos)) {
-            System.out.println("[MovableObject.java] Moved to " + endpos + " with velocity " + velocity);
+        if (velocity.getX() < 0.001f && velocity.getX() > -0.001f) velocity.setX(0);
+        Vector2 endPos = getPosition();
+        if (!startPos.equals(endPos)) {
+            System.out.println("[MovableObject.java] Moved to " + endPos + " with velocity " + velocity);
             setChanged();
-            notifyObservers(new SpriteUpdate(getObjectNr(),endpos,getSize(), SpriteUpdateType.MOVE,getSpriteType(),(velocity.getX()<0)));
+            notifyObservers(new SpriteUpdate(getObjectNr(),endPos,getSize(), SpriteUpdateType.MOVE,getSpriteType(),(velocity.getX()<0)));
         }
     }
 
     private void doGravity() {
         if (timeInAir < maxTimeInAir) timeInAir++;
-        addAcceleration(0, weight + timeInAir * -9.81f);//make this increase or something
+        addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
     }
 
     public void addAcceleration(float x, float y) {

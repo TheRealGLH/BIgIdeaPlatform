@@ -18,5 +18,8 @@ public class PlatformMainMenuController {
     }
 
     @FXML
-    void debugGameView() {sceneController.showGameView();}
+    void debugGameView() {
+        sceneController.joinGame();
+        sceneController.showGameView();
+    }
 }

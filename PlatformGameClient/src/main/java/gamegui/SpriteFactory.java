@@ -19,7 +19,7 @@ public class SpriteFactory {
     private static double spriteHeight = 2;
 
     public static ImageView drawSprite(SpriteUpdate spriteUpdate, double screenWidth, double screenHeight) {
-        if (spriteUpdate.getUpdateType() != SpriteUpdateType.CREATE)
+        if (spriteUpdate.getUpdateType() != SpriteUpdateType.CREATE && spriteUpdate.getUpdateType() != SpriteUpdateType.MOVE)
             throw new InvalidParameterException("Only SpriteUpdates of type CREATE are allowed");
         ImageView imageView = new ImageView();
         Image image = null;
@@ -57,7 +57,7 @@ public class SpriteFactory {
         imageView.setFitWidth(spriteWidth * size.getX());
         imageView.setFitHeight(spriteHeight * size.getY());
         imageView.setX(pos.getX());
-        imageView.setY(screenHeight - pos.getY());
+        imageView.setY(screenHeight - pos.getY() - imageView.getFitHeight());
         double x = (spriteUpdate.isFacingLeft()) ? -imageView.getScaleX() : imageView.getScaleX() ;
         imageView.setScaleX(x);
     }

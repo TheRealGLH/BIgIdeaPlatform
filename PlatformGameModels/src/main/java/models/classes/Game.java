@@ -6,6 +6,8 @@ import SharedClasses.SpriteUpdate;
 import SharedClasses.Vector2;
 import models.classes.objects.MovableObject;
 import models.classes.objects.Player;
+import models.classes.objects.WeaponPickup;
+import models.enums.WeaponType;
 
 import java.util.*;
 
@@ -24,11 +26,16 @@ public class Game implements Observer {
 
     public void setUpGame() {
         movableObjects = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 1; i++) {
             Player p = new Player(10 * i, 100 * i);
             createSprite(p);
             movableObjects.add(p);
             playerNrMap.put(i, p);
+        }
+        for (int i = 0; i < 5; i++) {
+            WeaponPickup pickup = new WeaponPickup(10*i,200*i, WeaponType.GUN);
+            createSprite(pickup);
+            movableObjects.add(pickup);
         }
     }
 
