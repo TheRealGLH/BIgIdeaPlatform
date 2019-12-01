@@ -8,8 +8,7 @@ import models.classes.GameObject;
 public abstract class MovableObject extends GameObject {
     private Vector2 acceleration;
     private Vector2 velocity;
-    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 20;
-    private Vector2 maxVelocity = new Vector2(maxHorizontalVelocity, maxVerticalVelocity);
+    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 40;
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
     private int timeInAir = 0;
@@ -17,7 +16,7 @@ public abstract class MovableObject extends GameObject {
     private float weight = 0.2f;
     //private final float gravity = -9.81f;
     private final float gravity = -0.1f;
-    private float friction = .75f;//the lower, the faster you'll stop!
+    private float friction = .85f;//the lower, the faster you'll stop!
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
@@ -32,7 +31,7 @@ public abstract class MovableObject extends GameObject {
         //TODO implementation with Platforms
         float y = getPosition().getY();
         if (y <= 0) {
-            setPosition(getPosition().getX(),0);
+            setPosition(getPosition().getX(), 0);
             return true;
         }
         return false;
@@ -54,6 +53,13 @@ public abstract class MovableObject extends GameObject {
         velocity.setX(velocity.getX() + acceleration.getX());
         velocity.setY(velocity.getY() + acceleration.getY());
 
+        //now we cap it
+        if (velocity.getX() > maxHorizontalVelocity) velocity.setX(maxHorizontalVelocity);
+        else if(velocity.getX() < -maxHorizontalVelocity) velocity.setX(-maxHorizontalVelocity);
+
+        if(velocity.getY() > maxVerticalVelocity) velocity.setY(maxVerticalVelocity);
+        else if(velocity.getY() < -maxVerticalVelocity) velocity.setY(-maxVerticalVelocity);
+
         Vector2 pos = getPosition();
         setPosition(pos.getX() + velocity.getX(), pos.getY() + velocity.getY());
 
@@ -64,7 +70,7 @@ public abstract class MovableObject extends GameObject {
         if (!startPos.equals(endPos)) {
             System.out.println("[MovableObject.java] Moved to " + endPos + " with velocity " + velocity);
             setChanged();
-            notifyObservers(new SpriteUpdate(getObjectNr(),endPos,getSize(), SpriteUpdateType.MOVE,getSpriteType(),(velocity.getX()<0),toString()));
+            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), (velocity.getX() < 0), toString()));
         }
     }
 
@@ -127,7 +133,7 @@ public abstract class MovableObject extends GameObject {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.getClass().toString();
     }
 

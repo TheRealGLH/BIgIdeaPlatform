@@ -36,4 +36,7 @@ public class WeaponPickup extends MovableObject {
 
     @Override
     public SpriteType getSpriteType() {return SpriteType.WEAPONPICKUP;}
+
+    @Override
+    public String toString(){return weaponType.toString() + " Pickup";}
 }

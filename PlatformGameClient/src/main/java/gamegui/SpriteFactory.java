@@ -6,6 +6,7 @@ import SharedClasses.Vector2;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.TextAlignment;
 
 import java.security.InvalidParameterException;
 
@@ -83,7 +84,8 @@ public class SpriteFactory {
         label.textProperty().setValue(spriteUpdate.getLabel());
         Vector2 pos = spriteUpdate.getPosition();
         Vector2 size = spriteUpdate.getSize();
-        label.setLayoutX(pos.getX());
+        label.setTextAlignment(TextAlignment.CENTER);
+        label.setLayoutX(pos.getX() - label.getWidth());
         label.setLayoutY(screenHeight - (pos.getY() + spriteHeight * size.getY()));
     }
 }

@@ -15,7 +15,7 @@ public class Player extends MovableObject {
     private float startX, startY;
 
 
-    private float walkAcceleration = 15;
+    private float walkAcceleration = 3;
 
     public Player(float xPos, float yPos) {
         super(xPos, yPos, 20, 20);
@@ -40,7 +40,7 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        addAcceleration(0,5);
+        if(isGrounded()) addAcceleration(0,2.5f);
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -79,6 +79,7 @@ public class Player extends MovableObject {
                     break;
                 case JUMP:
                     jump();
+                    break;
                 case SHOOT:
                 case DUCK:
                     System.out.println("[Player.java] Input has not yet been handled: " + lastInput);

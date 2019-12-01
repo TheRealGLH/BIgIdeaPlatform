@@ -73,15 +73,6 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 controller.updateScreen(spritesDelete);
                 lastId = 1;
                 break;
-            //Game inputs
-            case A:
-                controller.sendInput(InputType.MOVELEFT);
-                break;
-            case D:
-                controller.sendInput(InputType.MOVERIGHT);
-                break;
-            case SPACE:
-                controller.sendInput(InputType.JUMP);
         }
 
     }
@@ -96,6 +87,20 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             case D:
                 controller.sendInput(InputType.MOVERIGHT);
                 break;
+            case W:
+                controller.sendInput(InputType.JUMP);
+                break;
+            case SPACE:
+                controller.sendInput(InputType.SHOOT);
+                break;
+        }
+    }
+
+    @FXML
+    void handleKeyPressed(KeyEvent e){
+        KeyCode keyCode = e.getCode();
+        switch (keyCode){
+
         }
     }
 

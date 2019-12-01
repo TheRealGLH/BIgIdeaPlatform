@@ -5,6 +5,7 @@ import Enums.SpriteUpdateType;
 import SharedClasses.SpriteUpdate;
 import SharedClasses.Vector2;
 import models.classes.objects.MovableObject;
+import models.classes.objects.Platform;
 import models.classes.objects.Player;
 import models.classes.objects.WeaponPickup;
 import models.enums.WeaponType;
@@ -37,6 +38,8 @@ public class Game implements Observer {
             createSprite(pickup);
             movableObjects.add(pickup);
         }
+        Platform plat = new Platform(100,50,200,50,true);
+        createSprite(plat);
     }
 
 

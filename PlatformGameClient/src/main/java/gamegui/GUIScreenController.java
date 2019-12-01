@@ -40,6 +40,11 @@ public class GUIScreenController extends ScreenController {
         platformGUI.showMainMenu();
     }
 
+    public void showInputTest(){
+        guiState = GUIState.MainMenu;
+        platformGUI.showInputTest();
+    }
+
     public void showLoginScreen(){
         guiState = GUIState.Login;
         platformGUI.showLoginScreen();

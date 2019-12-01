@@ -1,6 +1,7 @@
 package gamegui.controllers;
 
 import gamegui.GUIScreenController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 public class PlatformMainMenuController {
@@ -21,5 +22,10 @@ public class PlatformMainMenuController {
     void debugGameView() {
         sceneController.joinGame();
         sceneController.showGameView();
+    }
+
+    @FXML
+    void inputTestView(){
+        sceneController.showInputTest();
     }
 }
