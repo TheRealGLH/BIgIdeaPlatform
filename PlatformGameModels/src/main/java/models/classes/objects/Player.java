@@ -25,7 +25,6 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
-        System.out.println("[Player.java] input: " + inputType);
         hasUsedInput = true;
         lastInput = inputType;
     }
@@ -106,7 +105,7 @@ public class Player extends MovableObject {
 
     @Override
     public String toString() {
-        return getName();
+        return name + " :" + currentWeapon;
     }
 
     public String getName() {

@@ -31,5 +31,7 @@ public interface IPlatformGameClient {
 
     public void gameStartNotification();
 
+    public void lobbyJoinedNotify(String[] names);
+
 
 }

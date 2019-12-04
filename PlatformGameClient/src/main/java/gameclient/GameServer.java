@@ -41,8 +41,18 @@ public class GameServer implements IPlatformGameServer {
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
         System.out.println("[GameServer.java] Logging in as " + name);
         LoginState loginState = loginClient.attemptLogin(name, password);
-        if (loginState == LoginState.SUCCESS) joinedClients.add(client);
+
         client.receiveLoginState(name, loginState);
+        if (loginState == LoginState.SUCCESS) {
+            joinedClients.add(client);
+            String names[] = new String[joinedClients.size()];
+            for (int i = 0; i < joinedClients.size(); i++) {
+                names[i] = joinedClients.get(i).getName();
+            }
+            for (IPlatformGameClient platformGameClient : joinedClients) {
+                platformGameClient.lobbyJoinedNotify(names);
+            }
+        }
     }
 
     @Override

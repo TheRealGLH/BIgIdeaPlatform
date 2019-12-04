@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GUIScreenController extends ScreenController {
@@ -176,6 +177,11 @@ public class GUIScreenController extends ScreenController {
     @Override
     public void gameStartNotification() {
         showGameView();
+    }
+
+    @Override
+    public void lobbyJoinedNotify(String[] names) {
+        System.out.println("[GUIScreenController.java] In lobby: " + Arrays.toString(names));
     }
 
     @Override
