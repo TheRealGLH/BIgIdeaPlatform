@@ -1,7 +1,7 @@
 package models.classes;
 
-import Enums.InputType;
-import Interfaces.IPlatformGameServer;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Interfaces.IPlatformGameServer;
 
 import java.util.TimerTask;
 
@@ -26,7 +26,7 @@ public class GameTimerTask extends TimerTask {
         gameServer.sendSpriteUpdates(game.getSpriteUpdates());
     }
 
-    public synchronized void sendInput(InputType inputType) {
-        game.sendInput(1, inputType);
+    public synchronized void sendInput(int playerNr, InputType inputType) {
+        game.sendInput(playerNr, inputType);
     }
 }

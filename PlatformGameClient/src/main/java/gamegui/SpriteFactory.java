@@ -1,8 +1,8 @@
 package gamegui;
 
-import Enums.SpriteUpdateType;
-import SharedClasses.SpriteUpdate;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.Points.Vector2;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

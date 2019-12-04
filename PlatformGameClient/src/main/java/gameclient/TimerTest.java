@@ -1,9 +1,6 @@
 package gameclient;
 
-import Enums.InputType;
-import models.classes.GameTimerTask;
-
-import java.util.Timer;
+import PlatformGameShared.Enums.InputType;
 
 class TimerTest {
     public static void main(String[] args) throws InterruptedException

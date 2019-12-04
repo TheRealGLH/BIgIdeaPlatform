@@ -1,5 +1,6 @@
 module PlatformGameShared {
-    exports SharedClasses;
-    exports Enums;
+    exports PlatformGameShared.Points;
+    exports PlatformGameShared.Enums;
     exports Interfaces;
+    exports PlatformGameShared.Interfaces;
 }

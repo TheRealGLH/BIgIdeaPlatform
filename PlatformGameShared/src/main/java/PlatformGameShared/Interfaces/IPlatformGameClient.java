@@ -1,7 +1,7 @@
-package Interfaces;
+package PlatformGameShared.Interfaces;
 
-import Enums.*;
-import SharedClasses.SpriteUpdate;
+import PlatformGameShared.Enums.*;
+import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
 
@@ -24,6 +24,10 @@ public interface IPlatformGameClient {
     public void receiveLoginState(String name, LoginState loginState);
 
     public void receiveRegisterState(String name, RegisterState registerState);
+
+    public int getPlayerNr();
+
+    public void gameStartNotification();
 
 
 }

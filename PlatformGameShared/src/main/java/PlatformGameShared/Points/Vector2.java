@@ -1,4 +1,4 @@
-package SharedClasses;
+package PlatformGameShared.Points;
 
 public class Vector2 {
 

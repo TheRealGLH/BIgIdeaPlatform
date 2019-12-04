@@ -1,4 +1,4 @@
-package SharedClasses;
+package PlatformGameShared.Points;
 
 
 import org.junit.Assert;

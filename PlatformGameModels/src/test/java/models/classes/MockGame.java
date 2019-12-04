@@ -1,6 +1,6 @@
 package models.classes;
 
-import SharedClasses.Vector2;
+import PlatformGameShared.Points.Vector2;
 import models.classes.objects.MovableObject;
 
 import java.util.ArrayList;

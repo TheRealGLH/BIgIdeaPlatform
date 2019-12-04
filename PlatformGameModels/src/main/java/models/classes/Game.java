@@ -1,9 +1,9 @@
 package models.classes;
 
-import Enums.InputType;
-import Enums.SpriteUpdateType;
-import SharedClasses.SpriteUpdate;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.Points.Vector2;
 import models.classes.objects.MovableObject;
 import models.classes.objects.Platform;
 import models.classes.objects.Player;

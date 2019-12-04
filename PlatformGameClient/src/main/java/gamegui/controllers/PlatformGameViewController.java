@@ -1,10 +1,10 @@
 package gamegui.controllers;
 
-import Enums.InputType;
-import Enums.SpriteType;
-import Enums.SpriteUpdateType;
-import SharedClasses.SpriteUpdate;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.Points.Vector2;
 import gamegui.GUIScreenController;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.ScreenController;

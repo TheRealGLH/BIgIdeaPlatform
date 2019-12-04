@@ -1,4 +1,4 @@
-package Enums;
+package PlatformGameShared.Enums;
 
 public enum LoginState {
     SUCCESS,

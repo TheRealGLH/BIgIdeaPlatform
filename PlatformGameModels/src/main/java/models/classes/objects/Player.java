@@ -1,8 +1,8 @@
 package models.classes.objects;
 
-import Enums.InputType;
-import Enums.SpriteType;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 

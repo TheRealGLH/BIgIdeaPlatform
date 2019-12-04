@@ -1,8 +1,8 @@
 package models.classes.objects;
 
-import Enums.SpriteUpdateType;
-import SharedClasses.SpriteUpdate;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 
 public abstract class MovableObject extends GameObject {

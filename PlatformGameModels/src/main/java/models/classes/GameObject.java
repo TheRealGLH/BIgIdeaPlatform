@@ -1,7 +1,7 @@
 package models.classes;
 
-import Enums.SpriteType;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Points.Vector2;
 
 import java.util.Observable;
 
