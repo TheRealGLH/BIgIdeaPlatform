@@ -28,6 +28,9 @@ public class Game implements Observer {
 
     public void setUpGame(int[] playerNrs, String[] playerNames) {
         movableObjects = new ArrayList<>();
+        Platform plat = new Platform(100, 50, 200, 50, true);
+        createSprite(plat);
+
         for (int i = 0; i < playerNrs.length; i++) {
             Player p = new Player(10 * (i + 1), 100 * (i + 1));
             createSprite(p);
@@ -41,8 +44,7 @@ public class Game implements Observer {
             createSprite(pickup);
             movableObjects.add(pickup);
         }
-        Platform plat = new Platform(100, 50, 200, 50, true);
-        createSprite(plat);
+
     }
 
 

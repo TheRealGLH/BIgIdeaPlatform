@@ -25,6 +25,7 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
+        System.out.println("[Player.java] input: " + inputType);
         hasUsedInput = true;
         lastInput = inputType;
     }
@@ -40,7 +41,7 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        if(isGrounded()) addAcceleration(0,2.5f);
+        if (isGrounded()) addAcceleration(0, 2.5f);
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -95,14 +96,16 @@ public class Player extends MovableObject {
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-       //Nobody here but us chickens
+        //Nobody here but us chickens
     }
 
     @Override
-    public SpriteType getSpriteType() {return SpriteType.PLAYER;}
+    public SpriteType getSpriteType() {
+        return SpriteType.PLAYER;
+    }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getName();
     }
 
