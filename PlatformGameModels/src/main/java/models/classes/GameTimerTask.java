@@ -14,7 +14,7 @@ public class GameTimerTask extends TimerTask {
     /**
      * @param gameServer The game server that we send updates back to
      */
-    public GameTimerTask(IPlatformGameServer gameServer) {
+    public GameTimerTask(IPlatformGameServer gameServer, int[] playerNrs, String[] names) {
         this.gameServer = gameServer;
         game = new Game();
         game.setUpGame();

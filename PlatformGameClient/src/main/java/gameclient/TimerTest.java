@@ -8,6 +8,6 @@ class TimerTest {
         GameServer gameServer = new GameServer();
         gameServer.startGame();
         Thread.sleep(500);
-        gameServer.receiveInput(InputType.MOVELEFT);
+        gameServer.receiveInput(InputType.MOVELEFT,null);
     }
 }

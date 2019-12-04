@@ -2,14 +2,19 @@ package gamegui.controllers;
 
 import gamegui.GUIScreenController;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class PlatformRegisterScreenController {
+    public TextField FieldName;
+    public PasswordField FieldPassword;
     GUIScreenController sceneController = GUIScreenController.getInstance();
 
     @FXML
     void registerPressed() {
-        //TODO add login methods to IPlatformGameClient interface
-        System.out.println("[PlatformRegisterScreenController.java] But registering has no implementation yet...");
+        String name = FieldName.getText();
+        String password = FieldPassword.getText();
+        sceneController.sendRegisterRequest(name,password);
     }
 
     @FXML

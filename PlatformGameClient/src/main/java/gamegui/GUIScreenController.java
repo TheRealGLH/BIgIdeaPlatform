@@ -24,6 +24,7 @@ public class GUIScreenController extends ScreenController {
     private GUIState guiState;
     private IPlatformGameServer gameServer;// message creator
     private List<ISpriteUpdateEventListener> spriteUpdateEventListeners = new ArrayList<>();
+    private String name;
 
     private GUIScreenController() {
         gameServer = new GameServer();
@@ -80,8 +81,7 @@ public class GUIScreenController extends ScreenController {
 
     @Override
     public void joinGame() {
-        if (guiState != GUIState.MainMenu) return;
-        gameServer.loginPlayer("REMOVE THIS LATER", "123", this);
+        if (guiState != GUIState.Lobby) return;
         gameServer.startGame();
     }
 
@@ -94,7 +94,7 @@ public class GUIScreenController extends ScreenController {
     @Override
     public void sendInput(InputType inputType) {
         if (guiState != GUIState.Game) return;
-        gameServer.receiveInput(inputType,this);
+        gameServer.receiveInput(inputType, this);
     }
 
     @Override
@@ -135,7 +135,10 @@ public class GUIScreenController extends ScreenController {
                 message = "Invalid loginstate: " + loginState;
         }
         platformGUI.showPopupMessage(title, message, alertType);
-        if (loginState == LoginState.SUCCESS) platformGUI.showLobbyScreen();
+        if (loginState == LoginState.SUCCESS) {
+            this.name = name;
+            this.showLobbyScreen();
+        }
     }
 
     @Override
@@ -163,6 +166,11 @@ public class GUIScreenController extends ScreenController {
     @Override
     public int getPlayerNr() {
         return 1;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

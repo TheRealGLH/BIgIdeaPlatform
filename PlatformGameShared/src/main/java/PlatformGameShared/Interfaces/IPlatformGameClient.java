@@ -27,6 +27,8 @@ public interface IPlatformGameClient {
 
     public int getPlayerNr();
 
+    public String getName();
+
     public void gameStartNotification();
 
 
