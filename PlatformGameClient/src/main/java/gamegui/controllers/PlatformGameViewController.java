@@ -1,5 +1,6 @@
 package gamegui.controllers;
 
+import Enums.InputType;
 import Enums.SpriteType;
 import Enums.SpriteUpdateType;
 import SharedClasses.SpriteUpdate;
@@ -9,12 +10,15 @@ import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.ScreenController;
 import gamegui.SpriteFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
+
 import java.util.*;
+import java.util.List;
 
 public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
@@ -22,15 +26,16 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
     private int lastId = 1;
     ScreenController controller = GUIScreenController.getInstance();
     Map<Integer, ImageView> spriteMap = new HashMap<>();
+    Map<Integer, Label> labelMap = new HashMap<>();
 
     @FXML
     protected void initialize() {
-        controller.addEventListener(this);
+        controller.addSpriteEventListener(this);
     }
 
 
     @FXML
-    void handleKeyInput(KeyEvent event) {
+    void handleKeyReleased(KeyEvent event) {
         KeyCode keyCode = event.getCode();
         float widthHeight = 10;
         Vector2 size = new Vector2(widthHeight, widthHeight);
@@ -72,31 +77,81 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
     }
 
+    @FXML
+    void handleKeyDown(KeyEvent e) {
+        KeyCode keyCode = e.getCode();
+        switch (keyCode) {
+            case A:
+                controller.sendInput(InputType.MOVELEFT);
+                break;
+            case D:
+                controller.sendInput(InputType.MOVERIGHT);
+                break;
+            case W:
+                controller.sendInput(InputType.JUMP);
+                break;
+            case SPACE:
+                controller.sendInput(InputType.SHOOT);
+                break;
+        }
+    }
+
+    @FXML
+    void handleKeyPressed(KeyEvent e){
+        KeyCode keyCode = e.getCode();
+        switch (keyCode){
+
+        }
+    }
+
     @Override
     public void handleSpriteUpdate(List<SpriteUpdate> spriteUpdates) {
+
         for (SpriteUpdate spriteUpdate : spriteUpdates) {
             SpriteUpdateType updateType = spriteUpdate.getUpdateType();
             switch (updateType) {
                 case MOVE:
-                    ImageView imageView = spriteMap.get((Integer) spriteUpdate.getObjectNr());
-                    System.out.println("[PlatformGameViewController] Moving image " + imageView);
-                    SpriteFactory.updateImage(imageView,spriteUpdate);
+                    ImageView imageView = spriteMap.get(spriteUpdate.getObjectNr());
+                    Label label = labelMap.get(spriteUpdate.getObjectNr());
+                    if (imageView != null) {
+                        SpriteFactory.updateImage(imageView, spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                    } else {
+                        System.out.println("[PlatformGameViewController.java] Image didn't exist for nr " + spriteUpdate.getObjectNr() + " creating new one");
+                        ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                        spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
+                        gamePane.getChildren().add(imageCreate);
+                    }
+                    if(label!=null){
+                        SpriteFactory.updateLabel(label,spriteUpdate,gamePane.getWidth(),gamePane.getHeight());
+                    }
+                    else {
+                        Label labelCreate = SpriteFactory.drawLabel(spriteUpdate,gamePane.getWidth(),gamePane.getHeight());
+                        labelMap.put(spriteUpdate.getObjectNr(),labelCreate);
+                        gamePane.getChildren().add(labelCreate);
+                    }
                     break;
                 case CREATE:
-                    System.out.println("[PlatformGameViewController] Creating sprite " + spriteUpdate);
-                    ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate);
-                    spriteMap.put((Integer) spriteUpdate.getObjectNr(), imageCreate);
+                    System.out.println("[PlatformGameViewController.java] Creating sprite " + spriteUpdate);
+                    ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                    spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
                     gamePane.getChildren().add(imageCreate);
+                    Label labelCreate = SpriteFactory.drawLabel(spriteUpdate,gamePane.getWidth(),gamePane.getHeight());
+                    labelMap.put(spriteUpdate.getObjectNr(),labelCreate);
+                    gamePane.getChildren().add(labelCreate);
                     break;
                 case DESTROY:
-                    Integer nrToDelete = (Integer) spriteUpdate.getObjectNr();
+                    Integer nrToDelete = spriteUpdate.getObjectNr();
                     ImageView imageViewToDelete = spriteMap.get(nrToDelete);
-                    System.out.println("[PlatformGameViewController] Destroying ImageView " + imageViewToDelete);
+                    Label labelToDelete = labelMap.get(nrToDelete);
                     gamePane.getChildren().remove(imageViewToDelete);
-                    spriteMap.remove((Integer) spriteUpdate.getObjectNr());
+                    gamePane.getChildren().remove(labelToDelete);
+                    spriteMap.remove(spriteUpdate.getObjectNr());
+                    labelMap.remove(spriteUpdate.getObjectNr());
                     break;
             }
         }
-        System.out.println("[PlatformGameViewController] Finished updating sprites");
+        System.out.println("[PlatformGameViewController.java] Finished updating sprites");
+
+
     }
 }

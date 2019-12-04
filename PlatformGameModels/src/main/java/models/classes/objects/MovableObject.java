@@ -1,18 +1,21 @@
 package models.classes.objects;
 
+import Enums.SpriteUpdateType;
+import SharedClasses.SpriteUpdate;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 
 public abstract class MovableObject extends GameObject {
     private Vector2 acceleration;
     private Vector2 velocity;
-    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 20;
-    private Vector2 maxVelocity = new Vector2(maxHorizontalVelocity, maxVerticalVelocity);
+    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 40;
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
     private int timeInAir = 0;
-    private int maxTimeInAir = 70;
-    private float weight = 4;
+    private int maxTimeInAir = 70; //the amount of update cycles it will take for us to reach terminal velocity
+    private float weight = 0.2f;
+    //private final float gravity = -9.81f;
+    private final float gravity = -0.1f;
     private float friction = .75f;//the lower, the faster you'll stop!
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
@@ -25,29 +28,53 @@ public abstract class MovableObject extends GameObject {
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
 
     public boolean isGrounded() {
-        //TODO proper implementation
-        return this.getPosition().getY() <= 0;
+        //TODO implementation with Platforms
+        float y = getPosition().getY();
+        if (y <= 0) {
+            setPosition(getPosition().getX(), 0);
+            return true;
+        }
+        return false;
     }
 
     public void update() {
-        if (isGrounded() && isUseGravity()) doGravity();
-        else timeInAir = 0;
+        Vector2 startPos = getPosition();
+        if (!isGrounded() && isUseGravity()) doGravity();
+        else {
+            timeInAir = 0;
+            if (acceleration.getY() < 0) {//that way we can still add upwards forces (ie jumping)
+                acceleration.setY(0);
+                velocity.setY(0);
+            }
+        }
 
         //add acceleration
-        velocity.setX(velocity.getX()+acceleration.getX());
-        velocity.setY(velocity.getY()+acceleration.getY());
+        velocity.setX(velocity.getX() + acceleration.getX());
+        velocity.setY(velocity.getY() + acceleration.getY());
+
+        //now we cap it
+        if (velocity.getX() > maxHorizontalVelocity) velocity.setX(maxHorizontalVelocity);
+        else if(velocity.getX() < -maxHorizontalVelocity) velocity.setX(-maxHorizontalVelocity);
+
+        if(velocity.getY() > maxVerticalVelocity) velocity.setY(maxVerticalVelocity);
+        else if(velocity.getY() < -maxVerticalVelocity) velocity.setY(-maxVerticalVelocity);
 
         Vector2 pos = getPosition();
-        setPosition(pos.getX()+velocity.getX(),pos.getY()+velocity.getY());
+        setPosition(pos.getX() + velocity.getX(), pos.getY() + velocity.getY());
 
         //friction
-        velocity.setX(velocity.getX()*friction);
-        if(velocity.getX() < 0.001f) velocity.setX(0);
+        velocity.setX(velocity.getX() * friction);
+        if (velocity.getX() < 0.001f && velocity.getX() > -0.001f) velocity.setX(0);
+        Vector2 endPos = getPosition();
+        if (!startPos.equals(endPos)) {
+            setChanged();
+            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), (velocity.getX() < 0), toString()));
+        }
     }
 
     private void doGravity() {
         if (timeInAir < maxTimeInAir) timeInAir++;
-            addAcceleration(0, weight * timeInAir * 9.81f);//make this increase or something
+        addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
     }
 
     public void addAcceleration(float x, float y) {
@@ -71,9 +98,13 @@ public abstract class MovableObject extends GameObject {
         return (isUpward) ? acceleration.getY() : acceleration.getX();
     }
 
-    public float getFriction(){return friction;}
+    public float getFriction() {
+        return friction;
+    }
 
-    public void setFriction(float friction){this.friction = friction;}
+    public void setFriction(float friction) {
+        this.friction = friction;
+    }
 
     public void setVelocity(float x, float y) {
         velocity = new Vector2(x, y);
@@ -98,4 +129,10 @@ public abstract class MovableObject extends GameObject {
     public boolean isShouldBeCleaned() {
         return shouldBeCleaned;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString();
+    }
+
 }

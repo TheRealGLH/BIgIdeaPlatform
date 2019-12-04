@@ -14,5 +14,6 @@
         <Button fx:id="BtnLogIn" mnemonicParsing="false" onAction="#LoginPressed" text="Log in" />
         <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#RegisterPressed" text="Register" />
         <Button fx:id="btnDebug" mnemonicParsing="false" onAction="#debugGameView" text="Debug" />
+        <Button fx:id="btnInputTest" mnemonicParsing="false" onAction="#inputTestView" text="Test Input" />
     </children>
 </VBox>

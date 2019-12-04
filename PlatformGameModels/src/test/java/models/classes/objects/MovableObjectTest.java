@@ -1,5 +1,6 @@
 package models.classes.objects;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 import models.classes.MockGame;
@@ -209,6 +210,11 @@ class MockMovableObject extends MovableObject {
 
     public MockMovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
+    }
+
+    @Override
+    public SpriteType getSpriteType() {
+        return SpriteType.NONE;
     }
 
     @Override

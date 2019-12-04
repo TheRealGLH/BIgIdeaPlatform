@@ -1,5 +1,6 @@
 package models.classes.objects;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 
@@ -12,6 +13,9 @@ public class ProjectileBullet extends Projectile {
     public void onCollide(GameObject other, Vector2 collidePoint) {
         super.onCollide(other,collidePoint);
     }
+
+    @Override
+    public SpriteType getSpriteType() {return SpriteType.BULLET;}
 
 
 }

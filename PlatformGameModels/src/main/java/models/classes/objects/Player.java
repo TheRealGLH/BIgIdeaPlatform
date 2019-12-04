@@ -1,6 +1,7 @@
 package models.classes.objects;
 
 import Enums.InputType;
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
@@ -14,10 +15,10 @@ public class Player extends MovableObject {
     private float startX, startY;
 
 
-    private float walkAcceleration = 15;
+    private float walkAcceleration = 3;
 
     public Player(float xPos, float yPos) {
-        super(xPos, yPos, 10, 10);
+        super(xPos, yPos, 20, 20);
         this.startX = xPos;
         this.startY = yPos;
     }
@@ -38,7 +39,7 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        throw new UnsupportedOperationException("Method jump() has not yet been implemented");
+        if(isGrounded()) addAcceleration(0,2.5f);
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -77,6 +78,7 @@ public class Player extends MovableObject {
                     break;
                 case JUMP:
                     jump();
+                    break;
                 case SHOOT:
                 case DUCK:
                     System.out.println("[Player.java] Input has not yet been handled: " + lastInput);
@@ -92,6 +94,14 @@ public class Player extends MovableObject {
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-        throw new UnsupportedOperationException("Method onCollide has not yet been implemented");
+       //Nobody here but us chickens
+    }
+
+    @Override
+    public SpriteType getSpriteType() {return SpriteType.PLAYER;}
+
+    @Override
+    public String toString(){
+        return "V "+getVelocity()+" A "+getAcceleration() + "P "+getPosition();
     }
 }

@@ -1,10 +1,14 @@
 package models.classes;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 
-public abstract class GameObject {
+import java.util.Observable;
+
+public abstract class GameObject extends Observable {
     private Vector2 position;
     private Vector2 size;
+    private int objectNr = -1;
 
     public GameObject(float xPosition, float yPosition, float width, float height) {
         position = new Vector2(xPosition, yPosition);
@@ -37,6 +41,14 @@ public abstract class GameObject {
         float y = position.getY() + size.getY();
         return new Vector2(x, y);
     }
+
+    public void setObjectNr(int objectNr){
+        this.objectNr = objectNr;
+    }
+
+    public int getObjectNr(){return objectNr;}
+
+    public abstract SpriteType getSpriteType();
 
     private static boolean between(Vector2 origin, Vector2 topRight, Vector2 toCompare) {
         return between(origin.getX(), topRight.getY(), toCompare.getX()) && between(origin.getY(), topRight.getY(), toCompare.getY());

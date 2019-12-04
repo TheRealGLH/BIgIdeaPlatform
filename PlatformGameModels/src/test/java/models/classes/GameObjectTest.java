@@ -1,5 +1,6 @@
 package models.classes;
 
+import Enums.SpriteType;
 import SharedClasses.Vector2;
 import org.junit.Assert;
 import org.junit.Test;
@@ -133,5 +134,10 @@ public class GameObjectTest {
 class GameObjectMock extends GameObject {
     public GameObjectMock(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
+    }
+
+    @Override
+    public SpriteType getSpriteType() {
+        return SpriteType.NONE;
     }
 }
