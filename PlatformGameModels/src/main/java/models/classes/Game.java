@@ -26,28 +26,29 @@ public class Game implements Observer {
         spriteUpdates = new ArrayList<>();
     }
 
-    public void setUpGame() {
+    public void setUpGame(int[] playerNrs, String[] playerNames) {
         movableObjects = new ArrayList<>();
-        for (int i = 1; i <= 1; i++) {
-            Player p = new Player(10 * i, 100 * i);
+        for (int i = 0; i < playerNrs.length; i++) {
+            Player p = new Player(10 * (i + 1), 100 * (i + 1));
             createSprite(p);
             movableObjects.add(p);
-            playerNrMap.put(i, p);
+            playerNrMap.put(playerNrs[i], p);
+            p.setName(playerNames[i]);
         }
         for (int i = 1; i < 5; i++) {
-            WeaponPickup pickup = new WeaponPickup(10*i,200*i, WeaponType.GUN);
-            pickup.setVelocity(20*i,0);
+            WeaponPickup pickup = new WeaponPickup(10 * i, 200 * i, WeaponType.GUN);
+            pickup.setVelocity(20 * i, 0);
             createSprite(pickup);
             movableObjects.add(pickup);
         }
-        Platform plat = new Platform(100,50,200,50,true);
+        Platform plat = new Platform(100, 50, 200, 50, true);
         createSprite(plat);
     }
 
 
     public void updateState() {
         System.out.println("[Game.java] Update cycle: " + new java.util.Date());
-        if(firstUpdateComplete) {
+        if (firstUpdateComplete) {
             spriteUpdates.clear();
         }
         firstUpdateComplete = true;
@@ -56,7 +57,7 @@ public class Game implements Observer {
         }
     }
 
-    public List<SpriteUpdate> getSpriteUpdates(){
+    public List<SpriteUpdate> getSpriteUpdates() {
         return spriteUpdates;
     }
 
@@ -66,15 +67,15 @@ public class Game implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if(o instanceof SpriteUpdate){
+        if (o instanceof SpriteUpdate) {
             spriteUpdates.add((SpriteUpdate) o);
         }
     }
 
-    private void createSprite(GameObject gameObject){
+    private void createSprite(GameObject gameObject) {
         Vector2 pos = gameObject.getPosition();
         Vector2 scale = gameObject.getSize();
-        spriteUpdates.add(new SpriteUpdate(spriteCount,pos,scale, SpriteUpdateType.CREATE,gameObject.getSpriteType(),false));
+        spriteUpdates.add(new SpriteUpdate(spriteCount, pos, scale, SpriteUpdateType.CREATE, gameObject.getSpriteType(), false));
         gameObject.addObserver(this);
         gameObject.setObjectNr(spriteCount);
         spriteCount++;

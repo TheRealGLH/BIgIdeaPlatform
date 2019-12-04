@@ -13,6 +13,7 @@ public class Player extends MovableObject {
     private boolean hasUsedInput = false;
     private InputType lastInput;
     private float startX, startY;
+    private String name = "undefinedplayer";
 
 
     private float walkAcceleration = 3;
@@ -102,6 +103,14 @@ public class Player extends MovableObject {
 
     @Override
     public String toString(){
-        return "V "+getVelocity()+" A "+getAcceleration() + "P "+getPosition();
+        return getName();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

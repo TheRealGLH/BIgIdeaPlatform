@@ -17,7 +17,7 @@ public class GameTimerTask extends TimerTask {
     public GameTimerTask(IPlatformGameServer gameServer, int[] playerNrs, String[] names) {
         this.gameServer = gameServer;
         game = new Game();
-        game.setUpGame();
+        game.setUpGame(playerNrs, names);
     }
 
     @Override
