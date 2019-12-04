@@ -88,7 +88,7 @@ public class PlatformInputTestController {
     }
 
     Rectangle getRect(KeyCode c) {
-        Rectangle rectangle = null;
+        Rectangle rectangle;
         switch (c) {
             case A:
                 rectangle = rectLeft;

@@ -7,14 +7,13 @@ import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Points.SpriteUpdate;
 import gameclient.GameServer;
+import gamegui.Interfaces.ILobbyEventListener;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GUIScreenController extends ScreenController {
@@ -25,6 +24,7 @@ public class GUIScreenController extends ScreenController {
     private GUIState guiState;
     private IPlatformGameServer gameServer;// message creator
     private List<ISpriteUpdateEventListener> spriteUpdateEventListeners = new ArrayList<>();
+    private List<ILobbyEventListener> lobbyEventListeners = new ArrayList<>();
     private String name;
 
     private GUIScreenController() {
@@ -180,13 +180,20 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
-    public void lobbyJoinedNotify(String[] names) {
-        System.out.println("[GUIScreenController.java] In lobby: " + Arrays.toString(names));
+    public void lobbyJoinedNotify(String[] playerNames) {
+        for (ILobbyEventListener lobbyEventListener : lobbyEventListeners) {
+            lobbyEventListener.updateLobbyPlayers(playerNames);
+        }
     }
 
     @Override
     public void addSpriteEventListener(ISpriteUpdateEventListener listener) {
         spriteUpdateEventListeners.add(listener);
+    }
+
+    @Override
+    public void addEventListener(ILobbyEventListener lobbyEventListener) {
+        lobbyEventListeners.add(lobbyEventListener);
     }
 }
 
