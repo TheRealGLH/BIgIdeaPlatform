@@ -1,4 +1,4 @@
-package gameclient;
+package gameserver;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.LoginState;
