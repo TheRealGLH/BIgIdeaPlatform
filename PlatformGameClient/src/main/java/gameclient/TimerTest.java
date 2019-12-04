@@ -1,6 +1,7 @@
 package gameclient;
 
 import PlatformGameShared.Enums.InputType;
+import gameserver.GameServer;
 
 class TimerTest {
     public static void main(String[] args) throws InterruptedException
