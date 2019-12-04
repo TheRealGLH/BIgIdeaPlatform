@@ -24,7 +24,6 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
-        System.out.println("[Player.java] got input "+inputType);
         hasUsedInput = true;
         lastInput = inputType;
     }
@@ -103,6 +102,6 @@ public class Player extends MovableObject {
 
     @Override
     public String toString(){
-        return "V "+getVelocity()+" A "+getAcceleration() + getCurrentWeapon();
+        return "V "+getVelocity()+" A "+getAcceleration() + "P "+getPosition();
     }
 }

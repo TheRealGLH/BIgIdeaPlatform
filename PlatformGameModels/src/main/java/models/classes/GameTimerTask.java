@@ -2,12 +2,12 @@ package models.classes;
 
 import Enums.InputType;
 import Interfaces.IPlatformGameServer;
-import models.classes.Game;
 
 import java.util.TimerTask;
 
 public class GameTimerTask extends TimerTask {
 
+    public static final int tickRate = 30;
     Game game;
     IPlatformGameServer gameServer;
 
@@ -18,7 +18,6 @@ public class GameTimerTask extends TimerTask {
         this.gameServer = gameServer;
         game = new Game();
         game.setUpGame();
-        this.gameServer.sendSpriteUpdates(game.getSpriteUpdates());
     }
 
     @Override
@@ -28,7 +27,6 @@ public class GameTimerTask extends TimerTask {
     }
 
     public synchronized void sendInput(InputType inputType) {
-        System.out.println("[GameTimerTask.java] " + inputType);
         game.sendInput(1, inputType);
     }
 }

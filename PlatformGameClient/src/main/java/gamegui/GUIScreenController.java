@@ -2,6 +2,8 @@ package gamegui;
 
 import Enums.GameState;
 import Enums.InputType;
+import Enums.LoginState;
+import Enums.RegisterState;
 import Interfaces.IPlatformGameServer;
 import SharedClasses.SpriteUpdate;
 import gameclient.GameServer;
@@ -67,7 +69,6 @@ public class GUIScreenController extends ScreenController {
 
     @Override
     public void updateScreen(List<SpriteUpdate> positions) {
-        if(guiState != GUIState.Game) return;
         for (ISpriteUpdateEventListener listener : spriteUpdateEventListeners){
             Platform.runLater(() -> {
                         listener.handleSpriteUpdate(positions);
@@ -101,6 +102,26 @@ public class GUIScreenController extends ScreenController {
             throw new UnsupportedOperationException("updateScreen has not yet been implemented.");
         }
         throw new InvalidParameterException("You're not allowed to call getAllSprites when not in the game view.");
+    }
+
+    @Override
+    public void sendRegisterRequest(String name, String password) {
+        gameServer.registerPlayer(name,password,this);
+    }
+
+    @Override
+    public void sendLoginRequest(String name, String password) {
+        gameServer.loginPlayer(name,password,this);
+    }
+
+    @Override
+    public void receiveLoginState(String name, LoginState loginState) {
+        throw new UnsupportedOperationException("method receiveLoginSuccess not implemented");
+    }
+
+    @Override
+    public void receiveRegisterState(String name, RegisterState registerState) {
+        throw new UnsupportedOperationException("method receiveRegisterSuccess not implemented");
     }
 
     @Override

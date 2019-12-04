@@ -16,7 +16,7 @@ public abstract class MovableObject extends GameObject {
     private float weight = 0.2f;
     //private final float gravity = -9.81f;
     private final float gravity = -0.1f;
-    private float friction = .85f;//the lower, the faster you'll stop!
+    private float friction = .75f;//the lower, the faster you'll stop!
 
     public MovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
@@ -39,7 +39,6 @@ public abstract class MovableObject extends GameObject {
 
     public void update() {
         Vector2 startPos = getPosition();
-        System.out.println("[MovableObject.java] Updating " + this);
         if (!isGrounded() && isUseGravity()) doGravity();
         else {
             timeInAir = 0;
@@ -68,7 +67,6 @@ public abstract class MovableObject extends GameObject {
         if (velocity.getX() < 0.001f && velocity.getX() > -0.001f) velocity.setX(0);
         Vector2 endPos = getPosition();
         if (!startPos.equals(endPos)) {
-            System.out.println("[MovableObject.java] Moved to " + endPos + " with velocity " + velocity);
             setChanged();
             notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), (velocity.getX() < 0), toString()));
         }

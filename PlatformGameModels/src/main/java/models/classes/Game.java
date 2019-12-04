@@ -19,6 +19,7 @@ public class Game implements Observer {
     private Map<Integer, Player> playerNrMap;
     private List<SpriteUpdate> spriteUpdates;
     private int spriteCount = 0;
+    private boolean firstUpdateComplete = false;
 
     public Game() {
         playerNrMap = new HashMap<>();
@@ -33,8 +34,9 @@ public class Game implements Observer {
             movableObjects.add(p);
             playerNrMap.put(i, p);
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 5; i++) {
             WeaponPickup pickup = new WeaponPickup(10*i,200*i, WeaponType.GUN);
+            pickup.setVelocity(20*i,0);
             createSprite(pickup);
             movableObjects.add(pickup);
         }
@@ -45,7 +47,10 @@ public class Game implements Observer {
 
     public void updateState() {
         System.out.println("[Game.java] Update cycle: " + new java.util.Date());
-        spriteUpdates.clear();
+        if(firstUpdateComplete) {
+            spriteUpdates.clear();
+        }
+        firstUpdateComplete = true;
         for (MovableObject movableObject : movableObjects) {
             movableObject.update();
         }

@@ -32,7 +32,7 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void startGame() {
         gameTimerTask = new GameTimerTask(this);
-        timer.schedule(gameTimerTask, 0, 100);
+        timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
     }
 
     @Override

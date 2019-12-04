@@ -106,6 +106,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
     @Override
     public void handleSpriteUpdate(List<SpriteUpdate> spriteUpdates) {
+
         for (SpriteUpdate spriteUpdate : spriteUpdates) {
             SpriteUpdateType updateType = spriteUpdate.getUpdateType();
             switch (updateType) {
@@ -113,7 +114,6 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                     ImageView imageView = spriteMap.get(spriteUpdate.getObjectNr());
                     Label label = labelMap.get(spriteUpdate.getObjectNr());
                     if (imageView != null) {
-                        System.out.println("[PlatformGameViewController.java] Moving image " + imageView);
                         SpriteFactory.updateImage(imageView, spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
                     } else {
                         System.out.println("[PlatformGameViewController.java] Image didn't exist for nr " + spriteUpdate.getObjectNr() + " creating new one");
@@ -143,7 +143,6 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                     Integer nrToDelete = spriteUpdate.getObjectNr();
                     ImageView imageViewToDelete = spriteMap.get(nrToDelete);
                     Label labelToDelete = labelMap.get(nrToDelete);
-                    System.out.println("[PlatformGameViewController.java] Destroying ImageView " + imageViewToDelete + " for object nr " + nrToDelete);
                     gamePane.getChildren().remove(imageViewToDelete);
                     gamePane.getChildren().remove(labelToDelete);
                     spriteMap.remove(spriteUpdate.getObjectNr());
@@ -152,5 +151,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             }
         }
         System.out.println("[PlatformGameViewController.java] Finished updating sprites");
+
+
     }
 }
