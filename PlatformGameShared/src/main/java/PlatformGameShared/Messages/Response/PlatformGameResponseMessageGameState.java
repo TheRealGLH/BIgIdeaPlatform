@@ -12,7 +12,13 @@ public class PlatformGameResponseMessageGameState extends PlatformGameResponseMe
         this.gameState = gameState;
     }
 
+    public PlatformGameResponseMessageGameState(){}
+
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }

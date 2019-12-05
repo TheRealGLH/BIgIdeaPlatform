@@ -11,7 +11,13 @@ public class PlatformGameResponseMessageLobbyMap extends PlatformGameResponseMes
         this.mapName = mapName;
     }
 
+    public PlatformGameResponseMessageLobbyMap(){}
+
     public String getMapName() {
         return mapName;
+    }
+
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
     }
 }

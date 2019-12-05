@@ -14,11 +14,21 @@ public class PlatformGameResponseMessageLogin extends PlatformGameResponseMessag
         this.loginState = loginState;
     }
 
+    public PlatformGameResponseMessageLogin(){}
+
     public LoginState getLoginState() {
         return loginState;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setLoginState(LoginState loginState) {
+        this.loginState = loginState;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -12,8 +12,13 @@ public class PlatformGameMessageInput extends PlatformGameMessage{
         this.inputType = inputType;
     }
 
+    public PlatformGameMessageInput(){}
+
     public InputType getInputType(){
         return inputType;
     }
 
+    public void setInputType(InputType inputType) {
+        this.inputType = inputType;
+    }
 }

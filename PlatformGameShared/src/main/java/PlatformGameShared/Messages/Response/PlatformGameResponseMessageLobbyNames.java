@@ -12,7 +12,13 @@ public class PlatformGameResponseMessageLobbyNames extends PlatformGameResponseM
         this.names = names;
     }
 
+    public PlatformGameResponseMessageLobbyNames(){}
+
     public String[] getNames() {
         return names;
+    }
+
+    public void setNames(String[] names) {
+        this.names = names;
     }
 }

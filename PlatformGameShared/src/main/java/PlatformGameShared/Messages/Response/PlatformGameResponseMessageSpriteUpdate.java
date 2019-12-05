@@ -14,7 +14,13 @@ public class PlatformGameResponseMessageSpriteUpdate extends PlatformGameRespons
         this.spriteUpdates = spriteUpdates;
     }
 
+    public PlatformGameResponseMessageSpriteUpdate(){}
+
     public List<SpriteUpdate> getSpriteUpdates() {
         return spriteUpdates;
+    }
+
+    public void setSpriteUpdates(List<SpriteUpdate> spriteUpdates) {
+        this.spriteUpdates = spriteUpdates;
     }
 }

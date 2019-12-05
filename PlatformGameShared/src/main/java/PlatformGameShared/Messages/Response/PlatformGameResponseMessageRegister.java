@@ -11,6 +11,8 @@ public class PlatformGameResponseMessageRegister extends PlatformGameResponseMes
         this.registerState = registerState;
     }
 
+    public PlatformGameResponseMessageRegister(){}
+
     public RegisterState getRegisterState() {
         return registerState;
     }
@@ -20,5 +22,13 @@ public class PlatformGameResponseMessageRegister extends PlatformGameResponseMes
 
     public String getName() {
         return name;
+    }
+
+    public void setRegisterState(RegisterState registerState) {
+        this.registerState = registerState;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

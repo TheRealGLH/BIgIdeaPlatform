@@ -14,6 +14,8 @@ public class PlatformGameMessageLogin extends PlatformGameMessage{
         this.password = password;
     }
 
+    public PlatformGameMessageLogin(){}
+
     public String getName() {
         return name;
     }
@@ -22,4 +24,11 @@ public class PlatformGameMessageLogin extends PlatformGameMessage{
         return password;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

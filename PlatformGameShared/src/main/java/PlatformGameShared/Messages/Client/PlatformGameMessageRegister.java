@@ -13,6 +13,8 @@ public class PlatformGameMessageRegister extends PlatformGameMessage{
         this.password = password;
     }
 
+    public PlatformGameMessageRegister(){};
+
 
     public String getName() {
         return name;
@@ -20,5 +22,13 @@ public class PlatformGameMessageRegister extends PlatformGameMessage{
 
     public String getPassword() {
         return password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
