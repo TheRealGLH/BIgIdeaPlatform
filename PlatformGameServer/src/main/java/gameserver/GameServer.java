@@ -39,11 +39,12 @@ public class GameServer implements IPlatformGameServer {
 
     @Override
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
-        System.out.println("[GameServer.java] Logging in as " + name);
+        System.out.println("[GameServer.java] Logging in as " + name + " " + this.toString());
         LoginState loginState = loginClient.attemptLogin(name, password);
 
         client.receiveLoginState(name, loginState);
         if (loginState == LoginState.SUCCESS) {
+            client.setName(name);
             joinedClients.add(client);
             String names[] = new String[joinedClients.size()];
             for (int i = 0; i < joinedClients.size(); i++) {

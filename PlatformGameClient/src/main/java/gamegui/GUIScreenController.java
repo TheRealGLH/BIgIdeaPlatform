@@ -6,12 +6,14 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Points.SpriteUpdate;
+import gameclient.GameClientMessageSender;
 import gamegui.Interfaces.ILobbyEventListener;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
 import gameserver.GameServer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class GUIScreenController extends ScreenController {
     private String name;
 
     private GUIScreenController() {
-        gameServer = new GameServer();
+        gameServer = new GameClientMessageSender();
     }
 
     //We use a so called 'Eager' Singleton pattern here, because it supposedly goes nicer with a multithreaded environment (Such as JavaFX)
@@ -118,50 +120,58 @@ public class GUIScreenController extends ScreenController {
 
     @Override
     public void receiveLoginState(String name, LoginState loginState) {
-        String title = "Logging in.";
-        String message = "";
-        Alert.AlertType alertType = Alert.AlertType.INFORMATION;
-        switch (loginState) {
-            case SUCCESS:
-                message = "You were logged in as " + name;
-                break;
-            case INCORRECTDATA:
-                message = "Incorrect user/password combination.";
-                break;
-            case BANNED:
-                message = "This account has been banned from playing";
-                alertType = Alert.AlertType.ERROR;
-                break;
-            default:
-                message = "Invalid loginstate: " + loginState;
-        }
-        platformGUI.showPopupMessage(title, message, alertType);
-        if (loginState == LoginState.SUCCESS) {
-            this.name = name;
-            this.showLobbyScreen();
-        }
+        Platform.runLater(() -> {
+                    String title = "Logging in.";
+                    String message = "";
+                    Alert.AlertType alertType = Alert.AlertType.INFORMATION;
+                    switch (loginState) {
+                        case SUCCESS:
+                            message = "You were logged in as " + name;
+                            break;
+                        case INCORRECTDATA:
+                            message = "Incorrect user/password combination.";
+                            break;
+                        case BANNED:
+                            message = "This account has been banned from playing";
+                            alertType = Alert.AlertType.ERROR;
+                            break;
+                        default:
+                            message = "Invalid loginstate: " + loginState;
+                    }
+                    platformGUI.showPopupMessage(title, message, alertType);
+                    if (loginState == LoginState.SUCCESS) {
+                        this.name = name;
+                        this.showLobbyScreen();
+                    }
+                }
+        );
+
     }
 
     @Override
     public void receiveRegisterState(String name, RegisterState registerState) {
-        String title = "Register.";
-        String message = "";
-        Alert.AlertType alertType = Alert.AlertType.INFORMATION;
-        switch (registerState) {
-            case SUCCESS:
-                message = "Registered as " + name + ". You may now log in";
-                break;
-            case INCORRECTDATA:
-                alertType = Alert.AlertType.ERROR;
-                message = "THe supplied credentials no mot match our requirements.";
-                break;
-            case ALREADYEXISTS:
-                alertType = Alert.AlertType.ERROR;
-                message = "The account " + name + " was already registered";
-                break;
-        }
-        platformGUI.showPopupMessage(title, message, alertType);
-        if (registerState == RegisterState.SUCCESS) platformGUI.showLoginScreen();
+        Platform.runLater(() -> {
+                    String title = "Register.";
+                    String message = "";
+                    Alert.AlertType alertType = Alert.AlertType.INFORMATION;
+                    switch (registerState) {
+                        case SUCCESS:
+                            message = "Registered as " + name + ". You may now log in";
+                            break;
+                        case INCORRECTDATA:
+                            alertType = Alert.AlertType.ERROR;
+                            message = "THe supplied credentials no mot match our requirements.";
+                            break;
+                        case ALREADYEXISTS:
+                            alertType = Alert.AlertType.ERROR;
+                            message = "The account " + name + " was already registered";
+                            break;
+                    }
+                    platformGUI.showPopupMessage(title, message, alertType);
+                    if (registerState == RegisterState.SUCCESS) platformGUI.showLoginScreen();
+                }
+        );
+
     }
 
     @Override
@@ -175,15 +185,32 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
+    public void setPlayerNr(int playerNr) {
+        //not here
+    }
+
+    @Override
+    public void setName(String name) {
+        //not here
+    }
+
+    @Override
     public void gameStartNotification() {
-        showGameView();
+        Platform.runLater(() -> {
+            showGameView();
+                }
+        );
+
     }
 
     @Override
     public void lobbyJoinedNotify(String[] playerNames) {
-        for (ILobbyEventListener lobbyEventListener : lobbyEventListeners) {
-            lobbyEventListener.updateLobbyPlayers(playerNames);
-        }
+        Platform.runLater(() -> {
+                    for (ILobbyEventListener lobbyEventListener : lobbyEventListeners) {
+                        lobbyEventListener.updateLobbyPlayers(playerNames);
+                    }
+                }
+        );
     }
 
     @Override

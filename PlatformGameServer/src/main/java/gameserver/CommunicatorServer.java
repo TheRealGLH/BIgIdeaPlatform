@@ -10,7 +10,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
-import org.eclipse.jetty.websocket.jsr356.ClientContainer;
 
 /**
  *
@@ -46,7 +45,7 @@ public class CommunicatorServer {
             ServerContainer wscontainer = WebSocketServerContainerInitializer.configureContext(webSocketContext);
 
             // Add WebSocket endpoint to javax.websocket layer
-            wscontainer.addEndpoint(CommunicatorServerWebSocket.class);
+            wscontainer.addEndpoint(CommunicatorServerWebSocketEndpoint.class);
 
             webSocketServer.start();
             //server.dump(System.err);

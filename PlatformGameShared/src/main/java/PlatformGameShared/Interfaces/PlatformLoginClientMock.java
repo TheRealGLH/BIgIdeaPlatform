@@ -13,6 +13,7 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
     public PlatformLoginClientMock() {
         usernamePasswordMap = new HashMap<>();
         usernamePasswordMap.put("test", "123456");
+        usernamePasswordMap.put("fred","123456");
     }
 
     @Override

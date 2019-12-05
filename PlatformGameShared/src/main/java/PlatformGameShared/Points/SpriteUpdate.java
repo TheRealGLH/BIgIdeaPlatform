@@ -26,6 +26,8 @@ public class SpriteUpdate {
         this(objectNr,position,size,updateType,spriteType,isFacingLeft,"");
     }
 
+    public SpriteUpdate(){}
+
     private int objectNr;
 
     public int getObjectNr() {
@@ -53,6 +55,34 @@ public class SpriteUpdate {
     }
 
     public String getLabel(){ return label;}
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setSize(Vector2 size) {
+        this.size = size;
+    }
+
+    public void setUpdateType(SpriteUpdateType updateType) {
+        this.updateType = updateType;
+    }
+
+    public void setSpriteType(SpriteType spriteType) {
+        this.spriteType = spriteType;
+    }
+
+    public void setFacingLeft(boolean facingLeft) {
+        isFacingLeft = facingLeft;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setObjectNr(int objectNr) {
+        this.objectNr = objectNr;
+    }
 
     @Override
     public boolean equals(Object other){
