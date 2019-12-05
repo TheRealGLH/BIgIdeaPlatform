@@ -1,8 +1,8 @@
-package PlatformGameShared.Messages;
+package PlatformGameShared.Messages.Client;
 
 import PlatformGameShared.Enums.GameClientMessageType;
 
-public class PlatformGameClientMessage {
+public class PlatformGameMessage {
     private GameClientMessageType messageType;
 
     public GameClientMessageType getMessageType() {

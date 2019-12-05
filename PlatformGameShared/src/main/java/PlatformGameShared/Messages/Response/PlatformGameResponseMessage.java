@@ -1,4 +1,4 @@
-package PlatformGameShared.Messages;
+package PlatformGameShared.Messages.Response;
 
 import PlatformGameShared.Enums.GameResponseMessageType;
 

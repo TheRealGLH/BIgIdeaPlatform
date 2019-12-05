@@ -5,7 +5,7 @@
  */
 package gameclient;
 
-import PlatformGameShared.Messages.PlatformGameClientMessage;
+import PlatformGameShared.Messages.Client.PlatformGameMessage;
 
 /**
  * Interface of Communicator in order to 
@@ -34,5 +34,5 @@ public interface ICommunicator {
      * Sends a message to a server
      * @param message the message to be sent
      */
-    public void sendMessage(PlatformGameClientMessage message);
+    public void sendMessage(PlatformGameMessage message);
 }

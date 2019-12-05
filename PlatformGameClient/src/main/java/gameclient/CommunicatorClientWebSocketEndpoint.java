@@ -1,7 +1,7 @@
 package gameclient;
 
-import PlatformGameShared.Messages.PlatformGameClientMessage;
-import PlatformGameShared.Messages.PlatformGameResponseMessage;
+import PlatformGameShared.Messages.Client.PlatformGameMessage;
+import PlatformGameShared.Messages.Response.PlatformGameResponseMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -19,24 +19,11 @@ import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-// https://github.com/jetty-project/embedded-jetty-websocket-examples/tree/master/javax.websocket-example/src/main/java/org/eclipse/jetty/demo
-
-/**
- * Client-side implementation of abstract class Communicator using 
- * WebSockets for communication.
- * 
- * This code is based on the example code from:
- * https://github.com/jetty-project/embedded-jetty-websocket-examples/blob/
- * master/javax.websocket-example/src/main/java/org/eclipse/jetty/
- * demo/EventServerSocket.java
- *
- * @author Nico Kuijpers
- */
 @ClientEndpoint
-public class CommunicatorClientWebSocket implements ICommunicator{
+public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     
     // Singleton
-    private static CommunicatorClientWebSocket instance = null;
+    private static CommunicatorClientWebSocketEndpoint instance = null;
     
     /**
      * The local websocket uri to connect to.
@@ -53,7 +40,7 @@ public class CommunicatorClientWebSocket implements ICommunicator{
     boolean isRunning = false;
     
     // Private constructor (singleton pattern)
-    private CommunicatorClientWebSocket() {
+    private CommunicatorClientWebSocketEndpoint() {
         gson = new Gson();
     }
     
@@ -62,10 +49,10 @@ public class CommunicatorClientWebSocket implements ICommunicator{
      * Ensure that only one instance of this class is created.
      * @return instance of client web socket
      */
-    public static CommunicatorClientWebSocket getInstance() {
+    public static CommunicatorClientWebSocketEndpoint getInstance() {
         if (instance == null) {
             System.out.println("[WebSocket Client create singleton instance]");
-            instance = new CommunicatorClientWebSocket();
+            instance = new CommunicatorClientWebSocketEndpoint();
         }
         return instance;
     }
@@ -119,12 +106,12 @@ public class CommunicatorClientWebSocket implements ICommunicator{
 
 
     @Override
-    public void sendMessage(PlatformGameClientMessage message) {
+    public void sendMessage(PlatformGameMessage message) {
         sendMessageToServer(message);
     }
 
     
-    private void sendMessageToServer(PlatformGameClientMessage message) {
+    private void sendMessageToServer(PlatformGameMessage message) {
         String jsonMessage = gson.toJson(message);
         // Use asynchronous communication
         session.getAsyncRemote().sendText(jsonMessage);

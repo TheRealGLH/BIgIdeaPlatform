@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GameClientMessageSender implements IPlatformGameServer {
 
-    private ICommunicator communicator = CommunicatorClientWebSocket.getInstance();
+    private ICommunicator communicator = CommunicatorClientWebSocketEndpoint.getInstance();
 
     @Override
     public void registerPlayer(String name, String password, IPlatformGameClient client) {
@@ -33,6 +33,6 @@ public class GameClientMessageSender implements IPlatformGameServer {
 
     @Override
     public void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList) {
-        throw new UnsupportedOperationException("Method sendSpriteUpdates() has not yet been implemented");
+        throw new UnsupportedOperationException("This method is not supposed to be called on the client");
     }
 }
