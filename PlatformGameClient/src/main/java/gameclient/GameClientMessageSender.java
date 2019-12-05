@@ -8,6 +8,9 @@ import PlatformGameShared.Points.SpriteUpdate;
 import java.util.List;
 
 public class GameClientMessageSender implements IPlatformGameServer {
+
+    private ICommunicator communicator = CommunicatorClientWebSocket.getInstance();
+
     @Override
     public void registerPlayer(String name, String password, IPlatformGameClient client) {
         throw new UnsupportedOperationException("Method registerPlayer() has not yet been implemented");

@@ -5,7 +5,10 @@ module PlatformGameClient {
     requires PlatformGameShared;
     requires java.desktop;
     requires PlatformGameServer;
+    requires gson;
+    requires javax.websocket.api;
     exports gamegui;
     exports gamegui.controllers;
+    exports gameclient;
     opens gamegui.controllers;
 }

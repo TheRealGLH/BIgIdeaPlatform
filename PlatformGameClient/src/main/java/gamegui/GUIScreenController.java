@@ -175,6 +175,16 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
+    public void setPlayerNr(int playerNr) {
+        //not here
+    }
+
+    @Override
+    public void setName(String name) {
+        //not here
+    }
+
+    @Override
     public void gameStartNotification() {
         showGameView();
     }
