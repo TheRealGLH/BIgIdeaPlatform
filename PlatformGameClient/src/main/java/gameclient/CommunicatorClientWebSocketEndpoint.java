@@ -211,6 +211,9 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
                     PlatformGameResponseMessageGameState messageGameState = gson.fromJson(jsonMessage, PlatformGameResponseMessageGameState.class);
                     platformGameClient.receiveGameState(messageGameState.getGameState());
                     break;
+                case NotifyStart:
+                    platformGameClient.gameStartNotification();
+                    break;
             }
         } catch (JsonSyntaxException ex) {
             System.out.println("WebSocket Client ERROR: Json message " + jsonMessage + " was malformed for the type " + messageType);
