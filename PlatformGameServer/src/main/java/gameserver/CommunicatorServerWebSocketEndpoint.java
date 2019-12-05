@@ -36,11 +36,10 @@ import javax.websocket.server.ServerEndpoint;
 public class CommunicatorServerWebSocketEndpoint {
 
     // All sessions
-    private static final List<Session> sessions = new ArrayList<>();
-    private Map<Session, IPlatformGameClient> sessionIPlatformGameClientMap = new HashMap<>();
+    private static Map<Session, IPlatformGameClient> sessionIPlatformGameClientMap = new HashMap<>();
 
     // Map each property to list of sessions that are subscribed to that property
-    IPlatformGameServer gameServer = new GameServer();
+    private static IPlatformGameServer gameServer = new GameServer();
 
     @OnOpen
     public void onConnect(Session session) {
