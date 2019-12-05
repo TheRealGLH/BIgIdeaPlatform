@@ -39,6 +39,7 @@ public class CommunicatorServerWebSocketEndpoint {
         String message = String.format("[New client with client side session ID]: %s", session.getId());
         IPlatformGameClient responseClient = new GameServerMessageSender(session);
         sessionIPlatformGameClientMap.put(session, responseClient);
+        responseClient.setPlayerNr(sessionIPlatformGameClientMap.size());
         System.out.println("[#sessions]: " + sessionIPlatformGameClientMap.size());
     }
 

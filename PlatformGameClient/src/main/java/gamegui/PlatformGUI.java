@@ -57,7 +57,7 @@ public class PlatformGUI extends Application {
         primaryStage.setHeight(800);
         GUIScreenController.getInstance().setPlatformGUI(this);
         GUIScreenController.getInstance().showMainMenu();
-        System.out.println("Game started.");
+        System.out.println("GUI started.");
     }
 
     void showMainMenu() {
