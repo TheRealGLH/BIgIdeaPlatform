@@ -12,4 +12,11 @@ public class PlatformGameMessage {
     public void setMessageType(GameClientMessageType messageType) {
         this.messageType = messageType;
     }
+
+    @Override
+    public String toString() {
+        return "PlatformGameMessage{" +
+                "messageType=" + messageType +
+                '}';
+    }
 }

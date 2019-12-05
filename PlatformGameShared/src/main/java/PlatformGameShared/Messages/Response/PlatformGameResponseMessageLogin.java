@@ -6,8 +6,10 @@ import PlatformGameShared.Enums.LoginState;
 public class PlatformGameResponseMessageLogin extends PlatformGameResponseMessage{
 
     private LoginState loginState;
+    private String name;
 
-    public PlatformGameResponseMessageLogin(LoginState loginState) {
+    public PlatformGameResponseMessageLogin(LoginState loginState, String name) {
+        this.name = name;
         this.setResponseMessageType(GameResponseMessageType.LoginState);
         this.loginState = loginState;
     }

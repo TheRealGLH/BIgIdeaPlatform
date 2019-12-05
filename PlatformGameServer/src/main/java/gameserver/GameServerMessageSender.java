@@ -5,7 +5,9 @@ import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
+import PlatformGameShared.Messages.Response.*;
 import PlatformGameShared.Points.SpriteUpdate;
+import com.google.gson.Gson;
 
 import javax.websocket.Session;
 import java.util.List;
@@ -15,54 +17,56 @@ public class GameServerMessageSender implements IPlatformGameClient {
     private int playerNr;
     private String name;
     private Session session;
+    private Gson gson = new Gson();
 
-    public GameServerMessageSender(Session session){
+    public GameServerMessageSender(Session session) {
         this.session = session;
     }
 
     @Override
     public void updateScreen(List<SpriteUpdate> positions) {
-        throw new UnsupportedOperationException("Method updateScreen has not yet been implemented.");
+        PlatformGameResponseMessageSpriteUpdate messageSpriteUpdate = new PlatformGameResponseMessageSpriteUpdate(positions);
+        sendMessage(messageSpriteUpdate);
     }
 
     @Override
     public void joinGame() {
-        throw new UnsupportedOperationException("Method joinGame has not yet been implemented.");
+        throw new UnsupportedOperationException("This method is not supposed to be called from the server!");
     }
 
     @Override
     public void receiveGameState(GameState gameState) {
-        throw new UnsupportedOperationException("Method receiveGameState has not yet been implemented.");
+        PlatformGameResponseMessageGameState messageGameState = new PlatformGameResponseMessageGameState(gameState);
     }
 
     @Override
     public void sendInput(InputType inputType) {
-        throw new UnsupportedOperationException("Method sendInput has not yet been implemented.");
+        throw new UnsupportedOperationException("This method is not supposed to be called from the server!");
     }
 
     @Override
     public List<SpriteUpdate> getAllSprites() {
-        throw new UnsupportedOperationException("Method getAllSprites has not yet been implemented.");
+        throw new UnsupportedOperationException("This method is not supposed to be called from the server!");
     }
 
     @Override
     public void sendRegisterRequest(String name, String password) {
-        throw new UnsupportedOperationException("Method sendRegisterRequest has not yet been implemented.");
+        throw new UnsupportedOperationException("This method is not supposed to be called from the server!");
     }
 
     @Override
     public void sendLoginRequest(String name, String password) {
-        throw new UnsupportedOperationException("Method sendLoginRequest has not yet been implemented.");
+        throw new UnsupportedOperationException("This method is not supposed to be called from the server!");
     }
 
     @Override
     public void receiveLoginState(String name, LoginState loginState) {
-        throw new UnsupportedOperationException("Method receiveLoginState has not yet been implemented.");
+        PlatformGameResponseMessageLogin messageLogin = new PlatformGameResponseMessageLogin(loginState, name);
     }
 
     @Override
     public void receiveRegisterState(String name, RegisterState registerState) {
-        throw new UnsupportedOperationException("Method receiveRegisterState has not yet been implemented.");
+        PlatformGameResponseMessageRegister messageRegister = new PlatformGameResponseMessageRegister(registerState, name);
     }
 
     @Override
@@ -93,6 +97,12 @@ public class GameServerMessageSender implements IPlatformGameClient {
     @Override
     public void lobbyJoinedNotify(String[] playerNames) {
         throw new UnsupportedOperationException("Method lobbyJoinedNotify has not yet been implemented.");
+    }
+
+
+    private void sendMessage(PlatformGameResponseMessage responseMessage) {
+        String json = gson.toJson(responseMessage);
+        session.getAsyncRemote().sendText(json);
     }
 
 }

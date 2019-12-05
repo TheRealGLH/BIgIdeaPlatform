@@ -5,7 +5,8 @@ import PlatformGameShared.Enums.RegisterState;
 
 public class PlatformGameResponseMessageRegister extends PlatformGameResponseMessage{
 
-    public PlatformGameResponseMessageRegister(RegisterState registerState) {
+    public PlatformGameResponseMessageRegister(RegisterState registerState, String name) {
+        this.name = name;
         this.setResponseMessageType(GameResponseMessageType.RegisterState);
         this.registerState = registerState;
     }
@@ -15,5 +16,9 @@ public class PlatformGameResponseMessageRegister extends PlatformGameResponseMes
     }
 
     private RegisterState registerState;
+    private String name;
 
+    public String getName() {
+        return name;
+    }
 }
