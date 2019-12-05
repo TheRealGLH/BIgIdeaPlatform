@@ -1,10 +1,10 @@
 package gamegui.controllers;
 
-import Enums.InputType;
-import Enums.SpriteType;
-import Enums.SpriteUpdateType;
-import SharedClasses.SpriteUpdate;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.Points.Vector2;
 import gamegui.GUIScreenController;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.ScreenController;
@@ -27,6 +27,11 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
     ScreenController controller = GUIScreenController.getInstance();
     Map<Integer, ImageView> spriteMap = new HashMap<>();
     Map<Integer, Label> labelMap = new HashMap<>();
+    private boolean walkLeftHeld = false;
+    private boolean walkRightHeld = false;
+    private boolean jumpHeld = false;
+    private boolean shootHeld = false;
+    private boolean duckHeld = false;
 
     @FXML
     protected void initialize() {
@@ -40,6 +45,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
         float widthHeight = 10;
         Vector2 size = new Vector2(widthHeight, widthHeight);
         switch (keyCode) {
+            /*
             case C:
                 List<SpriteUpdate> sprites = new ArrayList<>();
                 Random random = new Random();
@@ -73,36 +79,54 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 controller.updateScreen(spritesDelete);
                 lastId = 1;
                 break;
+
+             */
+            case A:
+                walkLeftHeld = false;
+                break;
+            case D:
+                walkRightHeld = false;
+                break;
+            case W:
+                jumpHeld = false;
+                break;
+            case S:
+                duckHeld = false;
+                break;
+            case SPACE:
+                shootHeld = false;
+                break;
         }
 
     }
 
     @FXML
     void handleKeyDown(KeyEvent e) {
-        KeyCode keyCode = e.getCode();
-        switch (keyCode) {
+        KeyCode c = e.getCode();
+        switch (c) {
             case A:
-                controller.sendInput(InputType.MOVELEFT);
+                walkLeftHeld = true;
                 break;
             case D:
-                controller.sendInput(InputType.MOVERIGHT);
+                walkRightHeld = true;
                 break;
             case W:
-                controller.sendInput(InputType.JUMP);
+                jumpHeld = true;
+                break;
+            case S:
+                duckHeld = true;
                 break;
             case SPACE:
-                controller.sendInput(InputType.SHOOT);
+                shootHeld = true;
                 break;
         }
+        if (walkLeftHeld) controller.sendInput(InputType.MOVELEFT);
+        if (walkRightHeld) controller.sendInput(InputType.MOVERIGHT);
+        if (duckHeld) controller.sendInput(InputType.DUCK);
+        if (jumpHeld) controller.sendInput(InputType.JUMP);
+        if (shootHeld) controller.sendInput(InputType.SHOOT);
     }
 
-    @FXML
-    void handleKeyPressed(KeyEvent e){
-        KeyCode keyCode = e.getCode();
-        switch (keyCode){
-
-        }
-    }
 
     @Override
     public void handleSpriteUpdate(List<SpriteUpdate> spriteUpdates) {
@@ -121,12 +145,11 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                         spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
                         gamePane.getChildren().add(imageCreate);
                     }
-                    if(label!=null){
-                        SpriteFactory.updateLabel(label,spriteUpdate,gamePane.getWidth(),gamePane.getHeight());
-                    }
-                    else {
-                        Label labelCreate = SpriteFactory.drawLabel(spriteUpdate,gamePane.getWidth(),gamePane.getHeight());
-                        labelMap.put(spriteUpdate.getObjectNr(),labelCreate);
+                    if (label != null) {
+                        SpriteFactory.updateLabel(label, spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                    } else {
+                        Label labelCreate = SpriteFactory.drawLabel(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                        labelMap.put(spriteUpdate.getObjectNr(), labelCreate);
                         gamePane.getChildren().add(labelCreate);
                     }
                     break;
@@ -135,8 +158,8 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                     ImageView imageCreate = SpriteFactory.drawSprite(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
                     spriteMap.put(spriteUpdate.getObjectNr(), imageCreate);
                     gamePane.getChildren().add(imageCreate);
-                    Label labelCreate = SpriteFactory.drawLabel(spriteUpdate,gamePane.getWidth(),gamePane.getHeight());
-                    labelMap.put(spriteUpdate.getObjectNr(),labelCreate);
+                    Label labelCreate = SpriteFactory.drawLabel(spriteUpdate, gamePane.getWidth(), gamePane.getHeight());
+                    labelMap.put(spriteUpdate.getObjectNr(), labelCreate);
                     gamePane.getChildren().add(labelCreate);
                     break;
                 case DESTROY:

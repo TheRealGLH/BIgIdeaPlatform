@@ -1,7 +1,7 @@
-package SharedClasses;
+package PlatformGameShared.Points;
 
-import Enums.SpriteType;
-import Enums.SpriteUpdateType;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
 
 public class SpriteUpdate {
 

@@ -1,9 +1,7 @@
 package gameclient;
 
-import Enums.InputType;
-import models.classes.GameTimerTask;
-
-import java.util.Timer;
+import PlatformGameShared.Enums.InputType;
+import gameserver.GameServer;
 
 class TimerTest {
     public static void main(String[] args) throws InterruptedException
@@ -11,6 +9,6 @@ class TimerTest {
         GameServer gameServer = new GameServer();
         gameServer.startGame();
         Thread.sleep(500);
-        gameServer.receiveInput(InputType.MOVELEFT);
+        gameServer.receiveInput(InputType.MOVELEFT,null);
     }
 }

@@ -1,12 +1,10 @@
-package SharedClasses;
+package PlatformGameShared.Points;
 
-import Enums.SpriteType;
-import Enums.SpriteUpdateType;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class SpriteUpdateTest {
 

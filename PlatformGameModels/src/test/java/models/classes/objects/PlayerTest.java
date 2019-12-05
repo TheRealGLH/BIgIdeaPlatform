@@ -1,7 +1,7 @@
 package models.classes.objects;
 
-import Enums.InputType;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Points.Vector2;
 import models.enums.WeaponType;
 import org.junit.Assert;
 import org.junit.Before;

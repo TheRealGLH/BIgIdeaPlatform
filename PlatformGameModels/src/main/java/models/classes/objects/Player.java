@@ -1,8 +1,8 @@
 package models.classes.objects;
 
-import Enums.InputType;
-import Enums.SpriteType;
-import SharedClasses.Vector2;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 
@@ -13,6 +13,7 @@ public class Player extends MovableObject {
     private boolean hasUsedInput = false;
     private InputType lastInput;
     private float startX, startY;
+    private String name = "undefinedplayer";
 
 
     private float walkAcceleration = 3;
@@ -39,7 +40,7 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        if(isGrounded()) addAcceleration(0,2.5f);
+        if (isGrounded()) addAcceleration(0, 2.5f);
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -94,14 +95,24 @@ public class Player extends MovableObject {
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-       //Nobody here but us chickens
+        //Nobody here but us chickens
     }
 
     @Override
-    public SpriteType getSpriteType() {return SpriteType.PLAYER;}
+    public SpriteType getSpriteType() {
+        return SpriteType.PLAYER;
+    }
 
     @Override
-    public String toString(){
-        return "V "+getVelocity()+" A "+getAcceleration() + "P "+getPosition();
+    public String toString() {
+        return name + " :" + currentWeapon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

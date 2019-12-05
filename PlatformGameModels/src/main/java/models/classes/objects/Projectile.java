@@ -1,6 +1,6 @@
 package models.classes.objects;
 
-import SharedClasses.Vector2;
+import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 
 public abstract class Projectile extends MovableObject {

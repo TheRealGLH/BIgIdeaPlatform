@@ -1,7 +1,7 @@
-package Interfaces;
+package PlatformGameShared.Interfaces;
 
-import Enums.InputType;
-import SharedClasses.SpriteUpdate;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface IPlatformGameServer {
 
     public void startGame();
 
-    public void receiveInput(InputType type);
+    public void receiveInput(InputType type, IPlatformGameClient client);
 
     void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList);
 }

@@ -1,7 +1,8 @@
 package gamegui;
 
-import Interfaces.IPlatformGameClient;
+import PlatformGameShared.Interfaces.IPlatformGameClient;
+import gamegui.Interfaces.ILobbyEventPublisher;
 import gamegui.Interfaces.ISpriteUpdateEventPublisher;
 
-public abstract class ScreenController implements IPlatformGameClient, ISpriteUpdateEventPublisher {
+public abstract class ScreenController implements IPlatformGameClient, ISpriteUpdateEventPublisher, ILobbyEventPublisher {
 }

@@ -1,6 +1,6 @@
 package models.classes.objects;
 
-import Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteType;
 import models.classes.GameObject;
 
 public class Platform extends GameObject {

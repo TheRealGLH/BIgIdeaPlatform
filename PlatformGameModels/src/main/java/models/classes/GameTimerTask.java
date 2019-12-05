@@ -1,7 +1,7 @@
 package models.classes;
 
-import Enums.InputType;
-import Interfaces.IPlatformGameServer;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Interfaces.IPlatformGameServer;
 
 import java.util.TimerTask;
 
@@ -14,10 +14,10 @@ public class GameTimerTask extends TimerTask {
     /**
      * @param gameServer The game server that we send updates back to
      */
-    public GameTimerTask(IPlatformGameServer gameServer) {
+    public GameTimerTask(IPlatformGameServer gameServer, int[] playerNrs, String[] names) {
         this.gameServer = gameServer;
         game = new Game();
-        game.setUpGame();
+        game.setUpGame(playerNrs, names);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class GameTimerTask extends TimerTask {
         gameServer.sendSpriteUpdates(game.getSpriteUpdates());
     }
 
-    public synchronized void sendInput(InputType inputType) {
-        game.sendInput(1, inputType);
+    public synchronized void sendInput(int playerNr, InputType inputType) {
+        game.sendInput(playerNr, inputType);
     }
 }

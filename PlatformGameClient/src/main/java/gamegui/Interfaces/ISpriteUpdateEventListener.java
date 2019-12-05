@@ -1,6 +1,6 @@
 package gamegui.Interfaces;
 
-import SharedClasses.SpriteUpdate;
+import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
 

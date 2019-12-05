@@ -4,7 +4,7 @@ module PlatformGameClient {
     requires javafx.controls;
     requires PlatformGameShared;
     requires java.desktop;
-    requires PlatformGameModels;
+    requires PlatformGameServer;
     exports gamegui;
     exports gamegui.controllers;
     opens gamegui.controllers;
