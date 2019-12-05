@@ -1,5 +1,7 @@
 package gameserver;
 
+import PlatformGameShared.Interfaces.IPlatformGameClient;
+import PlatformGameShared.Interfaces.IPlatformGameServer;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
@@ -28,20 +30,22 @@ import javax.websocket.server.ServerEndpoint;
  */
 
 @ServerEndpoint(value="/communicator/")
-public class CommunicatorServerWebSocket {
+public class CommunicatorServerWebSocketEndpoint {
     
     // All sessions
     private static final List<Session> sessions = new ArrayList<>();
+    private Map<Session, IPlatformGameClient> sessionIPlatformGameClientMap = new HashMap<>();
     
     // Map each property to list of sessions that are subscribed to that property
-    private static final Map<String,List<Session>> propertySessions = new HashMap<>();
+    IPlatformGameServer gameServer = new GameServer();
     
     @OnOpen
     public void onConnect(Session session) {
         System.out.println("[WebSocket Connected] SessionID: " + session.getId());
         String message = String.format("[New client with client side session ID]: %s", session.getId());
-        sessions.add(session);
-        System.out.println("[#sessions]: " + sessions.size());
+        IPlatformGameClient responseClient = new GameServerMessageSender(session);
+        sessionIPlatformGameClientMap.put(session,responseClient);
+        System.out.println("[#sessions]: " + sessionIPlatformGameClientMap.size());
     }
     
     @OnMessage
@@ -53,7 +57,7 @@ public class CommunicatorServerWebSocket {
     @OnClose
     public void onClose(CloseReason reason, Session session) {
         System.out.println("[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason);
-        sessions.remove(session);
+        sessionIPlatformGameClientMap.remove(session);
     }
     
     @OnError
@@ -65,8 +69,8 @@ public class CommunicatorServerWebSocket {
     // Handle incoming message from client
     private void handleMessageFromClient(String jsonMessage, Session session) {
         Gson gson = new Gson();
-        System.out.println(jsonMessage);
-
+        //System.out.println(jsonMessage);
+        //TODO decipher JSON message and send it to GameServer
 
     }
 }

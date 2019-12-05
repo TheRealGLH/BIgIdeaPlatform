@@ -29,6 +29,10 @@ public interface IPlatformGameClient {
 
     public String getName();
 
+    public void setPlayerNr(int playerNr);
+
+    public void setName(String name);
+
     public void gameStartNotification();
 
     public void lobbyJoinedNotify(String[] playerNames);
