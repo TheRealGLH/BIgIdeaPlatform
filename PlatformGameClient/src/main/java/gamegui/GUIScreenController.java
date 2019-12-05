@@ -6,6 +6,7 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Points.SpriteUpdate;
+import gameclient.GameClientMessageSender;
 import gamegui.Interfaces.ILobbyEventListener;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
@@ -28,7 +29,7 @@ public class GUIScreenController extends ScreenController {
     private String name;
 
     private GUIScreenController() {
-        gameServer = new GameServer();
+        gameServer = new GameClientMessageSender();
     }
 
     //We use a so called 'Eager' Singleton pattern here, because it supposedly goes nicer with a multithreaded environment (Such as JavaFX)
