@@ -4,6 +4,8 @@ module PlatformGameShared {
     exports PlatformGameShared.Interfaces;
     opens PlatformGameShared.Messages.Client;
     opens PlatformGameShared.Messages.Response;
+    opens PlatformGameShared.Points;
+    opens PlatformGameShared.Enums;
     exports PlatformGameShared.Messages.Client;
     exports PlatformGameShared.Messages.Response;
 }

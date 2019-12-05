@@ -196,7 +196,11 @@ public class GUIScreenController extends ScreenController {
 
     @Override
     public void gameStartNotification() {
-        showGameView();
+        Platform.runLater(() -> {
+            showGameView();
+                }
+        );
+
     }
 
     @Override
