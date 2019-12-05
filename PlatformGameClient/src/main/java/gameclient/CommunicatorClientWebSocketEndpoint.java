@@ -7,18 +7,9 @@ import PlatformGameShared.Messages.Response.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import java.net.URI;
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.ContainerProvider;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
-import javax.websocket.DeploymentException;
+import javax.websocket.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 @ClientEndpoint

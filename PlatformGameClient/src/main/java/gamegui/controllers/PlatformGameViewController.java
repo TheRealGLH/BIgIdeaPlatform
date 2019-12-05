@@ -1,7 +1,6 @@
 package gamegui.controllers;
 
 import PlatformGameShared.Enums.InputType;
-import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
@@ -16,9 +15,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
-
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlatformGameViewController implements ISpriteUpdateEventListener {
 

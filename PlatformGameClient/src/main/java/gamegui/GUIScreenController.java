@@ -10,7 +10,6 @@ import gameclient.GameClientMessageSender;
 import gamegui.Interfaces.ILobbyEventListener;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
-import gameserver.GameServer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 

@@ -3,7 +3,10 @@ package gameclient;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import PlatformGameShared.Messages.Client.*;
+import PlatformGameShared.Messages.Client.PlatformGameMessageInput;
+import PlatformGameShared.Messages.Client.PlatformGameMessageLogin;
+import PlatformGameShared.Messages.Client.PlatformGameMessageRegister;
+import PlatformGameShared.Messages.Client.PlatformGameMessageStart;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
