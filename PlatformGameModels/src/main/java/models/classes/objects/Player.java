@@ -6,14 +6,20 @@ import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.NONE;
-    private boolean hasUsedInput = false;
-    private InputType lastInput;
+    private WeaponType currentWeapon = WeaponType.GUN;
+    private boolean hasInputMove = false;
+    private boolean willJump = false;
+    private boolean willShoot = false;
+    private InputType lastMove;
     private float startX, startY;
     private String name = "undefinedplayer";
+    private List<IShootEventListener> shootEventListenerList = new ArrayList<>();
 
 
     private float walkAcceleration = 3;
@@ -25,12 +31,26 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
-        hasUsedInput = true;
-        lastInput = inputType;
+        switch (inputType) {
+            case MOVELEFT:
+            case MOVERIGHT:
+            case DUCK:
+                lastMove = inputType;
+                hasInputMove = true;
+                break;
+            case JUMP:
+                willJump = true;
+                break;
+            case SHOOT:
+                willShoot = true;
+                break;
+        }
     }
 
     public void useWeapon() {
-        throw new UnsupportedOperationException("Method useWeapon() has not yet been implemented");
+        for (IShootEventListener iShootEventListener : shootEventListenerList) {
+            iShootEventListener.onShootEvent(this);
+        }
     }
 
     public void Kill() {
@@ -40,7 +60,7 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        if (isGrounded()) addAcceleration(0, 2.5f);
+        if (isGrounded()) addAcceleration(getAcceleration(false), 2.5f);
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -69,27 +89,27 @@ public class Player extends MovableObject {
 
     @Override
     public void update() {
-        if (hasUsedInput) {
-            switch (lastInput) {
+        if (hasInputMove) {
+            switch (lastMove) {
                 case MOVELEFT:
                     addAcceleration(-walkAcceleration, 0);
                     break;
                 case MOVERIGHT:
                     addAcceleration(walkAcceleration, 0);
                     break;
-                case JUMP:
-                    jump();
-                    break;
-                case SHOOT:
                 case DUCK:
-                    System.out.println("[Player.java] Input has not yet been handled: " + lastInput);
+                    //TODO ducking
                     break;
             }
         } else {
             //if we're not walking, we don't want to have any more X acceleration.
             setAcceleration(0, getAcceleration().getY());
         }
-        hasUsedInput = false;
+        if(willJump) jump();
+        if(willShoot) useWeapon();
+        hasInputMove = false;
+        willJump = false;
+        willShoot = false;
         super.update();
     }
 
@@ -114,5 +134,9 @@ public class Player extends MovableObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addShootEventListener(IShootEventListener shootEventListener){
+        shootEventListenerList.add(shootEventListener);
     }
 }

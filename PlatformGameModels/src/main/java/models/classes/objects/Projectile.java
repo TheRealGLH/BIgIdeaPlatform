@@ -22,7 +22,6 @@ public abstract class Projectile extends MovableObject {
             Delete();
             return;
         }
-        System.out.println("[Projectile.java] current life is "+currentLife);
     }
 
     @Override
