@@ -37,6 +37,7 @@ public class GameServerMessageSender implements IPlatformGameClient {
     @Override
     public void receiveGameState(GameState gameState) {
         PlatformGameResponseMessageGameState messageGameState = new PlatformGameResponseMessageGameState(gameState);
+        sendMessage(messageGameState);
     }
 
     @Override
@@ -62,11 +63,13 @@ public class GameServerMessageSender implements IPlatformGameClient {
     @Override
     public void receiveLoginState(String name, LoginState loginState) {
         PlatformGameResponseMessageLogin messageLogin = new PlatformGameResponseMessageLogin(loginState, name);
+        sendMessage(messageLogin);
     }
 
     @Override
     public void receiveRegisterState(String name, RegisterState registerState) {
         PlatformGameResponseMessageRegister messageRegister = new PlatformGameResponseMessageRegister(registerState, name);
+        sendMessage(messageRegister);
     }
 
     @Override
@@ -96,7 +99,8 @@ public class GameServerMessageSender implements IPlatformGameClient {
 
     @Override
     public void lobbyJoinedNotify(String[] playerNames) {
-        throw new UnsupportedOperationException("Method lobbyJoinedNotify has not yet been implemented.");
+        PlatformGameResponseMessageLobbyNames responseMessageLobbyNames = new PlatformGameResponseMessageLobbyNames(playerNames);
+        sendMessage(responseMessageLobbyNames);
     }
 
 
