@@ -3,6 +3,7 @@ package gameclient;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.Messages.Client.*;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
@@ -11,24 +12,34 @@ public class GameClientMessageSender implements IPlatformGameServer {
 
     private ICommunicator communicator = CommunicatorClientWebSocketEndpoint.getInstance();
 
+    public GameClientMessageSender(){
+        communicator.start();
+    }
+
     @Override
     public void registerPlayer(String name, String password, IPlatformGameClient client) {
-        throw new UnsupportedOperationException("Method registerPlayer() has not yet been implemented");
+        communicator.setGameClient(client);
+        PlatformGameMessageRegister messageRegister = new PlatformGameMessageRegister(name, password);
+        communicator.sendMessage(messageRegister);
     }
 
     @Override
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
-        throw new UnsupportedOperationException("Method loginPlayer() has not yet been implemented");
+        communicator.setGameClient(client);
+        PlatformGameMessageLogin messageLogin = new PlatformGameMessageLogin(name, password);
+        communicator.sendMessage(messageLogin);
     }
 
     @Override
     public void startGame() {
-        throw new UnsupportedOperationException("Method startGame() has not yet been implemented");
+        PlatformGameMessageStart messageStart = new PlatformGameMessageStart();
+        communicator.sendMessage(messageStart);
     }
 
     @Override
     public void receiveInput(InputType type, IPlatformGameClient client) {
-        throw new UnsupportedOperationException("Method receiveInput() has not yet been implemented");
+        PlatformGameMessageInput messageInput = new PlatformGameMessageInput(type);
+        communicator.sendMessage(messageInput);
     }
 
     @Override

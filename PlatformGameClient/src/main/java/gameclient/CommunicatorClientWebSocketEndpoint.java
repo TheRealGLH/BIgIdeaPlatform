@@ -1,5 +1,6 @@
 package gameclient;
 
+import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Client.PlatformGameMessage;
 import PlatformGameShared.Messages.Response.PlatformGameResponseMessage;
 import com.google.gson.Gson;
@@ -35,6 +36,8 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     private String message;
     
     private Gson gson = null;
+
+    private IPlatformGameClient platformGameClient;
     
     // Status of the webSocket client
     boolean isRunning = false;
@@ -110,7 +113,12 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
         sendMessageToServer(message);
     }
 
-    
+    @Override
+    public void setGameClient(IPlatformGameClient platformGameClient) {
+        this.platformGameClient = platformGameClient;
+    }
+
+
     private void sendMessageToServer(PlatformGameMessage message) {
         String jsonMessage = gson.toJson(message);
         // Use asynchronous communication

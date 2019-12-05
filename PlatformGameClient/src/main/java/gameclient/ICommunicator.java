@@ -5,6 +5,7 @@
  */
 package gameclient;
 
+import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Client.PlatformGameMessage;
 
 /**
@@ -35,4 +36,12 @@ public interface ICommunicator {
      * @param message the message to be sent
      */
     public void sendMessage(PlatformGameMessage message);
+
+
+    /**
+     * Sets the game client to do things with on message responses
+     * @param platformGameClient the instance where we will send back stuff to
+     */
+    public void setGameClient(IPlatformGameClient platformGameClient);
+
 }

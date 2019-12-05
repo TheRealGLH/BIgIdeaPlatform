@@ -1,16 +1,13 @@
 package gameclient;
 
 import PlatformGameShared.Enums.GameClientMessageType;
+import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Messages.Client.PlatformGameMessage;
 
 public class CommunicatorTest {
 
     public static void main(String[] args) {
-        ICommunicator communicator = CommunicatorClientWebSocketEndpoint.getInstance();
-        communicator.start();
-        PlatformGameMessage message = new PlatformGameMessage();
-        message.setMessageType(GameClientMessageType.Login);
-        communicator.sendMessage(message);
-        communicator.stop();
+        IPlatformGameServer server = new GameClientMessageSender();
+        server.registerPlayer("mr test","123",null);
     }
 }
