@@ -94,7 +94,8 @@ public class GameServerMessageSender implements IPlatformGameClient {
 
     @Override
     public void gameStartNotification() {
-        throw new UnsupportedOperationException("Method gameStartNotification has not yet been implemented.");
+        PlatformGameResponseMessageGameStarted responseMessageGameStarted = new PlatformGameResponseMessageGameStarted();
+        sendMessage(responseMessageGameStarted);
     }
 
     @Override
