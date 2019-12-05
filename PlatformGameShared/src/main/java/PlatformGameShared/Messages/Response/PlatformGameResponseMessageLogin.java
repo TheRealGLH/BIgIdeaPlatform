@@ -17,4 +17,8 @@ public class PlatformGameResponseMessageLogin extends PlatformGameResponseMessag
     public LoginState getLoginState() {
         return loginState;
     }
+
+    public String getName() {
+        return name;
+    }
 }

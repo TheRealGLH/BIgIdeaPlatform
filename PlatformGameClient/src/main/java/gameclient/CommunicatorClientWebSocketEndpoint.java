@@ -1,8 +1,9 @@
 package gameclient;
 
+import PlatformGameShared.Enums.GameResponseMessageType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Client.PlatformGameMessage;
-import PlatformGameShared.Messages.Response.PlatformGameResponseMessage;
+import PlatformGameShared.Messages.Response.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -21,11 +22,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 @ClientEndpoint
-public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
-    
+public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
+
     // Singleton
     private static CommunicatorClientWebSocketEndpoint instance = null;
-    
+
     /**
      * The local websocket uri to connect to.
      */
@@ -34,22 +35,23 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     private Session session;
 
     private String message;
-    
+
     private Gson gson = null;
 
     private IPlatformGameClient platformGameClient;
-    
+
     // Status of the webSocket client
     boolean isRunning = false;
-    
+
     // Private constructor (singleton pattern)
     private CommunicatorClientWebSocketEndpoint() {
         gson = new Gson();
     }
-    
+
     /**
      * Get singleton instance of this class.
      * Ensure that only one instance of this class is created.
+     *
      * @return instance of client web socket
      */
     public static CommunicatorClientWebSocketEndpoint getInstance() {
@@ -61,7 +63,7 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     }
 
     /**
-     *  Start the connection.
+     * Start the connection.
      */
     @Override
     public void start() {
@@ -82,13 +84,13 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     }
 
     @OnOpen
-    public void onWebSocketConnect(Session session){
+    public void onWebSocketConnect(Session session) {
         System.out.println("[WebSocket Client open session] " + session.getRequestURI());
         this.session = session;
     }
 
     @OnMessage
-    public void onWebSocketText(String message, Session session){
+    public void onWebSocketText(String message, Session session) {
         this.message = message;
         System.out.println("[WebSocket Client message received] " + message);
         processMessage(message);
@@ -98,14 +100,13 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     public void onWebSocketError(Session session, Throwable cause) {
         System.out.println("[WebSocket Client connection error] " + cause.toString());
     }
-    
+
     @OnClose
-    public void onWebSocketClose(CloseReason reason){
+    public void onWebSocketClose(CloseReason reason) {
         System.out.print("[WebSocket Client close session] " + session.getRequestURI());
         System.out.println(" for reason " + reason);
         session = null;
     }
-
 
 
     @Override
@@ -124,9 +125,10 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
         // Use asynchronous communication
         session.getAsyncRemote().sendText(jsonMessage);
     }
-    
+
     /**
      * Get the latest message received from the websocket communication.
+     *
      * @return The message from the websocket communication
      */
     public String getMessage() {
@@ -135,6 +137,7 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
 
     /**
      * Set the message, but no action is taken when the message is changed.
+     *
      * @param message the new message
      */
     public void setMessage(String message) {
@@ -149,7 +152,7 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, new URI(uri));
-            
+
         } catch (IOException | URISyntaxException | DeploymentException ex) {
             // do something useful eventually
             ex.printStackTrace();
@@ -159,57 +162,60 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator{
     /**
      * Stop the client when it is running.
      */
-    private void stopClient(){
+    private void stopClient() {
         System.out.println("[WebSocket Client stop]");
         try {
             session.close();
 
-        } catch (IOException ex){
+        } catch (IOException ex) {
             // do something useful eventually
             ex.printStackTrace();
         }
     }
-    
+
     // Process incoming json message
     private void processMessage(String jsonMessage) {
-        
+
         // Parse incoming message
-        PlatformGameResponseMessage wsMessage;
+        GameResponseMessageType messageType = null;
         try {
-            wsMessage = gson.fromJson(jsonMessage, PlatformGameResponseMessage.class);
-        }
-        catch (JsonSyntaxException ex) {
+            messageType = gson.fromJson(jsonMessage, PlatformGameResponseMessage.class).getResponseMessageType();
+        } catch (JsonSyntaxException ex) {
             System.out.println("[WebSocket Client ERROR: cannot parse Json message " + jsonMessage);
-            return;
         }
-        /*
-        // Only operation update property will be further processed
-        CommunicatorWebSocketMessageOperation operation;
-        operation = wsMessage.getOperation();
-        if (operation == null || operation != CommunicatorWebSocketMessageOperation.UPDATEPROPERTY) {
-            System.out.println("[WebSocket Client ERROR: update property operation expected]");
-            return;
+        assert messageType != null;
+        try {
+            switch (messageType) {
+
+                case LoginState:
+                    PlatformGameResponseMessageLogin responseMessageLogin = gson.fromJson(jsonMessage, PlatformGameResponseMessageLogin.class);
+                    platformGameClient.receiveLoginState(responseMessageLogin.getName(), responseMessageLogin.getLoginState());
+                    break;
+                case RegisterState:
+                    PlatformGameResponseMessageRegister responseMessageRegister = gson.fromJson(jsonMessage, PlatformGameResponseMessageRegister.class);
+                    platformGameClient.receiveRegisterState(responseMessageRegister.getName(), responseMessageRegister.getRegisterState());
+                    break;
+                case SpriteUpdate:
+                    PlatformGameResponseMessageSpriteUpdate responseMessageSpriteUpdate = gson.fromJson(jsonMessage, PlatformGameResponseMessageSpriteUpdate.class);
+                    platformGameClient.updateScreen(responseMessageSpriteUpdate.getSpriteUpdates());
+                    break;
+                case LobbyNameChange:
+                    PlatformGameResponseMessageLobbyNames responseMessageLobbyNames = gson.fromJson(jsonMessage, PlatformGameResponseMessageLobbyNames.class);
+                    platformGameClient.lobbyJoinedNotify(responseMessageLobbyNames.getNames());
+                    break;
+                case LobbyMapChange:
+                    System.out.println("[WebSocket Client ERROR: handling of Map change events has not been handled " +
+                            "from a WebSocket level yet...");
+                    break;
+                case GameState:
+                    PlatformGameResponseMessageGameState messageGameState = gson.fromJson(jsonMessage, PlatformGameResponseMessageGameState.class);
+                    platformGameClient.receiveGameState(messageGameState.getGameState());
+                    break;
+            }
+        } catch (JsonSyntaxException ex) {
+            System.out.println("WebSocket Client ERROR: Json message " + jsonMessage + " was malformed for the type " + messageType);
         }
-        
-        // Obtain property from message
-        String property = wsMessage.getProperty();
-        if (property == null || "".equals(property)) {
-            System.out.println("[WebSocket Client ERROR: property not defined]");
-            return;
-        }
-        
-        // Obtain content from message
-        String content = wsMessage.getContent();
-        if (content == null || "".equals(content)) {
-            System.out.println("[WebSocket Client ERROR: message without content]");
-            return;
-        }
-        
-        // Create instance of CommunicatorMessage for observers
-        CommunicatorMessage commMessage = new CommunicatorMessage();
-        commMessage.setProperty(property);
-        commMessage.setContent(content);
-         */
+
 
     }
 }
