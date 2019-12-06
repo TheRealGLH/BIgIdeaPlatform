@@ -15,6 +15,7 @@ public class ProjectileFactory {
                 break;
             case GUN:
                 projectile = new ProjectileBullet(pos.getX(),pos.getY(),20,10,player);
+                projectile.setAcceleration(ProjectileBullet.bulletAcceleration * xfact,0);
                 break;
             case GRENADELAUNCHER:
                 projectile = new ProjectileBomb(pos.getX(),pos.getY(),20,20,player);

@@ -191,7 +191,7 @@ public class GUIScreenController extends ScreenController {
 
     @Override
     public void setName(String name) {
-        //not here
+        this.name = name;
     }
 
     @Override

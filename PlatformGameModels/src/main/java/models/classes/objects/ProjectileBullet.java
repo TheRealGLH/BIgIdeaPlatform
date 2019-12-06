@@ -5,7 +5,7 @@ import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 
 public class ProjectileBullet extends Projectile {
-    private static float bulletAcceleration = 10;
+    public static float bulletAcceleration = 10;
     public ProjectileBullet(float xPosition, float yPosition, float width, float height, Player owner) {
         super(xPosition, yPosition, width, height,30, owner);
         setUseGravity(false);
@@ -13,7 +13,6 @@ public class ProjectileBullet extends Projectile {
 
     @Override
     public void update(){
-        setAcceleration(bulletAcceleration,0);
         super.update();
     }
 

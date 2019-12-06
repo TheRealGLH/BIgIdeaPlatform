@@ -38,13 +38,21 @@ public class Game implements Observer, IShootEventListener {
             p.setName(playerNames[i]);
             p.addShootEventListener(this);
         }
-        for (int i = 1; i < 5; i++) {
-            WeaponPickup pickup = new WeaponPickup(10 * i, 200 * i, WeaponType.GUN);
+        for (int i = 1; i <= 5; i++) {
+            WeaponPickup pickup = new WeaponPickup(30 * i, 200 * i, pickRandomWeapon());
             pickup.setVelocity(20 * i, 0);
             createSprite(pickup);
             movableObjects.add(pickup);
         }
 
+    }
+
+    private WeaponType pickRandomWeapon(){
+        WeaponType type = null;
+        Random r = new Random();
+        type = WeaponType.values()[r.nextInt(WeaponType.values().length)];
+        if(type==WeaponType.NONE) type = pickRandomWeapon();
+        return type;
     }
 
 
@@ -59,15 +67,20 @@ public class Game implements Observer, IShootEventListener {
         for (MovableObject movableObject : movableObjects) {
             movableObject.update();
         }
-        movableObjects.addAll(objectsToSpawn);
-        objectsToSpawn.clear();
+
 
         //Colliding
         for (MovableObject movableObject : movableObjects) {
-            for(MovableObject colliding : movableObjects){
-                if(movableObject.collidesWith(colliding)) movableObject.onCollide(colliding,movableObject.getPosition());
+            for (MovableObject colliding : movableObjects) {
+                if (movableObject.collidesWith(colliding)) {
+                    movableObject.onCollide(colliding, movableObject.getPosition());
+                }
             }
         }
+
+        //Spawning
+        movableObjects.addAll(objectsToSpawn);
+        objectsToSpawn.clear();
 
 
         //Cleaning

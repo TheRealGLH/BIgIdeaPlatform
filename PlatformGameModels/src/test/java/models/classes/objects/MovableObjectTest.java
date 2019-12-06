@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class MovableObjectTest {
 
-    MovableObject movableObject;
+    MockMovableObject movableObject;
 
     @Before
     public void setMovableObject() {
@@ -204,9 +204,19 @@ public class MovableObjectTest {
         movableObject.Delete();
         Assert.assertTrue(movableObject.isShouldBeCleaned());
     }
+
+    @Test
+    public void hasCollided(){
+        MockMovableObject object2 = new MockMovableObject(50, 50, 20, 20);
+        if(movableObject.collidesWith(object2)) movableObject.onCollide(object2,movableObject.getPosition());
+        Assert.assertTrue(movableObject.isHasCollided());
+
+    }
 }
 
 class MockMovableObject extends MovableObject {
+
+    private boolean hasCollided = false;
 
     public MockMovableObject(float xPosition, float yPosition, float width, float height) {
         super(xPosition, yPosition, width, height);
@@ -219,6 +229,10 @@ class MockMovableObject extends MovableObject {
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-        //Does nothing
+        hasCollided = true;
+    }
+
+    public boolean isHasCollided() {
+        return hasCollided;
     }
 }

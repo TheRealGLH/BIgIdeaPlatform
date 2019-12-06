@@ -64,8 +64,8 @@ public class SpriteFactory {
                 break;
         }
         imageView.setImage(image);
-        imageView.setFitWidth(spriteWidth * size.getX());
-        imageView.setFitHeight(spriteHeight * size.getY());
+        imageView.setFitWidth(size.getX());
+        imageView.setFitHeight(size.getY());
         imageView.setX(pos.getX());
         imageView.setY(screenHeight - pos.getY() - imageView.getFitHeight());
         int a = 1;
