@@ -4,5 +4,6 @@ public enum WeaponType {
     NONE,
     SWORD,
     GUN,
+    THROWAXE,
     GRENADELAUNCHER
 }

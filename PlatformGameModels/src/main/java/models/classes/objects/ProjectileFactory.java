@@ -22,6 +22,10 @@ public class ProjectileFactory {
             case GRENADELAUNCHER:
                 projectile = new ProjectileBomb(pos.getX(),pos.getY(),player);
                 projectile.setVelocity(10*xfact,5);
+                break;
+            case THROWAXE:
+                projectile = new ProjectileThrowingAxe(pos.getX(),pos.getY(),player);
+                projectile.setVelocity(15*xfact,10);
         }
         return projectile;
     }

@@ -8,5 +8,6 @@ public enum SpriteType {
     PROJECTILESWORD,
     PROJECTILEBOMB,
     PROJECTILEBOMBEXPLODE,
+    AXE,
     NONE
 }
