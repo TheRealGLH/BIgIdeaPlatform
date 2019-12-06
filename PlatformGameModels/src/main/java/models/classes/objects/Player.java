@@ -119,6 +119,11 @@ public class Player extends MovableObject {
     }
 
     @Override
+    public void onOutOfBounds() {
+        Kill();
+    }
+
+    @Override
     public SpriteType getSpriteType() {
         return SpriteType.PLAYER;
     }

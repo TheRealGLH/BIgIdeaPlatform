@@ -59,7 +59,7 @@ public abstract class GameObject extends Observable {
         return between(origin.getX(), topRight.getX(), toCompare.getX()) && between(origin.getY(), topRight.getY(), toCompare.getY());
     }
 
-    private static boolean between(float min, float max, float toCompare) {
+    public  static boolean between(float min, float max, float toCompare) {
         return (toCompare >= min && toCompare <= max);
     }
 }

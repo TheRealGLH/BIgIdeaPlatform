@@ -39,4 +39,9 @@ public abstract class Projectile extends MovableObject {
     public int getCurrentLife(){
         return currentLife;
     }
+
+    @Override
+    public String getLabel() {
+        return "";
+    }
 }

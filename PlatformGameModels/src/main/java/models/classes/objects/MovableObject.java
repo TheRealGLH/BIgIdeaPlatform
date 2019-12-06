@@ -12,6 +12,7 @@ public abstract class MovableObject extends GameObject {
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
     private boolean isFacingLeft = false;
+    private boolean isGrounded = false;
     private int timeInAir = 0;
     private int maxTimeInAir = 70; //the amount of update cycles it will take for us to reach terminal velocity
     private float weight = 0.2f;
@@ -28,14 +29,12 @@ public abstract class MovableObject extends GameObject {
 
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
 
+    public void setGrounded(boolean value){
+        this.isGrounded = value;
+    }
+
     public boolean isGrounded() {
-        //TODO implementation with Platforms
-        float y = getPosition().getY();
-        if (y <= 0) {
-            setPosition(getPosition().getX(), 0);
-            return true;
-        }
-        return false;
+        return isGrounded;
     }
 
     public void update() {
@@ -77,6 +76,13 @@ public abstract class MovableObject extends GameObject {
         }
     }
 
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        setChanged();
+        notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
+    }
+
     private void doGravity() {
         if (timeInAir < maxTimeInAir) timeInAir++;
         addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
@@ -89,6 +95,10 @@ public abstract class MovableObject extends GameObject {
     public void Delete() {
         shouldBeCleaned = true;
         System.out.println("[MovableObject.java] Send event for DELETE SpriteUpdate");
+    }
+
+    public void onOutOfBounds(){
+        Delete();
     }
 
     public void setAcceleration(float x, float y) {
@@ -145,5 +155,6 @@ public abstract class MovableObject extends GameObject {
     public String toString() {
         return this.getClass().toString();
     }
+
 
 }

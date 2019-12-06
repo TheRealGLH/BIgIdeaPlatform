@@ -15,6 +15,7 @@ public class Game implements Observer, IShootEventListener {
 
     private List<MovableObject> movableObjects = new ArrayList<>();
     private List<MovableObject> objectsToSpawn = new ArrayList<>();
+    private List<Platform> platforms = new ArrayList<>();
     private Map<Integer, Player> playerNrMap;
     private List<SpriteUpdate> spriteUpdates;
     private int spriteCount = 0;
@@ -27,7 +28,8 @@ public class Game implements Observer, IShootEventListener {
 
     public void setUpGame(int[] playerNrs, String[] playerNames) {
         movableObjects = new ArrayList<>();
-        Platform plat = new Platform(100, 50, 200, 50, true);
+        Platform plat = new Platform(100, 50, 600, 50, true);
+        platforms.add(plat);
         createSprite(plat);
 
         for (int i = 0; i < playerNrs.length; i++) {
@@ -77,6 +79,17 @@ public class Game implements Observer, IShootEventListener {
                 }
             }
         }
+        for (Platform platform : platforms) {
+            for (MovableObject movableObject : movableObjects) {
+                if(platform.collidesWith(movableObject)){
+                    movableObject.setGrounded(true);
+                    movableObject.setPosition(movableObject.getPosition().getX(),platform.getTopRight().getY());
+                }
+                else{
+                    movableObject.setGrounded(false);
+                }
+            }
+        }
 
         //Spawning
         movableObjects.addAll(objectsToSpawn);
@@ -84,6 +97,13 @@ public class Game implements Observer, IShootEventListener {
 
 
         //Cleaning
+
+        //For objects in void
+        for (MovableObject movableObject : movableObjects) {
+            Vector2 pos = movableObject.getPosition();
+            if(pos.getX()<0||pos.getY()<0) movableObject.onOutOfBounds();
+        }
+
         Iterator<MovableObject> i = movableObjects.iterator();
         while (i.hasNext()) {
             MovableObject object = i.next();
