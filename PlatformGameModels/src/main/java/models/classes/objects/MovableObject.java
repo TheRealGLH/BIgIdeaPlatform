@@ -77,8 +77,8 @@ public abstract class MovableObject extends GameObject {
     }
 
     @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
+    public void setSize(float x, float y) {
+        super.setSize(x, y);
         setChanged();
         notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
     }
@@ -147,6 +147,10 @@ public abstract class MovableObject extends GameObject {
 
     public boolean isFacingLeft() {
         return isFacingLeft;
+    }
+
+    public void setFacingLeft(boolean value){
+        this.isFacingLeft = value;
     }
 
     public String getLabel(){return  this.toString();}

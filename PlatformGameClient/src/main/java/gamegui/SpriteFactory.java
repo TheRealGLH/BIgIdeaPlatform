@@ -13,11 +13,11 @@ import java.security.InvalidParameterException;
 public class SpriteFactory {
 
     private static Image placeHolder = new Image(SpriteFactory.class.getResource("/sprites/placeholder.png").toExternalForm());
-    private static Image player = new Image(SpriteFactory.class.getResource("/sprites/player.png").toExternalForm());
+    private static Image player = new Image(SpriteFactory.class.getResource("/sprites/platformplayer.png").toExternalForm());
     private static Image platform = new Image(SpriteFactory.class.getResource("/sprites/platform.png").toExternalForm());
     private static Image weaponpickup = new Image(SpriteFactory.class.getResource("/sprites/weaponpickup.png").toExternalForm());
     private static Image bullet = new Image(SpriteFactory.class.getResource("/sprites/bullet.png").toExternalForm());
-    private static Image bomb = new Image(SpriteFactory.class.getResource("/sprites/bomb.png").toExternalForm());
+    private static Image bomb = new Image(SpriteFactory.class.getResource("/sprites/grenade.gif").toExternalForm());
     private static Image explosion = new Image(SpriteFactory.class.getResource("/sprites/explosion.gif").toExternalForm());
     private static Image sword = new Image(SpriteFactory.class.getResource("/sprites/slash.gif").toExternalForm());
     private static Image axe = new Image(SpriteFactory.class.getResource("/sprites/axe.gif").toExternalForm());

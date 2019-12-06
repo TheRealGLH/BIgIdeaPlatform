@@ -83,7 +83,9 @@ public class Game implements Observer, IShootEventListener {
             for (MovableObject movableObject : movableObjects) {
                 if(platform.collidesWith(movableObject)){
                     movableObject.setGrounded(true);
-                    movableObject.setPosition(movableObject.getPosition().getX(),platform.getTopRight().getY());
+                    float pY = platform.getTopRight().getY();
+                    float objY = movableObject.getPosition().getY();
+                    if(pY != objY) movableObject.setPosition(movableObject.getPosition().getX(),pY);
                 }
                 else{
                     movableObject.setGrounded(false);
