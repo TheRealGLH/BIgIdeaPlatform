@@ -27,13 +27,31 @@ public class Game implements Observer, IShootEventListener {
     }
 
     public void setUpGame(int[] playerNrs, String[] playerNames) {
+
+
+
+
         movableObjects = new ArrayList<>();
+
+        //base platform
         Platform plat = new Platform(100, 50, 600, 50, true);
         platforms.add(plat);
         createSprite(plat);
+        //mini platforms
+        plat = new Platform(100, 200, 100, 20, true);
+        platforms.add(plat);
+        createSprite(plat);
+        plat = new Platform(350, 300, 100, 20, true);
+        platforms.add(plat);
+        createSprite(plat);
+        plat = new Platform(600, 200, 100, 20, true);
+        platforms.add(plat);
+        createSprite(plat);
+
+
 
         for (int i = 0; i < playerNrs.length; i++) {
-            Player p = new Player(10 * (i + 1) + 300, 100 * (i + 1));
+            Player p = new Player(10 * (i + 1) + 300, 1501);
             createSprite(p);
             movableObjects.add(p);
             playerNrMap.put(playerNrs[i], p);
@@ -49,11 +67,11 @@ public class Game implements Observer, IShootEventListener {
 
     }
 
-    private WeaponType pickRandomWeapon(){
+    private WeaponType pickRandomWeapon() {
         WeaponType type = null;
         Random r = new Random();
         type = WeaponType.values()[r.nextInt(WeaponType.values().length)];
-        if(type==WeaponType.NONE) type = pickRandomWeapon();
+        if (type == WeaponType.NONE) type = pickRandomWeapon();
         return type;
     }
 
@@ -79,15 +97,15 @@ public class Game implements Observer, IShootEventListener {
                 }
             }
         }
-        for (Platform platform : platforms) {
-            for (MovableObject movableObject : movableObjects) {
-                if(platform.collidesWith(movableObject)){
+        for (MovableObject movableObject : movableObjects) {
+            for (Platform platform : platforms) {
+                if (platform.collidesWith(movableObject)) {
                     movableObject.setGrounded(true);
                     float pY = platform.getTopRight().getY();
                     float objY = movableObject.getPosition().getY();
-                    if(pY != objY) movableObject.setPosition(movableObject.getPosition().getX(),pY);
-                }
-                else{
+                    if (pY != objY) movableObject.setPosition(movableObject.getPosition().getX(), pY);
+                    break;
+                } else {
                     movableObject.setGrounded(false);
                 }
             }
@@ -103,7 +121,7 @@ public class Game implements Observer, IShootEventListener {
         //For objects in void
         for (MovableObject movableObject : movableObjects) {
             Vector2 pos = movableObject.getPosition();
-            if(pos.getX()<0||pos.getY()<0) movableObject.onOutOfBounds();
+            if (pos.getX() < 0 || pos.getY() < 0) movableObject.onOutOfBounds();
         }
 
         Iterator<MovableObject> i = movableObjects.iterator();

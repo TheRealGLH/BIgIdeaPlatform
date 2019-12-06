@@ -7,6 +7,7 @@ public abstract class Projectile extends MovableObject {
 
     private int currentLife = 0;
     public int maxLife;
+    public boolean destroyOnHit = true;
     private Player owner;
     public Projectile(float xPosition, float yPosition, float width, float height, int maxLife, Player owner) {
         super(xPosition, yPosition, width, height);
@@ -30,7 +31,7 @@ public abstract class Projectile extends MovableObject {
             Player player = (Player) other;
             if(player != owner) {
                 player.Kill();
-                Delete();
+                if(destroyOnHit)Delete();
                 return;
             }
         }

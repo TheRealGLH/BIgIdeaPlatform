@@ -9,8 +9,9 @@ public class ProjectileBomb extends Projectile {
     private static int explosionGrowth = 2;
 
     public ProjectileBomb(float xPosition, float yPosition, Player owner) {
-        super(xPosition, yPosition, 20, 20, 60, owner);
-        explodeTime = 60 - explodeTime;
+        super(xPosition, yPosition, 20, 20, 120, owner);
+        explodeTime = 120 - explodeTime;
+        destroyOnHit = false;
     }
 
     @Override

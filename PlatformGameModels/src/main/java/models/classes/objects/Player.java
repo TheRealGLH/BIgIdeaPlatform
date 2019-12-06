@@ -130,7 +130,12 @@ public class Player extends MovableObject {
 
     @Override
     public String toString() {
-        return name + " :" + currentWeapon;
+        return "Player@"+hashCode() + " Pos "+getPosition();
+    }
+
+    @Override
+    public String getLabel() {
+        return name + " " +isGrounded();
     }
 
     public String getName() {
