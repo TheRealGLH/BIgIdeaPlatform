@@ -73,7 +73,7 @@ public abstract class MovableObject extends GameObject {
         else if (velocity.getX() > 0) isFacingLeft = false;
         if (!startPos.equals(endPos)) {
             setChanged();
-            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, toString()));
+            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
         }
     }
 
@@ -138,6 +138,8 @@ public abstract class MovableObject extends GameObject {
     public boolean isFacingLeft() {
         return isFacingLeft;
     }
+
+    public String getLabel(){return  this.toString();}
 
     @Override
     public String toString() {

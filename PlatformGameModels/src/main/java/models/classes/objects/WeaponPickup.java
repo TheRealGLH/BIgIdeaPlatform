@@ -39,4 +39,7 @@ public class WeaponPickup extends MovableObject {
 
     @Override
     public String toString(){return weaponType.toString() + " Pickup";}
+
+    @Override
+    public String getLabel(){return weaponType.toString();}
 }

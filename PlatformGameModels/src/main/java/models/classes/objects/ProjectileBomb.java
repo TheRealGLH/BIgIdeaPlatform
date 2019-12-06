@@ -6,10 +6,10 @@ import models.classes.GameObject;
 
 public class ProjectileBomb extends Projectile {
     private int explodeTime = 30;
-    private static int explosionGrowth = 5;
+    private static int explosionGrowth = 10;
 
-    public ProjectileBomb(float xPosition, float yPosition, float width, float height, Player owner) {
-        super(xPosition, yPosition, width, height, 60, owner);
+    public ProjectileBomb(float xPosition, float yPosition, Player owner) {
+        super(xPosition, yPosition, 5, 5, 60, owner);
         explodeTime = 60 - explodeTime;
     }
 
