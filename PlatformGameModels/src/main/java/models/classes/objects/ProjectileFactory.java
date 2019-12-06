@@ -12,7 +12,9 @@ public class ProjectileFactory {
         float xfact = (player.isFacingLeft()) ? -1 : 1;
         switch (weaponType){
             case SWORD:
+                projectile = new ProjectileSwordAttack(pos.getX(),pos.getY(),player);
                 break;
+            default:
             case GUN:
                 projectile = new ProjectileBullet(pos.getX(),pos.getY(),20,10,player);
                 projectile.setAcceleration(ProjectileBullet.bulletAcceleration * xfact,0);
