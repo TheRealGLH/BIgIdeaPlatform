@@ -19,6 +19,7 @@ public class SpriteFactory {
     private static Image bullet = new Image(SpriteFactory.class.getResource("/sprites/bullet.png").toExternalForm());
     private static Image bomb = new Image(SpriteFactory.class.getResource("/sprites/bomb.png").toExternalForm());
     private static Image explosion = new Image(SpriteFactory.class.getResource("/sprites/explosion.gif").toExternalForm());
+    private static Image sword = new Image(SpriteFactory.class.getResource("/sprites/slash.gif").toExternalForm());
     private static double spriteWidth = 2;
     private static double spriteHeight = 2;
 
@@ -56,8 +57,11 @@ public class SpriteFactory {
             case PROJECTILEBOMB:
                 image = bomb;
                 break;
-            case EXPLOSION:
+            case PROJECTILEBOMBEXPLODE:
                 image = explosion;
+                break;
+            case PROJECTILESWORD:
+                image = sword;
                 break;
             default:
                 image = placeHolder;

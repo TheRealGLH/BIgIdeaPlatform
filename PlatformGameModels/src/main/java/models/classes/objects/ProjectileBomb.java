@@ -35,7 +35,7 @@ public class ProjectileBomb extends Projectile {
     @Override
     public SpriteType getSpriteType() {
         if (explodeTime <= 0) {
-            return SpriteType.EXPLOSION;
+            return SpriteType.PROJECTILEBOMBEXPLODE;
         }
         return SpriteType.PROJECTILEBOMB;
     }

@@ -39,7 +39,7 @@ public class Game implements Observer, IShootEventListener {
             p.addShootEventListener(this);
         }
         for (int i = 1; i <= 5; i++) {
-            WeaponPickup pickup = new WeaponPickup(30 * i, 200 * i, pickRandomWeapon());
+            WeaponPickup pickup = new WeaponPickup(60 * i, 200 * i, pickRandomWeapon());
             pickup.setVelocity(20 * i, 0);
             createSprite(pickup);
             movableObjects.add(pickup);

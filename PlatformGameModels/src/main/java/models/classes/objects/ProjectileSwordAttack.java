@@ -8,21 +8,23 @@ public class ProjectileSwordAttack extends Projectile {
 
     private static float sizeMod = 1.5f;
     Player owner;
+
     public ProjectileSwordAttack(float xPosition, float yPosition, Player owner) {
-        super(xPosition, yPosition, owner.getSize().getX()*sizeMod, owner.getSize().getY()*sizeMod, 5, owner);
+        super(xPosition, yPosition, owner.getSize().getX() * sizeMod, owner.getSize().getY() * sizeMod, 10, owner);
         setUseGravity(false);
         this.owner = owner;
     }
 
     @Override
-    public void update(){
+    public void update() {
         Vector2 pos = owner.getPosition();
-        this.setPosition(pos.getX(),pos.getY());
+        Vector2 size = owner.getSize();
+        this.setPosition(pos.getX() + size.getX(), pos.getY() + size.getY() / 2);
         super.update();
     }
 
     @Override
     public SpriteType getSpriteType() {
-        return SpriteType.NONE;
+        return SpriteType.PROJECTILESWORD;
     }
 }
