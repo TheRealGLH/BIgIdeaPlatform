@@ -10,7 +10,7 @@ import models.enums.WeaponType;
 
 import java.util.*;
 
-public class Game implements Observer, IShootEventListener {
+public class Game implements Observer, IPlayerEventListener {
 
 
     private List<MovableObject> movableObjects = new ArrayList<>();

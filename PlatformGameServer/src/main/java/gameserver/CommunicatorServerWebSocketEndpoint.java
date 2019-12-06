@@ -69,7 +69,7 @@ public class CommunicatorServerWebSocketEndpoint {
                 break;
             case StartGame:
                 PlatformGameMessageStart messageStart = gson.fromJson(jsonMessage, PlatformGameMessageStart.class);
-                gameServer.startGame();
+                gameServer.startGame(client);
                 break;
         }
 

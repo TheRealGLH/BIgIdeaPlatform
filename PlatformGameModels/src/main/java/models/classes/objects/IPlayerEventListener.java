@@ -1,6 +1,6 @@
 package models.classes.objects;
 
-public interface IShootEventListener {
+public interface IPlayerEventListener {
 
     public void onShootEvent(Player firer);
 

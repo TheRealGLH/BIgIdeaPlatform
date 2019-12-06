@@ -85,7 +85,7 @@ public class GUIScreenController extends ScreenController {
     @Override
     public void joinGame() {
         if (guiState != GUIState.Lobby) return;
-        gameServer.startGame();
+        gameServer.startGame(this);
     }
 
     @Override

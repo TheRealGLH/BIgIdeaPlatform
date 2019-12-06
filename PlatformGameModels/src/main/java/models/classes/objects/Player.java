@@ -19,7 +19,7 @@ public class Player extends MovableObject {
     private InputType lastMove;
     private float startX, startY;
     private String name = "undefinedplayer";
-    private List<IShootEventListener> shootEventListenerList = new ArrayList<>();
+    private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
 
 
     private float walkAcceleration = 3;
@@ -48,8 +48,8 @@ public class Player extends MovableObject {
     }
 
     public void useWeapon() {
-        for (IShootEventListener iShootEventListener : shootEventListenerList) {
-            iShootEventListener.onShootEvent(this);
+        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+            iPlayerEventListener.onShootEvent(this);
         }
     }
 
@@ -146,7 +146,7 @@ public class Player extends MovableObject {
         this.name = name;
     }
 
-    public void addShootEventListener(IShootEventListener shootEventListener){
+    public void addShootEventListener(IPlayerEventListener shootEventListener){
         shootEventListenerList.add(shootEventListener);
     }
 }

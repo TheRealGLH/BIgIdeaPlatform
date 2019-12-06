@@ -57,21 +57,23 @@ public class GameServer implements IPlatformGameServer {
     }
 
     @Override
-    public void startGame() {
-        if (joinedClients.size() >= minAmountOfPlayers) {
-            int size = joinedClients.size();
-            String[] names = new String[size];
-            int[] playerNrs = new int[size];
-            for (int i = 0; i < size; i++) {
-                names[i] = joinedClients.get(i).getName();
-                playerNrs[i] = joinedClients.get(i).getPlayerNr();
+    public void startGame(IPlatformGameClient platformGameClient) {
+        if (joinedClients.contains(platformGameClient)) {
+            if (joinedClients.size() >= minAmountOfPlayers) {
+                int size = joinedClients.size();
+                String[] names = new String[size];
+                int[] playerNrs = new int[size];
+                for (int i = 0; i < size; i++) {
+                    names[i] = joinedClients.get(i).getName();
+                    playerNrs[i] = joinedClients.get(i).getPlayerNr();
+                }
+                gameTimerTask = new GameTimerTask(this, playerNrs, names);
+                for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
+                //TODO send stuff to the GameTimerTask, like the map perhaps
+                timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
+            } else {
+                System.out.println("[GameServer.java] A request to start the game was denied because of too few players");
             }
-            gameTimerTask = new GameTimerTask(this, playerNrs, names);
-            for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
-            //TODO send stuff to the GameTimerTask, like the map perhaps
-            timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
-        } else {
-            System.out.println("[GameServer.java] A request to start the game was denied because of too few players");
         }
     }
 

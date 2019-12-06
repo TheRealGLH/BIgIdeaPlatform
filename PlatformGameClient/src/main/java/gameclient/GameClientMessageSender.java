@@ -34,7 +34,7 @@ public class GameClientMessageSender implements IPlatformGameServer {
     }
 
     @Override
-    public void startGame() {
+    public void startGame(IPlatformGameClient client) {
         PlatformGameMessageStart messageStart = new PlatformGameMessageStart();
         communicator.sendMessage(messageStart);
     }
