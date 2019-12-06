@@ -4,6 +4,8 @@ public enum SpriteType {
     PLAYER,
     PLATFORM,
     WEAPONPICKUP,
-    BULLET,
+    PROJECTILEBULLET,
+    PROJECTILEBOMB,
+    EXPLOSION,
     NONE
 }

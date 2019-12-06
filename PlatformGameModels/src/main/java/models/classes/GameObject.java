@@ -32,6 +32,11 @@ public abstract class GameObject extends Observable {
         position.setY(y);
     }
 
+    public void setSize(float x, float y){
+        size.setX(x);
+        size.setY(y);
+    }
+
     public Vector2 getSize() {
         return size;
     }

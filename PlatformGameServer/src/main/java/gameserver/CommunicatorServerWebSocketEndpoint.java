@@ -11,20 +11,8 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.Map;
 
-// https://github.com/jetty-project/embedded-jetty-websocket-examples/tree/master/javax.websocket-example/src/main/java/org/eclipse/jetty/demo
 
-/**
- * Server-side implementation of Communicator using WebSockets for communication.
- * <p>
- * This code is based on example code from:
- * https://github.com/jetty-project/embedded-jetty-websocket-examples/blob/
- * master/javax.websocket-example/src/main/java/org/eclipse/jetty/
- * demo/EventServerSocket.java
- *
- * @author Nico Kuijpers, based on example project
- */
-
-@ServerEndpoint(value = "/communicator/")
+@ServerEndpoint(value = "/platform/")
 public class CommunicatorServerWebSocketEndpoint {
 
     // All sessions

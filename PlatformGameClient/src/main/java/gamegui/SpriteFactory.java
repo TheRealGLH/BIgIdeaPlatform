@@ -17,6 +17,8 @@ public class SpriteFactory {
     private static Image platform = new Image(SpriteFactory.class.getResource("/sprites/platform.png").toExternalForm());
     private static Image weaponpickup = new Image(SpriteFactory.class.getResource("/sprites/weaponpickup.png").toExternalForm());
     private static Image bullet = new Image(SpriteFactory.class.getResource("/sprites/bullet.png").toExternalForm());
+    private static Image bomb = new Image(SpriteFactory.class.getResource("/sprites/bomb.png").toExternalForm());
+    private static Image explosion = new Image(SpriteFactory.class.getResource("/sprites/explosion.gif").toExternalForm());
     private static double spriteWidth = 2;
     private static double spriteHeight = 2;
 
@@ -24,25 +26,6 @@ public class SpriteFactory {
         if (spriteUpdate.getUpdateType() != SpriteUpdateType.CREATE && spriteUpdate.getUpdateType() != SpriteUpdateType.MOVE)
             throw new InvalidParameterException("Only SpriteUpdates of type CREATE are allowed");
         ImageView imageView = new ImageView();
-        Image image = null;
-        switch (spriteUpdate.getSpriteType()) {
-            case PLAYER:
-                image = player;
-                break;
-            case PLATFORM:
-                image = platform;
-                break;
-            case WEAPONPICKUP:
-                image = weaponpickup;
-                break;
-            case BULLET:
-                image = bullet;
-                break;
-            default:
-                image = placeHolder;
-                break;
-        }
-        imageView.setImage(image);
         prepareImage(imageView, spriteUpdate, screenWidth, screenHeight);
         return imageView;
     }
@@ -56,6 +39,31 @@ public class SpriteFactory {
     private static void prepareImage(ImageView imageView, SpriteUpdate spriteUpdate, double screenWidth, double screenHeight) {
         Vector2 size = spriteUpdate.getSize();
         Vector2 pos = spriteUpdate.getPosition();
+        Image image = null;
+        switch (spriteUpdate.getSpriteType()) {
+            case PLAYER:
+                image = player;
+                break;
+            case PLATFORM:
+                image = platform;
+                break;
+            case WEAPONPICKUP:
+                image = weaponpickup;
+                break;
+            case PROJECTILEBULLET:
+                image = bullet;
+                break;
+            case PROJECTILEBOMB:
+                image = bomb;
+                break;
+            case EXPLOSION:
+                image = explosion;
+                break;
+            default:
+                image = placeHolder;
+                break;
+        }
+        imageView.setImage(image);
         imageView.setFitWidth(spriteWidth * size.getX());
         imageView.setFitHeight(spriteHeight * size.getY());
         imageView.setX(pos.getX());

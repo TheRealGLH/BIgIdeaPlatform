@@ -21,7 +21,7 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
     /**
      * The local websocket uri to connect to.
      */
-    private final String uri = "ws://localhost:8095/communicator/";
+    private final String uri = "ws://localhost:8095/platform/";
 
     private Session session;
 

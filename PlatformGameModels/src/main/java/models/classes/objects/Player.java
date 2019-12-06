@@ -12,7 +12,7 @@ import java.util.List;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.GUN;
+    private WeaponType currentWeapon = WeaponType.GRENADELAUNCHER;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;

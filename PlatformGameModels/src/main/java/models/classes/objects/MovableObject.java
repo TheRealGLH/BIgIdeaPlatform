@@ -11,6 +11,7 @@ public abstract class MovableObject extends GameObject {
     private float maxHorizontalVelocity = 20, maxVerticalVelocity = 40;
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
+    private boolean isFacingLeft = false;
     private int timeInAir = 0;
     private int maxTimeInAir = 70; //the amount of update cycles it will take for us to reach terminal velocity
     private float weight = 0.2f;
@@ -65,10 +66,14 @@ public abstract class MovableObject extends GameObject {
         //friction
         velocity.setX(velocity.getX() * friction);
         if (velocity.getX() < 0.001f && velocity.getX() > -0.001f) velocity.setX(0);
+
+        //Sprite change
         Vector2 endPos = getPosition();
+        if (velocity.getX() < 0) isFacingLeft = true;
+        else if (velocity.getX() > 0) isFacingLeft = false;
         if (!startPos.equals(endPos)) {
             setChanged();
-            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), (velocity.getX() < 0), toString()));
+            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, toString()));
         }
     }
 
@@ -128,6 +133,10 @@ public abstract class MovableObject extends GameObject {
 
     public boolean isShouldBeCleaned() {
         return shouldBeCleaned;
+    }
+
+    public boolean isFacingLeft() {
+        return isFacingLeft;
     }
 
     @Override
