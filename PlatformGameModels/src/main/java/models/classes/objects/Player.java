@@ -135,7 +135,7 @@ public class Player extends MovableObject {
 
     @Override
     public String getLabel() {
-        return name + " " +isGrounded();
+        return name + " " +currentWeapon;
     }
 
     public String getName() {
