@@ -106,11 +106,10 @@ public class Game implements Observer, IPlayerEventListener {
                     movableObject.setGrounded(true);
                     float pY = platform.getTopRight().getY();
                     float objY = movableObject.getPosition().getY();
-                    float abs = pY - objY;
-
-                    if (abs > 0.1f) {//can't seemingly compare exact float values
-                        System.out.println(movableObject + " Abs: " + abs + " platform y " + pY + " obj " + objY);
-                        movableObject.setPosition(movableObject.getPosition().getX(), pY);
+                    float diff = objY - pY;
+                    if (diff < -0.1f) {//can't seemingly compare exact float values
+                        System.out.println(movableObject + " Diff: " + diff + " platform y " + pY + " obj " + objY);
+                        movableObject.setPosition(movableObject.getPosition().getX(), pY,true);
                         movableObject.setAcceleration(movableObject.getAcceleration().getX(), 0);
                         movableObject.setVelocity(movableObject.getVelocity().getX(), 0);
                         movableObject.setTimeInAir(0);

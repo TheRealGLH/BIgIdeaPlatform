@@ -42,9 +42,11 @@ public abstract class MovableObject extends GameObject {
         Vector2 startPos = getPosition();
         if (!isGrounded() && isUseGravity()) doGravity();
         else {
-            timeInAir = 0;
-            acceleration.setY(0);
-            velocity.setY(0);
+            if (acceleration.getY() < 0) {
+                timeInAir = 0;
+                acceleration.setY(0);
+                velocity.setY(0);
+            }
 
         }
 
@@ -64,7 +66,7 @@ public abstract class MovableObject extends GameObject {
 
         //friction
         velocity.setX(velocity.getX() * friction);
-        if (velocity.getX() < 0.001f && velocity.getX() > -0.001f) velocity.setX(0);
+        if (velocity.getX() < 0.01f && velocity.getX() > -0.01f) velocity.setX(0);
 
         //Sprite change
         Vector2 endPos = getPosition();
@@ -83,11 +85,13 @@ public abstract class MovableObject extends GameObject {
         notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
     }
 
-    @Override
-    public void setPosition(float x, float y) {
+
+    public void setPosition(float x, float y, boolean forceUpdate) {
         super.setPosition(x, y);
-        setChanged();
-        notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
+        if(forceUpdate) {
+            setChanged();
+            notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
+        }
     }
 
     private void doGravity() {

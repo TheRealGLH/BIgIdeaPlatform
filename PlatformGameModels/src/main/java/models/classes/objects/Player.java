@@ -12,7 +12,7 @@ import java.util.List;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.NONE;
+    private WeaponType currentWeapon = WeaponType.THROWAXE;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
@@ -20,12 +20,17 @@ public class Player extends MovableObject {
     private float startX, startY;
     private String name = "undefinedplayer";
     private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
+    private float standingHeight = 20;
+    private float width;
+    private boolean ducked = false;
 
 
     private float walkAcceleration = 3;
 
     public Player(float xPos, float yPos) {
         super(xPos, yPos, 20, 20);
+        standingHeight = 20;
+        width = 20;
         this.startX = xPos;
         this.startY = yPos;
     }
@@ -60,7 +65,21 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        if (isGrounded()) addAcceleration(getAcceleration(false), 2.5f);
+        if (isGrounded()) {
+            addAcceleration(getAcceleration(false), 2.5f);
+        }
+    }
+
+    public void duck() {
+        setSize(width, standingHeight / 1);
+        ducked = true;
+    }
+
+    public void unDuck() {
+        if (ducked) {
+            setSize(width, standingHeight);
+            ducked = false;
+        }
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -105,8 +124,8 @@ public class Player extends MovableObject {
             //if we're not walking, we don't want to have any more X acceleration.
             setAcceleration(0, getAcceleration().getY());
         }
-        if(willJump) jump();
-        if(willShoot) useWeapon();
+        if (willJump) jump();
+        if (willShoot) useWeapon();
         hasInputMove = false;
         willJump = false;
         willShoot = false;
@@ -156,7 +175,7 @@ public class Player extends MovableObject {
         this.name = name;
     }
 
-    public void addShootEventListener(IPlayerEventListener shootEventListener){
+    public void addShootEventListener(IPlayerEventListener shootEventListener) {
         shootEventListenerList.add(shootEventListener);
     }
 }
