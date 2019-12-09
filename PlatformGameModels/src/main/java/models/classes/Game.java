@@ -36,7 +36,7 @@ public class Game implements Observer, IPlayerEventListener {
         platforms.add(plat);
         createSprite(plat);
         //mini platforms
-        /*
+
         plat = new Platform(100, 200, 100, 20, false);
         platforms.add(plat);
         createSprite(plat);
@@ -47,7 +47,7 @@ public class Game implements Observer, IPlayerEventListener {
         platforms.add(plat);
         createSprite(plat);
 
-         */
+
 
 
         for (int i = 0; i < playerNrs.length; i++) {
@@ -58,15 +58,13 @@ public class Game implements Observer, IPlayerEventListener {
             p.setName(playerNames[i]);
             p.addShootEventListener(this);
         }
-        /*
+
         for (int i = 1; i <= 5; i++) {
             WeaponPickup pickup = new WeaponPickup(60 * i, 200 * i, pickRandomWeapon());
             pickup.setVelocity(20 * i, 0);
             createSprite(pickup);
             movableObjects.add(pickup);
         }
-
-         */
 
     }
 
@@ -115,6 +113,7 @@ public class Game implements Observer, IPlayerEventListener {
                         movableObject.setTimeInAir(0);
                         if (platform.isSolid()) movableObject.invertVelocity();
                     }
+                    break;
                 } else {
                     movableObject.setGrounded(false);
                 }
