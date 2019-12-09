@@ -24,8 +24,8 @@ public class ProjectileFactory {
                 projectile.setVelocity(20*xfact,5);
                 break;
             case THROWAXE:
-                projectile = new ProjectileThrowingAxe(pos.getX(),pos.getY(),player);
-                projectile.setVelocity(15*xfact,10);
+                projectile = new ProjectileThrowingAxe(pos.getX(), pos.getY(), player);
+                projectile.setVelocity(30 * xfact, 10);
         }
         projectile.setFacingLeft(player.isFacingLeft());
         return projectile;

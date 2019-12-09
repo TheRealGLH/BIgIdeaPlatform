@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 public class GameTimerTask extends TimerTask {
 
-    public static final int tickRate = 30;
+    public static final int tickRate = 1000;
     Game game;
     IPlatformGameServer gameServer;
 

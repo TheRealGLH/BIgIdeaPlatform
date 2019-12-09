@@ -8,7 +8,8 @@ import models.classes.GameObject;
 public abstract class MovableObject extends GameObject {
     private Vector2 acceleration;
     private Vector2 velocity;
-    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 40;
+    private float maxHorizontalVelocity = 20;
+    private float maxVerticalVelocity = 40;
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
     private boolean isFacingLeft = false;
@@ -29,7 +30,7 @@ public abstract class MovableObject extends GameObject {
 
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
 
-    public void setGrounded(boolean value){
+    public void setGrounded(boolean value) {
         this.isGrounded = value;
     }
 
@@ -42,10 +43,9 @@ public abstract class MovableObject extends GameObject {
         if (!isGrounded() && isUseGravity()) doGravity();
         else {
             timeInAir = 0;
-            if (acceleration.getY() < 0) {//that way we can still add upwards forces (ie jumping)
-                acceleration.setY(0);
-                velocity.setY(0);
-            }
+            acceleration.setY(0);
+            velocity.setY(0);
+
         }
 
         //add acceleration
@@ -54,10 +54,10 @@ public abstract class MovableObject extends GameObject {
 
         //now we cap it
         if (velocity.getX() > maxHorizontalVelocity) velocity.setX(maxHorizontalVelocity);
-        else if(velocity.getX() < -maxHorizontalVelocity) velocity.setX(-maxHorizontalVelocity);
+        else if (velocity.getX() < -maxHorizontalVelocity) velocity.setX(-maxHorizontalVelocity);
 
-        if(velocity.getY() > maxVerticalVelocity) velocity.setY(maxVerticalVelocity);
-        else if(velocity.getY() < -maxVerticalVelocity) velocity.setY(-maxVerticalVelocity);
+        if (velocity.getY() > maxVerticalVelocity) velocity.setY(maxVerticalVelocity);
+        else if (velocity.getY() < -maxVerticalVelocity) velocity.setY(-maxVerticalVelocity);
 
         Vector2 pos = getPosition();
         setPosition(pos.getX() + velocity.getX(), pos.getY() + velocity.getY());
@@ -83,6 +83,13 @@ public abstract class MovableObject extends GameObject {
         notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
     }
 
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        setChanged();
+        notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
+    }
+
     private void doGravity() {
         if (timeInAir < maxTimeInAir) timeInAir++;
         addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
@@ -97,7 +104,7 @@ public abstract class MovableObject extends GameObject {
         System.out.println("[MovableObject.java] Send event for DELETE SpriteUpdate");
     }
 
-    public void onOutOfBounds(){
+    public void onOutOfBounds() {
         Delete();
     }
 
@@ -149,16 +156,41 @@ public abstract class MovableObject extends GameObject {
         return isFacingLeft;
     }
 
-    public void setFacingLeft(boolean value){
+    public void setFacingLeft(boolean value) {
         this.isFacingLeft = value;
     }
 
-    public String getLabel(){return  this.toString();}
+    public String getLabel() {
+        return this.toString();
+    }
 
     @Override
     public String toString() {
         return this.getClass().toString();
     }
 
+    public float getMaxHorizontalVelocity() {
+        return maxHorizontalVelocity;
+    }
 
+    public void setMaxHorizontalVelocity(float maxHorizontalVelocity) {
+        this.maxHorizontalVelocity = maxHorizontalVelocity;
+    }
+
+    public float getMaxVerticalVelocity() {
+        return maxVerticalVelocity;
+    }
+
+    public void setMaxVerticalVelocity(float maxVerticalVelocity) {
+        this.maxVerticalVelocity = maxVerticalVelocity;
+    }
+
+    public void invertVelocity() {
+        velocity.setX(-velocity.getX());
+        velocity.setY(-velocity.getY());
+    }
+
+    public void setTimeInAir(int timeInAir) {
+        this.timeInAir = timeInAir;
+    }
 }

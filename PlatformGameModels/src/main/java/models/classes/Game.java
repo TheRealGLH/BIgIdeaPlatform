@@ -29,8 +29,6 @@ public class Game implements Observer, IPlayerEventListener {
     public void setUpGame(int[] playerNrs, String[] playerNames) {
 
 
-
-
         movableObjects = new ArrayList<>();
 
         //base platform
@@ -38,32 +36,37 @@ public class Game implements Observer, IPlayerEventListener {
         platforms.add(plat);
         createSprite(plat);
         //mini platforms
-        plat = new Platform(100, 200, 100, 20, true);
+        /*
+        plat = new Platform(100, 200, 100, 20, false);
         platforms.add(plat);
         createSprite(plat);
         plat = new Platform(350, 300, 100, 20, true);
         platforms.add(plat);
         createSprite(plat);
-        plat = new Platform(600, 200, 100, 20, true);
+        plat = new Platform(600, 200, 100, 20, false);
         platforms.add(plat);
         createSprite(plat);
 
+         */
 
 
         for (int i = 0; i < playerNrs.length; i++) {
-            Player p = new Player(10 * (i + 1) + 300, 1501);
+            Player p = new Player(10 * (i + 1) + 300, 200);
             createSprite(p);
             movableObjects.add(p);
             playerNrMap.put(playerNrs[i], p);
             p.setName(playerNames[i]);
             p.addShootEventListener(this);
         }
+        /*
         for (int i = 1; i <= 5; i++) {
             WeaponPickup pickup = new WeaponPickup(60 * i, 200 * i, pickRandomWeapon());
             pickup.setVelocity(20 * i, 0);
             createSprite(pickup);
             movableObjects.add(pickup);
         }
+
+         */
 
     }
 
@@ -103,8 +106,16 @@ public class Game implements Observer, IPlayerEventListener {
                     movableObject.setGrounded(true);
                     float pY = platform.getTopRight().getY();
                     float objY = movableObject.getPosition().getY();
-                    if (pY != objY) movableObject.setPosition(movableObject.getPosition().getX(), pY);
-                    break;
+                    float abs = pY - objY;
+
+                    if (abs > 0.1f) {//can't seemingly compare exact float values
+                        System.out.println(movableObject + " Abs: " + abs + " platform y " + pY + " obj " + objY);
+                        movableObject.setPosition(movableObject.getPosition().getX(), pY);
+                        movableObject.setAcceleration(movableObject.getAcceleration().getX(), 0);
+                        movableObject.setVelocity(movableObject.getVelocity().getX(), 0);
+                        movableObject.setTimeInAir(0);
+                        if (platform.isSolid()) movableObject.invertVelocity();
+                    }
                 } else {
                     movableObject.setGrounded(false);
                 }
@@ -152,7 +163,7 @@ public class Game implements Observer, IPlayerEventListener {
     private void createSprite(GameObject gameObject) {
         Vector2 pos = gameObject.getPosition();
         Vector2 scale = gameObject.getSize();
-        spriteUpdates.add(new SpriteUpdate(spriteCount, pos, scale, SpriteUpdateType.CREATE, gameObject.getSpriteType(), false));
+        spriteUpdates.add(new SpriteUpdate(spriteCount, pos, scale, SpriteUpdateType.CREATE, gameObject.getSpriteType(), false, "Y:" + gameObject.getTopRight().getY()));
         gameObject.addObserver(this);
         gameObject.setObjectNr(spriteCount);
         spriteCount++;

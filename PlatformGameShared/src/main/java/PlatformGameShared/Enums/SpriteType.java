@@ -3,6 +3,7 @@ package PlatformGameShared.Enums;
 public enum SpriteType {
     PLAYER,
     PLATFORM,
+    UNSOLIDPLATFORM,
     WEAPONPICKUP,
     PROJECTILEBULLET,
     PROJECTILESWORD,

@@ -6,7 +6,8 @@ import models.classes.GameObject;
 
 public class ProjectileThrowingAxe extends Projectile {
     public ProjectileThrowingAxe(float xPosition, float yPosition,   Player owner) {
-        super(xPosition, yPosition, 15, 15, 60, owner);
+        super(xPosition, yPosition, 30, 30, 60, owner);
+        setMaxHorizontalVelocity(40);
     }
 
     @Override
