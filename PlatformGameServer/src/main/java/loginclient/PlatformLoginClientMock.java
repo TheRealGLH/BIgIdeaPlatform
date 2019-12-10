@@ -1,4 +1,4 @@
-package PlatformGameShared.Interfaces;
+package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
@@ -13,14 +13,16 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
     public PlatformLoginClientMock() {
         usernamePasswordMap = new HashMap<>();
         usernamePasswordMap.put("test", "123456");
-        usernamePasswordMap.put("fred","123456");
+        usernamePasswordMap.put("fred", "123456");
     }
+
+
 
     @Override
     public LoginState attemptLogin(String username, String password) {
         LoginState loginState = LoginState.INCORRECTDATA;
         String pw = usernamePasswordMap.get(username);
-        if(pw == null) return loginState;
+        if (pw == null) return loginState;
         if (pw.equals(password)) {
             loginState = LoginState.SUCCESS;
         }
@@ -41,7 +43,7 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
         }
         if (usernamePasswordMap.get(username) == null) {
             registerState = RegisterState.SUCCESS;
-            usernamePasswordMap.put(username,password);
+            usernamePasswordMap.put(username, password);
         }
         return registerState;
     }

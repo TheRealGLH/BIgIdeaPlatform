@@ -1,4 +1,4 @@
-package PlatformGameShared.Interfaces;
+package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;

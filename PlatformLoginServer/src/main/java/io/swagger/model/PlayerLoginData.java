@@ -31,7 +31,7 @@ public class PlayerLoginData   {
    * Get name
    * @return name
   **/
-  @ApiModelProperty(example = "Mr Test", required = true, value = "")
+  @ApiModelProperty(example = "test", required = true, value = "")
   @NotNull
 
 

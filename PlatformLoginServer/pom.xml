@@ -83,6 +83,12 @@
             <artifactId>jackson-core</artifactId>
             <version>2.10.1</version>
         </dependency>
+        <dependency>
+            <groupId>MartijnD</groupId>
+            <artifactId>PlatformGameShared</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
