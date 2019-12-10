@@ -16,6 +16,7 @@ public class Player extends MovableObject {
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
+    private boolean shotLastUpdate = false;
     private InputType lastMove;
     private float startX, startY;
     private String name = "undefinedplayer";
@@ -55,8 +56,11 @@ public class Player extends MovableObject {
     }
 
     public void useWeapon() {
-        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
-            iPlayerEventListener.onShootEvent(this);
+        if(!shotLastUpdate) {
+            shotLastUpdate = true;
+            for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+                iPlayerEventListener.onShootEvent(this);
+            }
         }
     }
 
@@ -134,6 +138,7 @@ public class Player extends MovableObject {
         }
         if (willJump) jump();
         if (willShoot) useWeapon();
+        else shotLastUpdate = false;
         hasInputMove = false;
         willJump = false;
         willShoot = false;
