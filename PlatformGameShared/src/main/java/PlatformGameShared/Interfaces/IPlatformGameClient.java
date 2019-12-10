@@ -40,5 +40,7 @@ public interface IPlatformGameClient {
 
     public void lobbyJoinedNotify(String[] playerNames);
 
+    public void receiveAllowInput();
+
 
 }

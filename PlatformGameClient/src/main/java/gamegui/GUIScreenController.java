@@ -214,6 +214,14 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
+    public void receiveAllowInput() {
+        for (ISpriteUpdateEventListener listener : spriteUpdateEventListeners) {
+            Platform.runLater(listener::allowSendInput
+            );
+        }
+    }
+
+    @Override
     public void addSpriteEventListener(ISpriteUpdateEventListener listener) {
         spriteUpdateEventListeners.add(listener);
     }

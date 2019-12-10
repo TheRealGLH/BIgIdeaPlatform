@@ -11,7 +11,7 @@ public class WeaponPickup extends MovableObject {
 
     private WeaponType weaponType;
     public WeaponPickup(float xPosition, float yPosition, WeaponType weaponType) {
-        super(xPosition, yPosition, 7.5f, 7.5f);
+        super(xPosition, yPosition, 25, 25);
         this.weaponType = weaponType;
     }
 

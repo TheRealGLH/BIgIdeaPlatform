@@ -16,4 +16,6 @@ public interface IPlatformGameServer {
     public void receiveInput(InputType type, IPlatformGameClient client);
 
     void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList);
+
+    void sendInputRequest();
 }

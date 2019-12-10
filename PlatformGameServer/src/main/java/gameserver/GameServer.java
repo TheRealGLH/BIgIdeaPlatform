@@ -94,4 +94,11 @@ public class GameServer implements IPlatformGameServer {
         }
 
     }
+
+    @Override
+    public void sendInputRequest() {
+        for (IPlatformGameClient platformGameClient : joinedClients) {
+            platformGameClient.receiveAllowInput();
+        }
+    }
 }

@@ -119,11 +119,6 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 shootHeld = true;
                 break;
         }
-        if (walkLeftHeld) controller.sendInput(InputType.MOVELEFT);
-        if (walkRightHeld) controller.sendInput(InputType.MOVERIGHT);
-        if (duckHeld) controller.sendInput(InputType.DUCK);
-        if (jumpHeld) controller.sendInput(InputType.JUMP);
-        if (shootHeld) controller.sendInput(InputType.SHOOT);
     }
 
 
@@ -173,7 +168,18 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             }
         }
         System.out.println("[PlatformGameViewController.java] Finished updating sprites");
+    }
 
+    @Override
+    public void allowSendInput() {
+        sendInput();
+    }
 
+    public void sendInput(){
+        if (walkLeftHeld) controller.sendInput(InputType.MOVELEFT);
+        else if (walkRightHeld) controller.sendInput(InputType.MOVERIGHT);
+        if (duckHeld) controller.sendInput(InputType.DUCK);
+        if (jumpHeld) controller.sendInput(InputType.JUMP);
+        if (shootHeld) controller.sendInput(InputType.SHOOT);
     }
 }

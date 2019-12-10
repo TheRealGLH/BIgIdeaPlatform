@@ -12,7 +12,7 @@ import java.util.List;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.THROWAXE;
+    private WeaponType currentWeapon = WeaponType.GRENADELAUNCHER;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
@@ -25,7 +25,8 @@ public class Player extends MovableObject {
     private boolean ducked = false;
 
 
-    private float walkAcceleration = 3;
+    private float walkAcceleration = 1;
+    private float maxHorizontalAcceleration = 5;
 
     public Player(float xPos, float yPos) {
         super(xPos, yPos, 20, 20);
@@ -36,6 +37,7 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
+        System.out.println(this + "received input " + inputType);
         switch (inputType) {
             case MOVELEFT:
             case MOVERIGHT:
@@ -109,12 +111,18 @@ public class Player extends MovableObject {
     @Override
     public void update() {
         if (hasInputMove) {
+            float acc = walkAcceleration;
+            if(!isGrounded()) acc = walkAcceleration/2;
             switch (lastMove) {
                 case MOVELEFT:
-                    addAcceleration(-walkAcceleration, 0);
+                    //setAcceleration(-acc,getAcceleration().getY());
+                    addAcceleration(-acc, 0);
+                    setFacingLeft(true);
                     break;
                 case MOVERIGHT:
-                    addAcceleration(walkAcceleration, 0);
+                    //setAcceleration(acc,getAcceleration().getY());
+                    addAcceleration(acc, 0);
+                    setFacingLeft(false);
                     break;
                 case DUCK:
                     //TODO ducking
@@ -129,6 +137,10 @@ public class Player extends MovableObject {
         hasInputMove = false;
         willJump = false;
         willShoot = false;
+        Vector2 acc = getAcceleration();
+        //Cap acceleration
+        if(acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration,acc.getY());
+        if(acc.getY() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
         super.update();
     }
 

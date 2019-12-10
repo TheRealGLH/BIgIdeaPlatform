@@ -49,4 +49,9 @@ public class GameClientMessageSender implements IPlatformGameServer {
     public void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList) {
         throw new UnsupportedOperationException("This method is not supposed to be called on the client");
     }
+
+    @Override
+    public void sendInputRequest() {
+        throw new UnsupportedOperationException("This method is not supposed to be called on the client");
+    }
 }

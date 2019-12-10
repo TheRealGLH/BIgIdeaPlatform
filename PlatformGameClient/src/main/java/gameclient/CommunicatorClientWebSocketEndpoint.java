@@ -83,7 +83,6 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
     @OnMessage
     public void onWebSocketText(String message, Session session) {
         this.message = message;
-        System.out.println("[WebSocket Client message received] " + message);
         processMessage(message);
     }
 
@@ -204,6 +203,9 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
                     break;
                 case NotifyStart:
                     platformGameClient.gameStartNotification();
+                    break;
+                case AllowInput:
+                    platformGameClient.receiveAllowInput();
                     break;
             }
         } catch (JsonSyntaxException ex) {

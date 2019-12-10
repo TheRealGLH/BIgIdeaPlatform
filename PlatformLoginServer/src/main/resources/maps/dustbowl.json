@@ -1,0 +1,39 @@
+{
+  "name": "dustbowl",
+  "width": 600,
+  "height": 600,
+  "objects": [
+    {
+      "kind": "platform",
+      "xpos": 100,
+      "ypos": 50,
+      "width": 600,
+      "height": 50,
+      "solid": true
+    },
+    {
+      "kind": "platform",
+      "xpos": 350,
+      "ypos": 300,
+      "width": 100,
+      "height": 20,
+      "solid": false
+    },
+    {
+      "kind": "platform",
+      "xpos": 600,
+      "ypos": 200,
+      "width": 100,
+      "height": 20,
+      "solid": false
+    },
+    {
+      "kind": "platform",
+      "xpos": 100,
+      "ypos": 200,
+      "width": 100,
+      "height": 20,
+      "solid": true
+    }
+  ]
+}

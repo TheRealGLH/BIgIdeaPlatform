@@ -31,8 +31,11 @@ public class Game implements Observer, IPlayerEventListener {
 
         movableObjects = new ArrayList<>();
 
+        //all of these objects are hardcoded, we'll later have this be based on an actual map file
+
+
         //base platform
-        Platform plat = new Platform(100, 50, 600, 50, true);
+        Platform plat = new Platform(100, 50, 8000, 50, true);
         platforms.add(plat);
         createSprite(plat);
         //mini platforms
@@ -44,6 +47,9 @@ public class Game implements Observer, IPlayerEventListener {
         platforms.add(plat);
         createSprite(plat);
         plat = new Platform(600, 200, 100, 20, false);
+        platforms.add(plat);
+        createSprite(plat);
+        plat = new Platform(800, 200, 100, 20, true);
         platforms.add(plat);
         createSprite(plat);
 
@@ -68,6 +74,10 @@ public class Game implements Observer, IPlayerEventListener {
 
     }
 
+    /**
+     * Should speak for itself
+     * @return A randomly selected weapontype
+     */
     private WeaponType pickRandomWeapon() {
         WeaponType type = null;
         Random r = new Random();
@@ -85,6 +95,7 @@ public class Game implements Observer, IPlayerEventListener {
             spriteUpdates.clear();
         }
         firstUpdateComplete = true;
+        //we loop through all of our movables and then do our update things
         for (MovableObject movableObject : movableObjects) {
             movableObject.update();
         }
@@ -98,10 +109,14 @@ public class Game implements Observer, IPlayerEventListener {
                 }
             }
         }
+
+        //Checking if we're on a platform
         for (MovableObject movableObject : movableObjects) {
             for (Platform platform : platforms) {
                 if (platform.collidesWith(movableObject)) {
                     movableObject.setGrounded(true);
+
+                    //reallign if we're somewhat underneath the top of the platform
                     float pY = platform.getTopRight().getY();
                     float objY = movableObject.getPosition().getY();
                     float diff = objY - pY;
@@ -113,7 +128,7 @@ public class Game implements Observer, IPlayerEventListener {
                         movableObject.setTimeInAir(0);
                         if (platform.isSolid()) movableObject.invertVelocity();
                     }
-                    break;
+                    break;//we don't want to keep looping through the other ones if we already found our platform
                 } else {
                     movableObject.setGrounded(false);
                 }
@@ -133,6 +148,7 @@ public class Game implements Observer, IPlayerEventListener {
             if (pos.getX() < 0 || pos.getY() < 0) movableObject.onOutOfBounds();
         }
 
+        //Deleting of unneeded objects
         Iterator<MovableObject> i = movableObjects.iterator();
         while (i.hasNext()) {
             MovableObject object = i.next();

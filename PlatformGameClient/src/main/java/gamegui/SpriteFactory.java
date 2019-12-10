@@ -15,7 +15,8 @@ public class SpriteFactory {
     private static Image placeHolder = new Image(SpriteFactory.class.getResource("/sprites/placeholder.png").toExternalForm());
     private static Image player = new Image(SpriteFactory.class.getResource("/sprites/platformplayer.png").toExternalForm());
     private static Image platform = new Image(SpriteFactory.class.getResource("/sprites/platform.png").toExternalForm());
-    private static Image weaponpickup = new Image(SpriteFactory.class.getResource("/sprites/weaponpickup.png").toExternalForm());
+    private static Image platformNonSolid = new Image(SpriteFactory.class.getResource("/sprites/unsolidplatform.png").toExternalForm());
+    private static Image weaponpickup = new Image(SpriteFactory.class.getResource("/sprites/ammo.gif").toExternalForm());
     private static Image bullet = new Image(SpriteFactory.class.getResource("/sprites/bullet.png").toExternalForm());
     private static Image bomb = new Image(SpriteFactory.class.getResource("/sprites/grenade.gif").toExternalForm());
     private static Image explosion = new Image(SpriteFactory.class.getResource("/sprites/explosion.gif").toExternalForm());
@@ -66,6 +67,9 @@ public class SpriteFactory {
                 break;
             case AXE:
                 image = axe;
+                break;
+            case UNSOLIDPLATFORM:
+                image = platformNonSolid;
                 break;
             default:
                 image = placeHolder;

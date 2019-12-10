@@ -64,14 +64,14 @@ public abstract class MovableObject extends GameObject {
         Vector2 pos = getPosition();
         setPosition(pos.getX() + velocity.getX(), pos.getY() + velocity.getY());
 
-        //friction
+        //apply friction
         velocity.setX(velocity.getX() * friction);
         if (velocity.getX() < 0.01f && velocity.getX() > -0.01f) velocity.setX(0);
 
         //Sprite change
         Vector2 endPos = getPosition();
         if (velocity.getX() < 0) isFacingLeft = true;
-        else if (velocity.getX() > 0) isFacingLeft = false;
+        else if (velocity.getX() > 0) isFacingLeft = false;//we want to keep the direction after we've stopped moving
         if (!startPos.equals(endPos)) {
             setChanged();
             notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));

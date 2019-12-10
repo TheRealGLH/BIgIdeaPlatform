@@ -37,6 +37,7 @@ public class Platform extends GameObject {
         //other origin x is inclusief binnen platform origin x en topright x
         //other origin y is inclusief binnen platform origin y en topright y
         //other topright is niet binnen deze waarden
+        if(other instanceof MovableObject && ((MovableObject) other).getVelocity(true) > 0) return false;
         Vector2 otherOrigin = other.getPosition();
         float otherTopRight = other.getTopRight().getY();
         Vector2 pOrigin = getPosition();

@@ -19,7 +19,9 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
     @Override
     public LoginState attemptLogin(String username, String password) {
         LoginState loginState = LoginState.INCORRECTDATA;
-        if (usernamePasswordMap.get(username).equals(password)) {
+        String pw = usernamePasswordMap.get(username);
+        if(pw == null) return loginState;
+        if (pw.equals(password)) {
             loginState = LoginState.SUCCESS;
         }
         return loginState;
