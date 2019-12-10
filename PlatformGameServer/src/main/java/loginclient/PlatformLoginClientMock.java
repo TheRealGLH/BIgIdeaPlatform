@@ -47,4 +47,9 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
         }
         return registerState;
     }
+
+    @Override
+    public String getLevelContent(String levelname) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
 }

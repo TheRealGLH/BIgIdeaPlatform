@@ -11,4 +11,6 @@ public interface IPlatformLoginClient {
 
     public RegisterState attemptRegistration(String username, String password);
 
+    public String getLevelContent(String levelname);
+
 }
