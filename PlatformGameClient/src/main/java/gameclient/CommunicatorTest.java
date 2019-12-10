@@ -1,8 +1,6 @@
 package gameclient;
 
-import PlatformGameShared.Enums.GameClientMessageType;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import PlatformGameShared.Messages.Client.PlatformGameMessage;
 
 public class CommunicatorTest {
 

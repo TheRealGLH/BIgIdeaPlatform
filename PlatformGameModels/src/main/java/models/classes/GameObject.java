@@ -32,6 +32,11 @@ public abstract class GameObject extends Observable {
         position.setY(y);
     }
 
+    public void setSize(float x, float y){
+        size.setX(x);
+        size.setY(y);
+    }
+
     public Vector2 getSize() {
         return size;
     }
@@ -51,10 +56,10 @@ public abstract class GameObject extends Observable {
     public abstract SpriteType getSpriteType();
 
     private static boolean between(Vector2 origin, Vector2 topRight, Vector2 toCompare) {
-        return between(origin.getX(), topRight.getY(), toCompare.getX()) && between(origin.getY(), topRight.getY(), toCompare.getY());
+        return between(origin.getX(), topRight.getX(), toCompare.getX()) && between(origin.getY(), topRight.getY(), toCompare.getY());
     }
 
-    private static boolean between(float min, float max, float toCompare) {
+    public  static boolean between(float min, float max, float toCompare) {
         return (toCompare >= min && toCompare <= max);
     }
 }

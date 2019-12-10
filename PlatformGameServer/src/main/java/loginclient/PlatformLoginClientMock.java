@@ -1,4 +1,4 @@
-package PlatformGameShared.Interfaces;
+package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
@@ -13,13 +13,17 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
     public PlatformLoginClientMock() {
         usernamePasswordMap = new HashMap<>();
         usernamePasswordMap.put("test", "123456");
-        usernamePasswordMap.put("fred","123456");
+        usernamePasswordMap.put("fred", "123456");
     }
+
+
 
     @Override
     public LoginState attemptLogin(String username, String password) {
         LoginState loginState = LoginState.INCORRECTDATA;
-        if (usernamePasswordMap.get(username).equals(password)) {
+        String pw = usernamePasswordMap.get(username);
+        if (pw == null) return loginState;
+        if (pw.equals(password)) {
             loginState = LoginState.SUCCESS;
         }
         return loginState;
@@ -39,8 +43,13 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
         }
         if (usernamePasswordMap.get(username) == null) {
             registerState = RegisterState.SUCCESS;
-            usernamePasswordMap.put(username,password);
+            usernamePasswordMap.put(username, password);
         }
         return registerState;
+    }
+
+    @Override
+    public String getLevelContent(String levelname) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
     }
 }

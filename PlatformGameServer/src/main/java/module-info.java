@@ -9,5 +9,6 @@ module PlatformGameServer {
     requires org.eclipse.jetty.websocket.javax.websocket.server;
     requires org.eclipse.jetty.websocket.javax.websocket;
     requires java.sql;
-
+    requires org.apache.httpcomponents.httpcore;
+    requires org.apache.httpcomponents.httpclient;
 }

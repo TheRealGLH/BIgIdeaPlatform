@@ -8,9 +8,12 @@ import models.classes.GameObject;
 public abstract class MovableObject extends GameObject {
     private Vector2 acceleration;
     private Vector2 velocity;
-    private float maxHorizontalVelocity = 20, maxVerticalVelocity = 40;
+    private float maxHorizontalVelocity = 20;
+    private float maxVerticalVelocity = 40;
     private boolean useGravity;
     private boolean shouldBeCleaned = false;
+    private boolean isFacingLeft = false;
+    private boolean isGrounded = false;
     private int timeInAir = 0;
     private int maxTimeInAir = 70; //the amount of update cycles it will take for us to reach terminal velocity
     private float weight = 0.2f;
@@ -27,25 +30,24 @@ public abstract class MovableObject extends GameObject {
 
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
 
+    public void setGrounded(boolean value) {
+        this.isGrounded = value;
+    }
+
     public boolean isGrounded() {
-        //TODO implementation with Platforms
-        float y = getPosition().getY();
-        if (y <= 0) {
-            setPosition(getPosition().getX(), 0);
-            return true;
-        }
-        return false;
+        return isGrounded;
     }
 
     public void update() {
         Vector2 startPos = getPosition();
         if (!isGrounded() && isUseGravity()) doGravity();
         else {
-            timeInAir = 0;
-            if (acceleration.getY() < 0) {//that way we can still add upwards forces (ie jumping)
+            if (acceleration.getY() < 0) {
+                timeInAir = 0;
                 acceleration.setY(0);
                 velocity.setY(0);
             }
+
         }
 
         //add acceleration
@@ -54,21 +56,41 @@ public abstract class MovableObject extends GameObject {
 
         //now we cap it
         if (velocity.getX() > maxHorizontalVelocity) velocity.setX(maxHorizontalVelocity);
-        else if(velocity.getX() < -maxHorizontalVelocity) velocity.setX(-maxHorizontalVelocity);
+        else if (velocity.getX() < -maxHorizontalVelocity) velocity.setX(-maxHorizontalVelocity);
 
-        if(velocity.getY() > maxVerticalVelocity) velocity.setY(maxVerticalVelocity);
-        else if(velocity.getY() < -maxVerticalVelocity) velocity.setY(-maxVerticalVelocity);
+        if (velocity.getY() > maxVerticalVelocity) velocity.setY(maxVerticalVelocity);
+        else if (velocity.getY() < -maxVerticalVelocity) velocity.setY(-maxVerticalVelocity);
 
         Vector2 pos = getPosition();
         setPosition(pos.getX() + velocity.getX(), pos.getY() + velocity.getY());
 
-        //friction
+        //apply friction
         velocity.setX(velocity.getX() * friction);
-        if (velocity.getX() < 0.001f && velocity.getX() > -0.001f) velocity.setX(0);
+        if (velocity.getX() < 0.01f && velocity.getX() > -0.01f) velocity.setX(0);
+
+        //Sprite change
         Vector2 endPos = getPosition();
+        if (velocity.getX() < 0) isFacingLeft = true;
+        else if (velocity.getX() > 0) isFacingLeft = false;//we want to keep the direction after we've stopped moving
         if (!startPos.equals(endPos)) {
             setChanged();
-            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), (velocity.getX() < 0), toString()));
+            notifyObservers(new SpriteUpdate(getObjectNr(), endPos, getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
+        }
+    }
+
+    @Override
+    public void setSize(float x, float y) {
+        super.setSize(x, y);
+        setChanged();
+        notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
+    }
+
+
+    public void setPosition(float x, float y, boolean forceUpdate) {
+        super.setPosition(x, y);
+        if(forceUpdate) {
+            setChanged();
+            notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft, getLabel()));
         }
     }
 
@@ -84,6 +106,10 @@ public abstract class MovableObject extends GameObject {
     public void Delete() {
         shouldBeCleaned = true;
         System.out.println("[MovableObject.java] Send event for DELETE SpriteUpdate");
+    }
+
+    public void onOutOfBounds() {
+        Delete();
     }
 
     public void setAcceleration(float x, float y) {
@@ -130,9 +156,45 @@ public abstract class MovableObject extends GameObject {
         return shouldBeCleaned;
     }
 
+    public boolean isFacingLeft() {
+        return isFacingLeft;
+    }
+
+    public void setFacingLeft(boolean value) {
+        this.isFacingLeft = value;
+    }
+
+    public String getLabel() {
+        return this.toString();
+    }
+
     @Override
     public String toString() {
         return this.getClass().toString();
     }
 
+    public float getMaxHorizontalVelocity() {
+        return maxHorizontalVelocity;
+    }
+
+    public void setMaxHorizontalVelocity(float maxHorizontalVelocity) {
+        this.maxHorizontalVelocity = maxHorizontalVelocity;
+    }
+
+    public float getMaxVerticalVelocity() {
+        return maxVerticalVelocity;
+    }
+
+    public void setMaxVerticalVelocity(float maxVerticalVelocity) {
+        this.maxVerticalVelocity = maxVerticalVelocity;
+    }
+
+    public void invertVelocity() {
+        velocity.setX(-velocity.getX());
+        velocity.setY(-velocity.getY());
+    }
+
+    public void setTimeInAir(int timeInAir) {
+        this.timeInAir = timeInAir;
+    }
 }

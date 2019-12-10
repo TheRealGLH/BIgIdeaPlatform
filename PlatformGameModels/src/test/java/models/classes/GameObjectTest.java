@@ -2,6 +2,9 @@ package models.classes;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
+import models.classes.objects.Player;
+import models.classes.objects.WeaponPickup;
+import models.enums.WeaponType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -122,6 +125,15 @@ public class GameObjectTest {
         mock = new GameObjectMock(x, y, width, height);
         Vector2 actual = mock.getTopRight();
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPractical(){
+        Player player = new Player(116,0);
+        WeaponPickup pickup = new WeaponPickup(89,0, WeaponType.NONE);
+        Assert.assertTrue(pickup.collidesWith(player));
+
+
     }
 
 

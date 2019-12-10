@@ -5,34 +5,14 @@ import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Messages.Client.*;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.util.HashMap;
+import java.util.Map;
 
-// https://github.com/jetty-project/embedded-jetty-websocket-examples/tree/master/javax.websocket-example/src/main/java/org/eclipse/jetty/demo
 
-/**
- * Server-side implementation of Communicator using WebSockets for communication.
- * <p>
- * This code is based on example code from:
- * https://github.com/jetty-project/embedded-jetty-websocket-examples/blob/
- * master/javax.websocket-example/src/main/java/org/eclipse/jetty/
- * demo/EventServerSocket.java
- *
- * @author Nico Kuijpers, based on example project
- */
-
-@ServerEndpoint(value = "/communicator/")
+@ServerEndpoint(value = "/platform/")
 public class CommunicatorServerWebSocketEndpoint {
 
     // All sessions
@@ -47,6 +27,7 @@ public class CommunicatorServerWebSocketEndpoint {
         String message = String.format("[New client with client side session ID]: %s", session.getId());
         IPlatformGameClient responseClient = new GameServerMessageSender(session);
         sessionIPlatformGameClientMap.put(session, responseClient);
+        responseClient.setPlayerNr(sessionIPlatformGameClientMap.size());
         System.out.println("[#sessions]: " + sessionIPlatformGameClientMap.size());
     }
 
@@ -88,7 +69,7 @@ public class CommunicatorServerWebSocketEndpoint {
                 break;
             case StartGame:
                 PlatformGameMessageStart messageStart = gson.fromJson(jsonMessage, PlatformGameMessageStart.class);
-                gameServer.startGame();
+                gameServer.startGame(client);
                 break;
         }
 

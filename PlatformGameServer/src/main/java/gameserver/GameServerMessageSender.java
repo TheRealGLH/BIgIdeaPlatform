@@ -104,6 +104,12 @@ public class GameServerMessageSender implements IPlatformGameClient {
         sendMessage(responseMessageLobbyNames);
     }
 
+    @Override
+    public void receiveAllowInput() {
+        PlatformGameResponseMessageAllowInput responseMessageAllowInput = new PlatformGameResponseMessageAllowInput();
+        sendMessage(responseMessageAllowInput);
+    }
+
 
     private void sendMessage(PlatformGameResponseMessage responseMessage) {
         String json = gson.toJson(responseMessage);

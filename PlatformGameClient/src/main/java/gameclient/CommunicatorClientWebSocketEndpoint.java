@@ -7,18 +7,9 @@ import PlatformGameShared.Messages.Response.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import java.net.URI;
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.ContainerProvider;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
-import javax.websocket.DeploymentException;
+import javax.websocket.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 @ClientEndpoint
@@ -30,7 +21,7 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
     /**
      * The local websocket uri to connect to.
      */
-    private final String uri = "ws://localhost:8095/communicator/";
+    private final String uri = "ws://localhost:8095/platform/";
 
     private Session session;
 
@@ -92,7 +83,6 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
     @OnMessage
     public void onWebSocketText(String message, Session session) {
         this.message = message;
-        System.out.println("[WebSocket Client message received] " + message);
         processMessage(message);
     }
 
@@ -213,6 +203,9 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
                     break;
                 case NotifyStart:
                     platformGameClient.gameStartNotification();
+                    break;
+                case AllowInput:
+                    platformGameClient.receiveAllowInput();
                     break;
             }
         } catch (JsonSyntaxException ex) {

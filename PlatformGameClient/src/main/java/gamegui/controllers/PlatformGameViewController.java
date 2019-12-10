@@ -1,7 +1,6 @@
 package gamegui.controllers;
 
 import PlatformGameShared.Enums.InputType;
-import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
@@ -16,9 +15,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
-
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
@@ -120,11 +119,6 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
                 shootHeld = true;
                 break;
         }
-        if (walkLeftHeld) controller.sendInput(InputType.MOVELEFT);
-        if (walkRightHeld) controller.sendInput(InputType.MOVERIGHT);
-        if (duckHeld) controller.sendInput(InputType.DUCK);
-        if (jumpHeld) controller.sendInput(InputType.JUMP);
-        if (shootHeld) controller.sendInput(InputType.SHOOT);
     }
 
 
@@ -174,7 +168,18 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
             }
         }
         System.out.println("[PlatformGameViewController.java] Finished updating sprites");
+    }
 
+    @Override
+    public void allowSendInput() {
+        sendInput();
+    }
 
+    public void sendInput(){
+        if (walkLeftHeld) controller.sendInput(InputType.MOVELEFT);
+        else if (walkRightHeld) controller.sendInput(InputType.MOVERIGHT);
+        if (duckHeld) controller.sendInput(InputType.DUCK);
+        if (jumpHeld) controller.sendInput(InputType.JUMP);
+        if (shootHeld) controller.sendInput(InputType.SHOOT);
     }
 }

@@ -3,7 +3,10 @@ package gameclient;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import PlatformGameShared.Messages.Client.*;
+import PlatformGameShared.Messages.Client.PlatformGameMessageInput;
+import PlatformGameShared.Messages.Client.PlatformGameMessageLogin;
+import PlatformGameShared.Messages.Client.PlatformGameMessageRegister;
+import PlatformGameShared.Messages.Client.PlatformGameMessageStart;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public class GameClientMessageSender implements IPlatformGameServer {
     }
 
     @Override
-    public void startGame() {
+    public void startGame(IPlatformGameClient client) {
         PlatformGameMessageStart messageStart = new PlatformGameMessageStart();
         communicator.sendMessage(messageStart);
     }
@@ -44,6 +47,11 @@ public class GameClientMessageSender implements IPlatformGameServer {
 
     @Override
     public void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList) {
+        throw new UnsupportedOperationException("This method is not supposed to be called on the client");
+    }
+
+    @Override
+    public void sendInputRequest() {
         throw new UnsupportedOperationException("This method is not supposed to be called on the client");
     }
 }

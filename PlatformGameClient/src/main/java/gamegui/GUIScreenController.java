@@ -85,7 +85,7 @@ public class GUIScreenController extends ScreenController {
     @Override
     public void joinGame() {
         if (guiState != GUIState.Lobby) return;
-        gameServer.startGame();
+        gameServer.startGame(this);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class GUIScreenController extends ScreenController {
 
     @Override
     public void setName(String name) {
-        //not here
+        this.name = name;
     }
 
     @Override
@@ -211,6 +211,14 @@ public class GUIScreenController extends ScreenController {
                     }
                 }
         );
+    }
+
+    @Override
+    public void receiveAllowInput() {
+        for (ISpriteUpdateEventListener listener : spriteUpdateEventListeners) {
+            Platform.runLater(listener::allowSendInput
+            );
+        }
     }
 
     @Override

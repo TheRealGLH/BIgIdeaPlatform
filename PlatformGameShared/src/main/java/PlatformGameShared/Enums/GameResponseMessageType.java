@@ -7,5 +7,6 @@ public enum GameResponseMessageType {
     LobbyNameChange,
     LobbyMapChange,
     GameState,
+    AllowInput,
     NotifyStart
 }

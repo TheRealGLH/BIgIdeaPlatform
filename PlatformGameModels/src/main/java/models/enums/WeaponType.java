@@ -3,5 +3,7 @@ package models.enums;
 public enum WeaponType {
     NONE,
     SWORD,
-    GUN
+    GUN,
+    THROWAXE,
+    GRENADELAUNCHER
 }

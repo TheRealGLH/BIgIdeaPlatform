@@ -11,7 +11,7 @@ public class WeaponPickup extends MovableObject {
 
     private WeaponType weaponType;
     public WeaponPickup(float xPosition, float yPosition, WeaponType weaponType) {
-        super(xPosition, yPosition, 10, 10);
+        super(xPosition, yPosition, 25, 25);
         this.weaponType = weaponType;
     }
 
@@ -39,4 +39,7 @@ public class WeaponPickup extends MovableObject {
 
     @Override
     public String toString(){return weaponType.toString() + " Pickup";}
+
+    @Override
+    public String getLabel(){return weaponType.toString();}
 }

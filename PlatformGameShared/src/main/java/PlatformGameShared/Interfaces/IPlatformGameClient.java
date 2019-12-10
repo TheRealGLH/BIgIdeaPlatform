@@ -1,6 +1,9 @@
 package PlatformGameShared.Interfaces;
 
-import PlatformGameShared.Enums.*;
+import PlatformGameShared.Enums.GameState;
+import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Enums.LoginState;
+import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
@@ -36,6 +39,8 @@ public interface IPlatformGameClient {
     public void gameStartNotification();
 
     public void lobbyJoinedNotify(String[] playerNames);
+
+    public void receiveAllowInput();
 
 
 }

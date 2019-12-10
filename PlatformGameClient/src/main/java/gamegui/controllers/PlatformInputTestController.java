@@ -1,16 +1,11 @@
 package gamegui.controllers;
 
-import PlatformGameShared.Enums.InputType;
 import gamegui.GUIScreenController;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 public class PlatformInputTestController {

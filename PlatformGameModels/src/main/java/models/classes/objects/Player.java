@@ -6,31 +6,58 @@ import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.NONE;
-    private boolean hasUsedInput = false;
-    private InputType lastInput;
+    private WeaponType currentWeapon = WeaponType.GRENADELAUNCHER;
+    private boolean hasInputMove = false;
+    private boolean willJump = false;
+    private boolean willShoot = false;
+    private InputType lastMove;
     private float startX, startY;
     private String name = "undefinedplayer";
+    private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
+    private float standingHeight = 20;
+    private float width;
+    private boolean ducked = false;
 
 
-    private float walkAcceleration = 3;
+    private float walkAcceleration = 1;
+    private float maxHorizontalAcceleration = 5;
 
     public Player(float xPos, float yPos) {
         super(xPos, yPos, 20, 20);
+        standingHeight = 20;
+        width = 20;
         this.startX = xPos;
         this.startY = yPos;
     }
 
     public void handleInput(InputType inputType) {
-        hasUsedInput = true;
-        lastInput = inputType;
+        System.out.println(this + "received input " + inputType);
+        switch (inputType) {
+            case MOVELEFT:
+            case MOVERIGHT:
+            case DUCK:
+                lastMove = inputType;
+                hasInputMove = true;
+                break;
+            case JUMP:
+                willJump = true;
+                break;
+            case SHOOT:
+                willShoot = true;
+                break;
+        }
     }
 
     public void useWeapon() {
-        throw new UnsupportedOperationException("Method useWeapon() has not yet been implemented");
+        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+            iPlayerEventListener.onShootEvent(this);
+        }
     }
 
     public void Kill() {
@@ -40,7 +67,21 @@ public class Player extends MovableObject {
     }
 
     public void jump() {
-        if (isGrounded()) addAcceleration(0, 2.5f);
+        if (isGrounded()) {
+            addAcceleration(getAcceleration(false), 2.5f);
+        }
+    }
+
+    public void duck() {
+        setSize(width, standingHeight / 1);
+        ducked = true;
+    }
+
+    public void unDuck() {
+        if (ducked) {
+            setSize(width, standingHeight);
+            ducked = false;
+        }
     }
 
     public void setCurrentWeapon(WeaponType weaponType) {
@@ -69,27 +110,37 @@ public class Player extends MovableObject {
 
     @Override
     public void update() {
-        if (hasUsedInput) {
-            switch (lastInput) {
+        if (hasInputMove) {
+            float acc = walkAcceleration;
+            if(!isGrounded()) acc = walkAcceleration/2;
+            switch (lastMove) {
                 case MOVELEFT:
-                    addAcceleration(-walkAcceleration, 0);
+                    //setAcceleration(-acc,getAcceleration().getY());
+                    addAcceleration(-acc, 0);
+                    setFacingLeft(true);
                     break;
                 case MOVERIGHT:
-                    addAcceleration(walkAcceleration, 0);
+                    //setAcceleration(acc,getAcceleration().getY());
+                    addAcceleration(acc, 0);
+                    setFacingLeft(false);
                     break;
-                case JUMP:
-                    jump();
-                    break;
-                case SHOOT:
                 case DUCK:
-                    System.out.println("[Player.java] Input has not yet been handled: " + lastInput);
+                    //TODO ducking
                     break;
             }
         } else {
             //if we're not walking, we don't want to have any more X acceleration.
             setAcceleration(0, getAcceleration().getY());
         }
-        hasUsedInput = false;
+        if (willJump) jump();
+        if (willShoot) useWeapon();
+        hasInputMove = false;
+        willJump = false;
+        willShoot = false;
+        Vector2 acc = getAcceleration();
+        //Cap acceleration
+        if(acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration,acc.getY());
+        if(acc.getY() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
         super.update();
     }
 
@@ -99,13 +150,33 @@ public class Player extends MovableObject {
     }
 
     @Override
+    public void onOutOfBounds() {
+        Kill();
+    }
+
+    @Override
     public SpriteType getSpriteType() {
         return SpriteType.PLAYER;
     }
 
     @Override
     public String toString() {
-        return name + " :" + currentWeapon;
+        return "Player@" + hashCode() + " Pos " + getPosition();
+    }
+
+    /*
+    @Override
+    public String getLabel() {
+        return name + " " +currentWeapon +" G "+isGrounded() + " P: "+getPosition();
+    }
+     */
+
+    @Override
+    public String getLabel() {
+        return name + " " + currentWeapon + " P ; " + getPosition() +
+                "\n V " + getVelocity() +
+                "\n A " + getAcceleration() +
+                "\n G " + isGrounded();
     }
 
     public String getName() {
@@ -114,5 +185,9 @@ public class Player extends MovableObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addShootEventListener(IPlayerEventListener shootEventListener) {
+        shootEventListenerList.add(shootEventListener);
     }
 }

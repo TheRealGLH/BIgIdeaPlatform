@@ -11,9 +11,11 @@ public interface IPlatformGameServer {
 
     public void loginPlayer(String name, String password, IPlatformGameClient client);
 
-    public void startGame();
+    public void startGame(IPlatformGameClient client);
 
     public void receiveInput(InputType type, IPlatformGameClient client);
 
     void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList);
+
+    void sendInputRequest();
 }
