@@ -33,7 +33,17 @@
       "ypos": 200,
       "width": 100,
       "height": 20,
-      "solid": true
+      "solid": false
+    },
+    {
+      "kind": "playerspawn",
+      "xpos": 250,
+      "ypos": 210
+    },
+    {
+      "kind": "playerspawn",
+      "xpos": 150,
+      "ypos": 210
     }
   ]
 }
