@@ -140,7 +140,7 @@ public class Player extends MovableObject {
         Vector2 acc = getAcceleration();
         //Cap acceleration
         if(acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration,acc.getY());
-        if(acc.getY() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
+        if(acc.getX() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
         super.update();
     }
 
