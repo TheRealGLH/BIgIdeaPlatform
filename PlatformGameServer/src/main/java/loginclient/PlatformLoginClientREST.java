@@ -19,7 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class PlatformLoginClientREST implements IPlatformLoginClient {
 
-    HttpClient client = new DefaultHttpClient();
+    HttpClient client;
     public static String domain = "http://localhost:8080/";
     public static String ApiUrl = "MartijnDaniels/PlatformLoginAPI/1.0.0";
 
@@ -49,7 +49,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                     }
                     return LoginState.ERROR;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return LoginState.ERROR;
         }
@@ -85,7 +85,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                         System.out.println(line);
                     }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return RegisterState.ERROR;
@@ -111,12 +111,14 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
 
 
     private HttpResponse sendGetRequest(String path) throws IOException {
+        client =  new DefaultHttpClient();
         HttpGet request = new HttpGet(domain + ApiUrl + path);
         request.setHeader(HttpHeaders.ACCEPT, "application/json");
         return client.execute(request);
     }
 
     private HttpResponse sendPostRequest(String path, String inputString) throws IOException {
+        client =  new DefaultHttpClient();
         HttpPost post = new HttpPost(domain + ApiUrl + path);
         post.setHeader(HttpHeaders.ACCEPT, "application/json");
         StringEntity input = new StringEntity(inputString);

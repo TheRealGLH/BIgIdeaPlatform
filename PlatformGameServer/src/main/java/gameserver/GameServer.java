@@ -8,6 +8,7 @@ import PlatformGameShared.Interfaces.IPlatformGameServer;
 import loginclient.IPlatformLoginClient;
 import loginclient.PlatformLoginClientMock;
 import PlatformGameShared.Points.SpriteUpdate;
+import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class GameServer implements IPlatformGameServer {
     Timer timer = new Timer();
 
     public GameServer() {
-        loginClient = new PlatformLoginClientMock();
+        loginClient = new PlatformLoginClientREST();
         joinedClients = new ArrayList<>();
     }
 
