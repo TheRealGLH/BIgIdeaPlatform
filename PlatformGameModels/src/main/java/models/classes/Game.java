@@ -7,6 +7,7 @@ import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.GameLevelObject;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
+import PlatformGameShared.PropertiesLoader;
 import models.classes.objects.*;
 import models.enums.WeaponType;
 
@@ -16,14 +17,20 @@ public class Game implements Observer, IPlayerEventListener {
 
 
     private List<MovableObject> movableObjects = new ArrayList<>();
-    private List<MovableObject> objectsToSpawn = new ArrayList<>();
+    private List<MovableObject> objectsToSpawn = new ArrayList<>();// we can't add stuff to our movableObjects list when we're looping through it
     private List<Platform> platforms = new ArrayList<>();
+    private List<Vector2> weaponSpawnPoints;
     private Map<Integer, Player> playerNrMap;
     private List<SpriteUpdate> spriteUpdates;
     private int spriteCount = 0;
     private boolean firstUpdateComplete = false;
-    private float levelWidth = 600;
+    private float levelWidth = 600;//these are default values for when we start a game without a GameLevel loaded
     private float levelHeight = 600;
+
+    //keeping track of weapon spawning stuff
+    private final static int maxTimeBetweenWeaponSpawns = Integer.parseInt(PropertiesLoader.getPropValues("game.maxTimeBetweenWeaponSpawns","game.properties"));;
+    private int currentWeaponSpawnTarget;//once we reach this amount, we spawn a new weapon
+    private int currentWeaponSpawnTime = 0;
 
     public Game() {
         playerNrMap = new HashMap<>();
@@ -34,6 +41,8 @@ public class Game implements Observer, IPlayerEventListener {
 
 
         movableObjects = new ArrayList<>();
+        weaponSpawnPoints = new ArrayList<>();
+        setNewWeaponSpawnTarget();
 
         //all of these objects are hardcoded, we'll later have this be based on an actual map file
 
@@ -77,7 +86,13 @@ public class Game implements Observer, IPlayerEventListener {
     }
 
     public void setUpGame(int[] playerNrs, String[] playerNames, GameLevel gameLevel) {
+        movableObjects = new ArrayList<>();
+        weaponSpawnPoints = new ArrayList<>();
+        setNewWeaponSpawnTarget();
+
+
         List<GameLevelObject> platformlevelobjects = new ArrayList<>();
+        List<GameLevelObject> playerspawnobjects = new ArrayList<>();
         levelWidth = gameLevel.getWidth();
         levelHeight = gameLevel.getHeight();
         for (GameLevelObject object : gameLevel.getObjects()) {
@@ -86,8 +101,10 @@ public class Game implements Observer, IPlayerEventListener {
                     platformlevelobjects.add(object);
                     break;
                 case playerspawn:
+                    playerspawnobjects.add(object);
                     break;
                 case weaponspawn:
+                    weaponSpawnPoints.add(new Vector2(object.getXpos(), object.getYpos()));
                     break;
             }
         }
@@ -98,16 +115,34 @@ public class Game implements Observer, IPlayerEventListener {
             createSprite(plat);
         }
 
+        int j = 0;
+        if (playerspawnobjects.size() < 1) {
+            System.out.println("[Game.java] The map " + gameLevel.getName() + " doesn't seem to have any player spawn points!! Adding one on (100,100).");
+            playerspawnobjects.add(new GameLevelObject(GameLevelObject.KindEnum.playerspawn, 100, 100, 100, 100, false));
+        }
         for (int i = 0; i < playerNrs.length; i++) {
-            Player p = new Player(10 * (i + 1) + 300, 200);
-            //TODO have this position be based on player spawn points
+            if (j >= playerspawnobjects.size()) j = 0;// there might be more players than there are spawnpoints
+            Player p = new Player(platformlevelobjects.get(j).getXpos(), platformlevelobjects.get(j).getYpos());
             createSprite(p);
             movableObjects.add(p);
             playerNrMap.put(playerNrs[i], p);
             p.setName(playerNames[i]);
             p.addShootEventListener(this);
+            j++;
+        }
+        if (weaponSpawnPoints.size() < 1) {
+            System.out.println("[Game.java] The map " + gameLevel.getName() + " doesn't seem to have any weapon spawn points!! Adding one on (100,100).");
+            weaponSpawnPoints.add(new Vector2(100, 100));
         }
 
+    }
+
+
+    private void spawnWeapon() {
+        Vector2 point = weaponSpawnPoints.get(new Random().nextInt(weaponSpawnPoints.size()));
+        WeaponPickup pickup = new WeaponPickup(point.getX(), point.getY(), pickRandomWeapon());
+        createSprite(pickup);
+        objectsToSpawn.add(pickup);
     }
 
     /**
@@ -123,9 +158,14 @@ public class Game implements Observer, IPlayerEventListener {
         return type;
     }
 
+    private void setNewWeaponSpawnTarget() {
+        currentWeaponSpawnTarget = new Random().nextInt(maxTimeBetweenWeaponSpawns);
+        System.out.println("{Game.java] Current weapon spawn target is " + currentWeaponSpawnTarget);
+    }
+
 
     public void updateState() {
-        System.out.println("[Game.java] Update cycle: " + new java.util.Date());
+        //System.out.println("[Game.java] Update cycle: " + new java.util.Date());
 
         //Moving
         if (firstUpdateComplete) {
@@ -171,6 +211,14 @@ public class Game implements Observer, IPlayerEventListener {
                 }
             }
         }
+
+        //Creating new weapon pickup stuff
+        currentWeaponSpawnTime++;
+        if (currentWeaponSpawnTime >= currentWeaponSpawnTarget) {
+            currentWeaponSpawnTime = 0;
+            spawnWeapon();
+        }
+
 
         //Spawning
         movableObjects.addAll(objectsToSpawn);
