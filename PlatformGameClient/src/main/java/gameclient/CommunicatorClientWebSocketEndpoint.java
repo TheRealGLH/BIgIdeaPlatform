@@ -4,6 +4,7 @@ import PlatformGameShared.Enums.GameResponseMessageType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Client.PlatformGameMessage;
 import PlatformGameShared.Messages.Response.*;
+import PlatformGameShared.PropertiesLoader;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -21,7 +22,14 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
     /**
      * The local websocket uri to connect to.
      */
-    private final String uri = "ws://localhost:8095/platform/";
+
+    private String domain = PropertiesLoader.getPropValues("gameServer.domain","connection.properties");
+    private String port = PropertiesLoader.getPropValues("gameServer.port","connection.properties");
+    private String path = PropertiesLoader.getPropValues("gameServer.contextPath","connection.properties");
+
+
+    //private final String uri = "ws://localhost:8095/platform/";
+    private final String uri = "ws://"+domain+":"+port+path;
 
     private Session session;
 
