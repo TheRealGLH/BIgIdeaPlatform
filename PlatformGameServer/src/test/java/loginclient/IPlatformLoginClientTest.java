@@ -9,11 +9,11 @@ import static org.junit.Assert.assertEquals;
 
 public class IPlatformLoginClientTest {
 
-    IPlatformLoginClient client = new PlatformLoginClientREST();
+    IPlatformLoginClient client = new PlatformLoginClientMock();//we can't actually test connection to the REST server in CI
 
     @Test
     public void attemptLoginSuccess() {
-        assertEquals(LoginState.SUCCESS,client.attemptLogin("test","letmein123"));
+        assertEquals(LoginState.SUCCESS,client.attemptLogin("test","123456"));
     }
 
     @Test
