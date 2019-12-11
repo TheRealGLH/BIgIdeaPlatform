@@ -8,4 +8,5 @@ module PlatformGameShared {
     opens PlatformGameShared.Enums;
     exports PlatformGameShared.Messages.Client;
     exports PlatformGameShared.Messages.Response;
+    exports PlatformGameShared;
 }

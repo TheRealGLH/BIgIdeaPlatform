@@ -2,12 +2,13 @@ package models.classes;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.PropertiesLoader;
 
 import java.util.TimerTask;
 
 public class GameTimerTask extends TimerTask {
 
-    public static final int tickRate = 30;
+    public static final int tickRate = Integer.parseInt(PropertiesLoader.getPropValues("game.tickrate","game.properties"));
     Game game;
     IPlatformGameServer gameServer;
 

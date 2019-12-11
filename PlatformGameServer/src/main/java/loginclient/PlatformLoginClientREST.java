@@ -20,8 +20,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class PlatformLoginClientREST implements IPlatformLoginClient {
 
     HttpClient client;
-    public static String domain = "http://localhost:8080/";
-    public static String ApiUrl = "MartijnDaniels/PlatformLoginAPI/1.0.0";
+    public static String domain = "http://localhost:8080";
+    public static String ApiUrl = "/MartijnDaniels/PlatformLoginAPI/1.0.0";
 
     @Override
     public LoginState attemptLogin(String username, String password) {
