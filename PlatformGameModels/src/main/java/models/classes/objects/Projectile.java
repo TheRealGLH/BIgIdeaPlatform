@@ -43,6 +43,6 @@ public abstract class Projectile extends MovableObject {
 
     @Override
     public String getLabel() {
-        return getPosition().toString();
+        return "";
     }
 }
