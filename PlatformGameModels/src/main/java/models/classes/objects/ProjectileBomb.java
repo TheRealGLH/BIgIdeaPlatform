@@ -2,15 +2,18 @@ package models.classes.objects;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
+import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
 
 public class ProjectileBomb extends Projectile {
-    private int explodeTime = 30;
-    private static int explosionGrowth = 2;
+    private int explodeTime = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explodeTime","weapons.properties"));;
+    private static int explosionGrowth = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explosionGrowth","weapons.properties"));;
+    private static int maxLife = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.maxLife","weapons.properties"));;
+    private static float size = Float.parseFloat(PropertiesLoader.getPropValues("projectileBomb.size","weapons.properties"));
 
     public ProjectileBomb(float xPosition, float yPosition, Player owner) {
-        super(xPosition, yPosition, 20, 20, 120, owner);
-        explodeTime = 120 - explodeTime;
+        super(xPosition, yPosition, size, size, maxLife, owner);
+        explodeTime = maxLife - explodeTime;
         destroyOnHit = false;
     }
 

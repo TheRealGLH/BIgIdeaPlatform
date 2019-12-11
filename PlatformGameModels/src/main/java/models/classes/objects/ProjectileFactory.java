@@ -16,7 +16,7 @@ public class ProjectileFactory {
                 break;
             default:
             case GUN:
-                projectile = new ProjectileBullet(pos.getX(),pos.getY(),20,10,player);
+                projectile = new ProjectileBullet(pos.getX(),pos.getY(),player);
                 projectile.setAcceleration(ProjectileBullet.bulletAcceleration * xfact,0);
                 break;
             case GRENADELAUNCHER:
@@ -25,7 +25,7 @@ public class ProjectileFactory {
                 break;
             case THROWAXE:
                 projectile = new ProjectileThrowingAxe(pos.getX(), pos.getY(), player);
-                projectile.setVelocity(30 * xfact, 10);
+                projectile.setVelocity(ProjectileThrowingAxe.horizontalVelocity * xfact, ProjectileThrowingAxe.verticalVelocity);
         }
         projectile.setFacingLeft(player.isFacingLeft());
         return projectile;
