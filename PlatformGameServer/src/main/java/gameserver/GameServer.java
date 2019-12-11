@@ -29,7 +29,7 @@ public class GameServer implements IPlatformGameServer {
     Timer timer = new Timer();
 
     public GameServer() {
-        loginClient = new PlatformLoginClientMock();
+        loginClient = new PlatformLoginClientREST();
         joinedClients = new ArrayList<>();
     }
 
