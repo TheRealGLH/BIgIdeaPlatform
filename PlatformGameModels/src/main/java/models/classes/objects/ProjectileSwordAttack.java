@@ -3,7 +3,6 @@ package models.classes.objects;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
-import models.classes.GameObject;
 
 public class ProjectileSwordAttack extends Projectile {
 

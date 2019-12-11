@@ -5,9 +5,8 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import loginclient.IPlatformLoginClient;
-import loginclient.PlatformLoginClientMock;
 import PlatformGameShared.Points.SpriteUpdate;
+import loginclient.IPlatformLoginClient;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 

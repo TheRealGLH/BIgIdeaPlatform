@@ -1,10 +1,9 @@
 package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
-import PlatformGameShared.Interfaces.IPlatformGameClient;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class IPlatformLoginClientTest {
 

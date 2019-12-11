@@ -2,7 +2,6 @@ package interfaces;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
-import io.swagger.model.PlayerLoginResponse;
 
 public interface ILoginDatabaseConnector {
 
