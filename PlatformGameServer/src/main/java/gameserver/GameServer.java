@@ -9,6 +9,7 @@ import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.SpriteUpdate;
 import com.google.gson.Gson;
 import loginclient.IPlatformLoginClient;
+import loginclient.PlatformLoginClientMock;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
@@ -28,7 +29,7 @@ public class GameServer implements IPlatformGameServer {
     Timer timer = new Timer();
 
     public GameServer() {
-        loginClient = new PlatformLoginClientREST();
+        loginClient = new PlatformLoginClientMock();
         joinedClients = new ArrayList<>();
     }
 

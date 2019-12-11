@@ -17,9 +17,13 @@ public abstract class GameObject extends Observable {
 
 
     public boolean collidesWith(GameObject other) {
-        if (this.equals(other)) return false;
-        if (between(position, getTopRight(), other.getPosition())) return true;
-        return between(position, getTopRight(), other.getTopRight());
+        if(other.equals(this)) return false;
+        Vector2 otherSize = other.getSize();
+        Vector2 otherPos = other.getPosition();
+        return (position.getX() <= otherPos.getX()+ otherSize.getX() &&
+                position.getX() + size.getX() >= otherPos.getX() &&
+                position.getY() <= otherPos.getY() + otherSize.getY() &&
+                position.getY() + size.getY() >= otherPos.getY());
     }
 
 

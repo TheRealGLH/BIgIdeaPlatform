@@ -26,7 +26,7 @@ public class ProjectileBullet extends Projectile {
     }
 
     @Override
-    public SpriteType getSpriteType() {return SpriteType.PROJECTILEBULLET;}
+    public SpriteType getSpriteType() {return SpriteType.NONE;}
 
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.GRENADELAUNCHER;
+    private WeaponType currentWeapon = WeaponType.GUN;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
@@ -21,7 +21,8 @@ public class Player extends MovableObject {
     private float startX, startY;
     private String name = "undefinedplayer";
     private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
-    private float standingHeight = 20;
+    private static float baseSize = 40;
+    private float standingHeight = baseSize;
     private float width;
     private boolean ducked = false;
 
@@ -30,9 +31,8 @@ public class Player extends MovableObject {
     private float maxHorizontalAcceleration = 5;
 
     public Player(float xPos, float yPos) {
-        super(xPos, yPos, 20, 20);
-        standingHeight = 20;
-        width = 20;
+        super(xPos, yPos, baseSize, baseSize);
+        width = baseSize;
         this.startX = xPos;
         this.startY = yPos;
     }

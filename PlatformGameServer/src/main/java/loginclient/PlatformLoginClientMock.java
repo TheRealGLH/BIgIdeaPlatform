@@ -50,6 +50,54 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
 
     @Override
     public String getLevelContent(String levelname) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        return "{\n" +
+                "  \"name\": \"Mock Rest Land\",\n" +
+                "  \"width\": 600,\n" +
+                "  \"height\": 600,\n" +
+                "  \"objects\": [\n" +
+                "    {\n" +
+                "      \"kind\": \"platform\",\n" +
+                "      \"xpos\": 100,\n" +
+                "      \"ypos\": 50,\n" +
+                "      \"width\": 600,\n" +
+                "      \"height\": 50,\n" +
+                "      \"solid\": true\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"platform\",\n" +
+                "      \"xpos\": 350,\n" +
+                "      \"ypos\": 300,\n" +
+                "      \"width\": 100,\n" +
+                "      \"height\": 20,\n" +
+                "      \"solid\": false\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"platform\",\n" +
+                "      \"xpos\": 600,\n" +
+                "      \"ypos\": 200,\n" +
+                "      \"width\": 100,\n" +
+                "      \"height\": 20,\n" +
+                "      \"solid\": false\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"platform\",\n" +
+                "      \"xpos\": 100,\n" +
+                "      \"ypos\": 200,\n" +
+                "      \"width\": 100,\n" +
+                "      \"height\": 20,\n" +
+                "      \"solid\": false\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"playerspawn\",\n" +
+                "      \"xpos\": 250,\n" +
+                "      \"ypos\": 210\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"playerspawn\",\n" +
+                "      \"xpos\": 150,\n" +
+                "      \"ypos\": 210\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
     }
 }

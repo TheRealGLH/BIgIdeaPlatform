@@ -21,11 +21,13 @@ public class Platform extends GameObject {
         this.isSolid = isSolid;
     }
 
+    /*
     @Override
     public boolean collidesWith(GameObject other) {
-        if (!isSolid) return isObjectOnTop(other);
+        //if (!isSolid) return isObjectOnTop(other);
         return super.collidesWith(other);
     }
+     */
 
     @Override
     public SpriteType getSpriteType() {
