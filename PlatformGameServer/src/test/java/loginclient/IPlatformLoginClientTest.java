@@ -1,6 +1,8 @@
 package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
+import PlatformGameShared.Points.GameLevel;
+import com.google.gson.Gson;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +32,15 @@ public class IPlatformLoginClientTest {
     @Test
     public void testLevel() {
         System.out.println(client.getLevelContent("dustbowl"));
+    }
+
+    @Test
+    public void convertLevel(){
+
+        Gson gson = new Gson();
+
+        GameLevel gameLevel = gson.fromJson(client.getLevelContent("battlefield"),GameLevel.class);
+        System.out.println("a");
     }
 
 }

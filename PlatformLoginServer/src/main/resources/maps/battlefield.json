@@ -21,6 +21,14 @@
     },
     {
       "kind": "platform",
+      "xpos": 350,
+      "ypos": 400,
+      "width": 100,
+      "height": 20,
+      "solid": false
+    },
+    {
+      "kind": "platform",
       "xpos": 600,
       "ypos": 200,
       "width": 100,

@@ -3,6 +3,8 @@ package models.classes;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.GameLevel;
+import PlatformGameShared.Points.GameLevelObject;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
 import models.classes.objects.*;
@@ -20,6 +22,8 @@ public class Game implements Observer, IPlayerEventListener {
     private List<SpriteUpdate> spriteUpdates;
     private int spriteCount = 0;
     private boolean firstUpdateComplete = false;
+    private float levelWidth = 600;
+    private float levelHeight = 600;
 
     public Game() {
         playerNrMap = new HashMap<>();
@@ -54,8 +58,6 @@ public class Game implements Observer, IPlayerEventListener {
         createSprite(plat);
 
 
-
-
         for (int i = 0; i < playerNrs.length; i++) {
             Player p = new Player(10 * (i + 1) + 300, 200);
             createSprite(p);
@@ -74,8 +76,43 @@ public class Game implements Observer, IPlayerEventListener {
 
     }
 
+    public void setUpGame(int[] playerNrs, String[] playerNames, GameLevel gameLevel) {
+        List<GameLevelObject> platformlevelobjects = new ArrayList<>();
+        levelWidth = gameLevel.getWidth();
+        levelHeight = gameLevel.getHeight();
+        for (GameLevelObject object : gameLevel.getObjects()) {
+            switch (object.getKind()) {
+                case platform:
+                    platformlevelobjects.add(object);
+                    break;
+                case playerspawn:
+                    break;
+                case weaponspawn:
+                    break;
+            }
+        }
+        for (GameLevelObject platformlevelobject : platformlevelobjects) {
+            Platform plat = new Platform(platformlevelobject.getXpos(), platformlevelobject.getYpos(),
+                    platformlevelobject.getWidth(), platformlevelobject.getHeight(), platformlevelobject.isSolid());
+            platforms.add(plat);
+            createSprite(plat);
+        }
+
+        for (int i = 0; i < playerNrs.length; i++) {
+            Player p = new Player(10 * (i + 1) + 300, 200);
+            //TODO have this position be based on player spawn points
+            createSprite(p);
+            movableObjects.add(p);
+            playerNrMap.put(playerNrs[i], p);
+            p.setName(playerNames[i]);
+            p.addShootEventListener(this);
+        }
+
+    }
+
     /**
      * Should speak for itself
+     *
      * @return A randomly selected weapontype
      */
     private WeaponType pickRandomWeapon() {
@@ -122,7 +159,7 @@ public class Game implements Observer, IPlayerEventListener {
                     float diff = objY - pY;
                     if (diff < -0.1f) {//can't seemingly compare exact float values
                         System.out.println(movableObject + " Diff: " + diff + " platform y " + pY + " obj " + objY);
-                        movableObject.setPosition(movableObject.getPosition().getX(), pY,true);
+                        movableObject.setPosition(movableObject.getPosition().getX(), pY, true);
                         movableObject.setAcceleration(movableObject.getAcceleration().getX(), 0);
                         movableObject.setVelocity(movableObject.getVelocity().getX(), 0);
                         movableObject.setTimeInAir(0);

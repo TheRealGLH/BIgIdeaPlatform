@@ -2,6 +2,7 @@ package models.classes;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.PropertiesLoader;
 
 import java.util.TimerTask;
@@ -19,6 +20,12 @@ public class GameTimerTask extends TimerTask {
         this.gameServer = gameServer;
         game = new Game();
         game.setUpGame(playerNrs, names);
+    }
+
+    public GameTimerTask(IPlatformGameServer gameServer, int[] playerNrs, String[] names, GameLevel gameLevel) {
+        this.gameServer = gameServer;
+        game = new Game();
+        game.setUpGame(playerNrs, names, gameLevel);
     }
 
     @Override
