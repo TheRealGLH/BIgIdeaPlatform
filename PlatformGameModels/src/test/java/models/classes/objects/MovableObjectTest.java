@@ -103,6 +103,7 @@ public class MovableObjectTest {
         float yAcc = 12;
         Vector2 expected = new Vector2(movableObject.getPosition().getX() + xAcc, movableObject.getPosition().getY() + yAcc);
         movableObject.setAcceleration(xAcc, yAcc);
+        movableObject.setUseGravity(false);
         movableObject.update();
         Vector2 actual = movableObject.getPosition();
         Assert.assertEquals(expected, actual);

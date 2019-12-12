@@ -5,6 +5,7 @@
  */
 package gameserver;
 
+import PlatformGameShared.PropertiesLoader;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -18,7 +19,7 @@ import javax.websocket.server.ServerContainer;
  */
 public class CommunicatorServer {
 
-    private static final int PORT = 8095;
+    private static final int PORT = Integer.parseInt(PropertiesLoader.getPropValues("gameServer.port","application.properties"));
     
     /**
      * @param args the command line arguments

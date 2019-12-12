@@ -1,18 +1,19 @@
 package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
-import PlatformGameShared.Interfaces.IPlatformGameClient;
+import PlatformGameShared.Points.GameLevel;
+import com.google.gson.Gson;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class IPlatformLoginClientTest {
 
-    IPlatformLoginClient client = new PlatformLoginClientREST();
+    IPlatformLoginClient client = new PlatformLoginClientMock();//we can't actually test connection to the REST server in CI
 
     @Test
     public void attemptLoginSuccess() {
-        assertEquals(LoginState.SUCCESS,client.attemptLogin("test","letmein123"));
+        assertEquals(LoginState.SUCCESS,client.attemptLogin("test","123456"));
     }
 
     @Test
@@ -31,6 +32,15 @@ public class IPlatformLoginClientTest {
     @Test
     public void testLevel() {
         System.out.println(client.getLevelContent("dustbowl"));
+    }
+
+    @Test
+    public void convertLevel(){
+
+        Gson gson = new Gson();
+
+        GameLevel gameLevel = gson.fromJson(client.getLevelContent("battlefield"),GameLevel.class);
+        System.out.println("a");
     }
 
 }

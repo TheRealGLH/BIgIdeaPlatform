@@ -46,6 +46,7 @@ public class ProjectileTest {
         //using these positions will ensure that we dont start by hitting the projectile
         Vector2 playerStartPoint = new Vector2(projectile.getPosition().getX() + 20, projectile.getPosition().getY() + 20);
         Player player = new Player(playerStartPoint.getX(),playerStartPoint.getY());
+        player.setUseGravity(false);
         game.addObject(player);
         Vector2 projPos = projectile.getPosition();
         player.setPosition(projPos.getX(),projPos.getY());

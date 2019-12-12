@@ -2,26 +2,24 @@ package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import org.apache.http.Header;
+import PlatformGameShared.PropertiesLoader;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class PlatformLoginClientREST implements IPlatformLoginClient {
 
     HttpClient client;
-    public static String domain = "http://localhost:8080/";
-    public static String ApiUrl = "MartijnDaniels/PlatformLoginAPI/1.0.0";
+    public static final String domain = "http://"+PropertiesLoader.getPropValues("RESTClient.domain","application.properties")+":"+PropertiesLoader.getPropValues("RESTClient.port","application.properties");
+    public static final String ApiUrl = PropertiesLoader.getPropValues("RESTClient.apiURL","application.properties");
 
     @Override
     public LoginState attemptLogin(String username, String password) {

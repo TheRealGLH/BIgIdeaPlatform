@@ -3,7 +3,6 @@ package gamegui.controllers;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.Points.SpriteUpdate;
-import PlatformGameShared.Points.Vector2;
 import gamegui.GUIScreenController;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.ScreenController;
@@ -22,7 +21,6 @@ import java.util.Map;
 public class PlatformGameViewController implements ISpriteUpdateEventListener {
 
     public Pane gamePane;
-    private int lastId = 1;
     ScreenController controller = GUIScreenController.getInstance();
     Map<Integer, ImageView> spriteMap = new HashMap<>();
     Map<Integer, Label> labelMap = new HashMap<>();
@@ -41,45 +39,7 @@ public class PlatformGameViewController implements ISpriteUpdateEventListener {
     @FXML
     void handleKeyReleased(KeyEvent event) {
         KeyCode keyCode = event.getCode();
-        float widthHeight = 10;
-        Vector2 size = new Vector2(widthHeight, widthHeight);
         switch (keyCode) {
-            /*
-            case C:
-                List<SpriteUpdate> sprites = new ArrayList<>();
-                Random random = new Random();
-                for (int i = 1; i < 5; i++) {
-                    SpriteType spriteType = SpriteType.values()[random.nextInt(SpriteType.values().length)];
-                    Vector2 position = new Vector2(widthHeight, (i + lastId) * widthHeight);
-                    SpriteUpdate u1 = new SpriteUpdate(lastId, position, size, SpriteUpdateType.CREATE, spriteType, false);
-                    sprites.add(u1);
-                    lastId++;
-                }
-                controller.updateScreen(sprites);
-                break;
-            case M:
-                Random random1 = new Random();
-                List<SpriteUpdate> spriteMove = new ArrayList<>();
-                for (int nr : spriteMap.keySet()) {
-                    float xPos = (float) random1.nextInt(1270);
-                    float yPos = (float) random1.nextInt(720);
-                    SpriteUpdate m = new SpriteUpdate(nr, new Vector2(xPos, yPos), size, SpriteUpdateType.MOVE, SpriteType.NONE, (Math.random() < 0.5));
-                    spriteMove.add(m);
-                }
-                controller.updateScreen(spriteMove);
-                break;
-
-            case R:
-                List<SpriteUpdate> spritesDelete = new ArrayList<>();
-                for (int nr : spriteMap.keySet()) {
-                    SpriteUpdate d = new SpriteUpdate(nr, Vector2.Zero(), Vector2.Zero(), SpriteUpdateType.DESTROY, SpriteType.NONE, false);
-                    spritesDelete.add(d);
-                }
-                controller.updateScreen(spritesDelete);
-                lastId = 1;
-                break;
-
-             */
             case A:
                 walkLeftHeld = false;
                 break;

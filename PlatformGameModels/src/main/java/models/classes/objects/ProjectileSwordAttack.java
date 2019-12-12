@@ -2,15 +2,16 @@ package models.classes.objects;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
-import models.classes.GameObject;
+import PlatformGameShared.PropertiesLoader;
 
 public class ProjectileSwordAttack extends Projectile {
 
-    private static float sizeMod = 1.5f;
+    private static float sizeMod = Float.parseFloat(PropertiesLoader.getPropValues("projectileSwordAttack.sizeMod","weapons.properties"));
+    private static int maxLife = Integer.parseInt(PropertiesLoader.getPropValues("projectileSwordAttack.maxLife","weapons.properties"));
     Player owner;
 
     public ProjectileSwordAttack(float xPosition, float yPosition, Player owner) {
-        super(xPosition, yPosition, owner.getSize().getX() * sizeMod, owner.getSize().getY() * sizeMod, 10, owner);
+        super(xPosition, yPosition, owner.getSize().getX() * sizeMod, owner.getSize().getY() * sizeMod, maxLife, owner);
         setUseGravity(false);
         this.owner = owner;
     }

@@ -3,6 +3,7 @@ package models.classes;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import models.classes.objects.Player;
+import models.classes.objects.ProjectileBullet;
 import models.classes.objects.WeaponPickup;
 import models.enums.WeaponType;
 import org.junit.Assert;
@@ -39,7 +40,7 @@ public class GameObjectTest {
     public void collidesWithTopRight() {
         System.out.println("Testing GameObject collision with top right");
         mock = new GameObjectMock(0, 0, 10, 10);
-        collide = new GameObjectMock(5, 5, 10, 10);
+        collide = new GameObjectMock(5, 5, 40, 40);
         Assert.assertTrue(mock.collidesWith(collide));
     }
 
@@ -129,9 +130,10 @@ public class GameObjectTest {
 
     @Test
     public void testPractical(){
-        Player player = new Player(116,0);
-        WeaponPickup pickup = new WeaponPickup(89,0, WeaponType.NONE);
-        Assert.assertTrue(pickup.collidesWith(player));
+        Player player = new Player(350,320);
+        ProjectileBullet pickup = new ProjectileBullet(343.429f,324f,null);
+        boolean status = pickup.collidesWith(player);
+        Assert.assertTrue(status);
 
 
     }

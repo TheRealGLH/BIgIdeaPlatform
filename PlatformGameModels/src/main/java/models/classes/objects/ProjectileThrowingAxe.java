@@ -2,12 +2,21 @@ package models.classes.objects;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
+import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
 
+
+
 public class ProjectileThrowingAxe extends Projectile {
+
+    private static float size = Float.parseFloat(PropertiesLoader.getPropValues("projectileThrowingAxe.size","weapons.properties"));
+    private static int maxLife = Integer.parseInt(PropertiesLoader.getPropValues("projectileThrowingAxe.maxLife","weapons.properties"));
+    public static float horizontalVelocity = Float.parseFloat(PropertiesLoader.getPropValues("projectileThrowingAxe.velocityX","weapons.properties"));
+    public static float verticalVelocity = Float.parseFloat(PropertiesLoader.getPropValues("projectileThrowingAxe.velocityY","weapons.properties"));
+
     public ProjectileThrowingAxe(float xPosition, float yPosition,   Player owner) {
-        super(xPosition, yPosition, 30, 30, 60, owner);
-        setMaxHorizontalVelocity(40);
+        super(xPosition, yPosition, size, size, maxLife, owner);
+        setMaxHorizontalVelocity(horizontalVelocity);
     }
 
     @Override

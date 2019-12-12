@@ -5,9 +5,11 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.Points.GameLevel;
+import PlatformGameShared.Points.SpriteUpdate;
+import com.google.gson.Gson;
 import loginclient.IPlatformLoginClient;
 import loginclient.PlatformLoginClientMock;
-import PlatformGameShared.Points.SpriteUpdate;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
@@ -68,7 +70,8 @@ public class GameServer implements IPlatformGameServer {
                     names[i] = joinedClients.get(i).getName();
                     playerNrs[i] = joinedClients.get(i).getPlayerNr();
                 }
-                gameTimerTask = new GameTimerTask(this, playerNrs, names);
+                GameLevel gameLevel = new Gson().fromJson(loginClient.getLevelContent("battlefield"),GameLevel.class);
+                gameTimerTask = new GameTimerTask(this, playerNrs, names,gameLevel);
                 for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
                 //TODO send stuff to the GameTimerTask, like the map perhaps
                 timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);

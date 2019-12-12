@@ -1,7 +1,8 @@
-package interfaces;
+package DatabaseConnector;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
+import interfaces.ILoginDatabaseConnector;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -6,6 +6,7 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.PropertiesLoader;
 import gameclient.GameClientMessageSender;
 import gamegui.Interfaces.ILobbyEventListener;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
@@ -30,7 +31,12 @@ public class GUIScreenController extends ScreenController {
     private String name;
 
     private GUIScreenController() {
-        gameServer = new GameClientMessageSender();
+        if(Boolean.parseBoolean(PropertiesLoader.getPropValues("gameServer.runLocally","connection.properties"))) {
+            gameServer = new GameServer();
+        }
+        else{
+            gameServer = new GameClientMessageSender();
+        }
     }
 
     //We use a so called 'Eager' Singleton pattern here, because it supposedly goes nicer with a multithreaded environment (Such as JavaFX)

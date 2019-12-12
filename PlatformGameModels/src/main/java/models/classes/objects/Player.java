@@ -12,15 +12,17 @@ import java.util.List;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.GRENADELAUNCHER;
+    private WeaponType currentWeapon = WeaponType.GUN;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
+    private boolean shotLastUpdate = false;
     private InputType lastMove;
     private float startX, startY;
     private String name = "undefinedplayer";
     private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
-    private float standingHeight = 20;
+    private static float baseSize = 40;
+    private float standingHeight = baseSize;
     private float width;
     private boolean ducked = false;
 
@@ -29,9 +31,8 @@ public class Player extends MovableObject {
     private float maxHorizontalAcceleration = 5;
 
     public Player(float xPos, float yPos) {
-        super(xPos, yPos, 20, 20);
-        standingHeight = 20;
-        width = 20;
+        super(xPos, yPos, baseSize, baseSize);
+        width = baseSize;
         this.startX = xPos;
         this.startY = yPos;
     }
@@ -55,8 +56,11 @@ public class Player extends MovableObject {
     }
 
     public void useWeapon() {
-        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
-            iPlayerEventListener.onShootEvent(this);
+        if(!shotLastUpdate) {
+            shotLastUpdate = true;
+            for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+                iPlayerEventListener.onShootEvent(this);
+            }
         }
     }
 
@@ -134,13 +138,14 @@ public class Player extends MovableObject {
         }
         if (willJump) jump();
         if (willShoot) useWeapon();
+        else shotLastUpdate = false;
         hasInputMove = false;
         willJump = false;
         willShoot = false;
         Vector2 acc = getAcceleration();
         //Cap acceleration
         if(acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration,acc.getY());
-        if(acc.getY() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
+        if(acc.getX() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
         super.update();
     }
 

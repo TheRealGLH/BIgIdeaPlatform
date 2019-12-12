@@ -54,9 +54,8 @@ public class Vector2 {
         if (other == this) return true;
         Vector2 vector2 = (Vector2) other;
         if (other == null) return false;
-        if (vector2.getX() == this.x && vector2.getY() == this.y) return true;
-
-        return false;
+        return Float.compare(vector2.getX(),x) == 0 && Float.compare(vector2.getY(),y) == 0;
+        //return vector2.getX() == this.x && vector2.getY() == this.y;
     }
 
     /**
