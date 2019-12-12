@@ -14,7 +14,7 @@ public class SpriteFactory {
 
     private static Image placeHolder = new Image(SpriteFactory.class.getResource("/sprites/placeholder.png").toExternalForm());
     private static Image player = new Image(SpriteFactory.class.getResource("/sprites/platformplayer.png").toExternalForm());
-    private static Image platform = new Image(SpriteFactory.class.getResource("/sprites/platform.png").toExternalForm());
+    private static Image platform = new Image(SpriteFactory.class.getResource("/sprites/solidplatform.png").toExternalForm());
     private static Image platformNonSolid = new Image(SpriteFactory.class.getResource("/sprites/unsolidplatform.png").toExternalForm());
     private static Image weaponpickup = new Image(SpriteFactory.class.getResource("/sprites/ammo.gif").toExternalForm());
     private static Image bullet = new Image(SpriteFactory.class.getResource("/sprites/bullet.png").toExternalForm());

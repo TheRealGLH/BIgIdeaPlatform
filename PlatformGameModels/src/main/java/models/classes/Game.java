@@ -269,7 +269,7 @@ public class Game implements Observer, IPlayerEventListener {
     }
 
     private void deleteSprite(GameObject gameObject) {
-        spriteUpdates.add(new SpriteUpdate(gameObject.getObjectNr(), Vector2.Zero(), Vector2.Zero(), SpriteUpdateType.DESTROY, SpriteType.NONE, false));
+        spriteUpdates.add(new SpriteUpdate(gameObject.getObjectNr(), Vector2.Zero(), Vector2.Zero(), SpriteUpdateType.DESTROY, gameObject.getSpriteType(), false));
     }
 
     @Override
@@ -279,5 +279,10 @@ public class Game implements Observer, IPlayerEventListener {
             objectsToSpawn.add(p);
             createSprite(p);
         }
+    }
+
+    @Override
+    public void onDeathEvent(Player deadPlayer) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
     }
 }

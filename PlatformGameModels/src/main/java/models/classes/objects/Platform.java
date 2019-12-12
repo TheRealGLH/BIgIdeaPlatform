@@ -42,6 +42,6 @@ public class Platform extends GameObject {
         float otherTopRight = other.getTopRight().getY();
         Vector2 pOrigin = getPosition();
         Vector2 pTopRight = getTopRight();
-        return (between(pOrigin.getX(), pTopRight.getX(), otherOrigin.getX()) && between(pOrigin.getY(), pTopRight.getY(), otherOrigin.getY()) && otherTopRight > pTopRight.getY());
+        return (between(pOrigin.getX(), pTopRight.getX(), otherOrigin.getX()+other.getSize().getX()/2) && between(pOrigin.getY(), pTopRight.getY(), otherOrigin.getY()) && otherTopRight > pTopRight.getY());
     }
 }
