@@ -13,6 +13,8 @@ import static org.junit.Assert.*;
 
 public class LoginDatabaseJDBCTest {
 
+    //Commented because we cannot reach the DB from our VCS CI
+    //private ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
     private ILoginDatabaseConnector databaseConnector = LoginDatabaseConnectorMock.getInstance();
 
     @Before

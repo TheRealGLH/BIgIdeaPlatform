@@ -90,3 +90,6 @@ seabattleclient/target/generated-sources/
 seabattleclient/target/generated-test-sources/
 
 */target/*
+/PlatformLoginServer/src/main/resources/maps/jdbc.properties
+/PlatformLoginServer/src/main/resources/jdbc.properties
+/PlatformLoginServer/src/test/resources/jdbc.properties

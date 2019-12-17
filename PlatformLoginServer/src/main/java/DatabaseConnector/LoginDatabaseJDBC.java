@@ -11,16 +11,20 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import com.mysql.jdbc.Driver;
+
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Base64;
 
 public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
-    private static final String hostname = PropertiesLoader.getPropValues("jdbc.domain", "jdbc.hostname");
-    private static final String port = PropertiesLoader.getPropValues("jdbc.port", "jdbc.hostname");
-    private static final String databasename = PropertiesLoader.getPropValues("jdbc.databasename", "jdbc.hostname");
-    private static final String username = PropertiesLoader.getPropValues("jdbc.username", "jdbc.hostname");
-    private static final String password = PropertiesLoader.getPropValues("jdbc.password", "jdbc.hostname");
-    private static final String secret = PropertiesLoader.getPropValues("jdbc.secret", "jdbc.hostname");
+    private static final String hostname = PropertiesLoader.getPropValues("jdbc.hostname", "jdbc.properties");
+    private static final String port = PropertiesLoader.getPropValues("jdbc.port", "jdbc.properties");
+    private static final String databaseName = PropertiesLoader.getPropValues("jdbc.databasename", "jdbc.properties");
+    private static final String dbUserName = PropertiesLoader.getPropValues("jdbc.username", "jdbc.properties");
+    private static final String dbPassword = PropertiesLoader.getPropValues("jdbc.password", "jdbc.properties");
+    private static final String secret = PropertiesLoader.getPropValues("jdbc.secret", "jdbc.properties");
     private static String connectionString;
 
     private static SecretKeySpec secretKey;
@@ -28,8 +32,10 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
 
     static LoginDatabaseJDBC instance = null;
 
+    Connection con;
+
     private LoginDatabaseJDBC() {
-        connectionString = hostname + port + "/" + databasename;
+        connectionString = "jdbc:mysql://" + hostname + ":" + port + "/" + databaseName;
         System.out.println("Connect string is " + connectionString);
     }
 
@@ -40,17 +46,79 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
 
     @Override
     public LoginState loginPlayer(String name, String password) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        String encryptedPassword = encrypt(password, secret);
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("select name, password from player where name = '" + name + "';");
+            while (rs.next()) {
+                String pwGet = rs.getString("password");
+                if (encryptedPassword.equals(pwGet)) return LoginState.SUCCESS;
+
+            }
+            con.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return LoginState.ERROR;
+        }
+        return LoginState.INCORRECTDATA;
     }
 
     @Override
     public RegisterState registerPlayer(String name, String password) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        if (name.length() <= 3 || password.length() <= 6) return RegisterState.INCORRECTDATA;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
+            Statement statement = con.createStatement();
+            String encryptedPW = encrypt(password, secret);
+            ResultSet rs = statement.executeQuery("select name from player where name = '" + name + "';");
+            while (rs.next()) {
+                String nameGet = rs.getString("name");
+                if (name.equals(nameGet)) return RegisterState.ALREADYEXISTS;
+                con.close();
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return RegisterState.ERROR;
+        }
+        try {
+            con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
+            Statement statement = con.createStatement();
+            String encryptedPW = encrypt(password, secret);
+            statement.execute("INSERT INTO `player` (`name`, `password`, `score`) VALUES ('" + name + "', '" + encryptedPW + "', '0')");
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return RegisterState.ERROR;
+        }
+        return RegisterState.SUCCESS;
+
     }
 
     @Override
     public void resetData() {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        try {
+            DriverManager.registerDriver(new Driver());
+            con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
+            Statement statement = con.createStatement();
+            statement.execute("TRUNCATE TABLE player;");
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
