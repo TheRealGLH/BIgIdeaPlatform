@@ -9,7 +9,7 @@ public interface ILoginDatabaseConnector {
 
     public RegisterState registerPlayer(String name, String password);
 
-
+    public void resetData();
 
 
 }

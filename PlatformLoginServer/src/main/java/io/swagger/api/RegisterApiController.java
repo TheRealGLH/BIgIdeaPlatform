@@ -1,6 +1,7 @@
 package io.swagger.api;
 
 import DatabaseConnector.LoginDatabaseConnectorMock;
+import DatabaseConnector.LoginDatabaseJDBC;
 import PlatformGameShared.Enums.RegisterState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import interfaces.ILoginDatabaseConnector;
@@ -25,7 +26,7 @@ public class RegisterApiController implements RegisterApi {
 
     private static final Logger log = LoggerFactory.getLogger(RegisterApiController.class);
 
-    private static final ILoginDatabaseConnector databaseConnector = LoginDatabaseConnectorMock.getInstance();
+    private static final ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
 
     private final ObjectMapper objectMapper;
 
@@ -48,7 +49,7 @@ public class RegisterApiController implements RegisterApi {
                     case SUCCESS:
                         return new ResponseEntity<PlayerLoginResponse>(objectMapper.readValue("{  \"playerNr\" : 1,  \"name\" : \""+playerLogin.getName()+"\"}", PlayerLoginResponse.class), HttpStatus.OK);
                     case INCORRECTDATA:
-                        return new ResponseEntity<PlayerLoginResponse>(HttpStatus.FORBIDDEN);
+                        return new ResponseEntity<PlayerLoginResponse>(HttpStatus.NOT_ACCEPTABLE);
                     case ALREADYEXISTS:
                         return new ResponseEntity<PlayerLoginResponse>(HttpStatus.CONFLICT);
                 }

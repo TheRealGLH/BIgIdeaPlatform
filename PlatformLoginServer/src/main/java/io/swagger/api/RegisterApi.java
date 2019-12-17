@@ -20,10 +20,11 @@ import javax.validation.Valid;
 public interface RegisterApi {
 
     @ApiOperation(value = "registers a player", nickname = "registerPlayer", notes = "Adds player login data to the system", response = PlayerLoginResponse.class, tags={ "serverapp", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "player created", response = PlayerLoginResponse.class),
-        @ApiResponse(code = 400, message = "invalid input, object invalid"),
-        @ApiResponse(code = 409, message = "player already registered") })
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "player created", response = PlayerLoginResponse.class),
+            @ApiResponse(code = 400, message = "invalid input, object invalid"),
+            @ApiResponse(code = 406, message = "invalid input, credentials do not match specificiations (too short)"),
+            @ApiResponse(code = 409, message = "player already registered")})
     @RequestMapping(value = "/register",
         produces = { "application/json" }, 
         consumes = { "application/json" },

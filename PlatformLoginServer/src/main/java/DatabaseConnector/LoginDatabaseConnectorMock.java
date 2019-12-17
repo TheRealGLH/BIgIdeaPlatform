@@ -37,14 +37,19 @@ public class LoginDatabaseConnectorMock implements ILoginDatabaseConnector {
     @Override
     public RegisterState registerPlayer(String name, String password) {
         RegisterState registerState = RegisterState.ALREADYEXISTS;
-        if (name.length() <= 3 && password.length() < 6) {
+        if (name.length() <= 3 || password.length() < 6) {
             registerState = RegisterState.INCORRECTDATA;
             return registerState;
         }
         if (usernamePasswordMap.get(name) == null) {
             registerState = RegisterState.SUCCESS;
-            usernamePasswordMap.put(name,password);
+            usernamePasswordMap.put(name, password);
         }
         return registerState;
+    }
+
+    @Override
+    public void resetData() {
+        usernamePasswordMap.clear();
     }
 }
