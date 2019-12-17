@@ -57,10 +57,14 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>MartijnD</groupId>
-            <artifactId>PlatformGameServer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-client-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>javax-websocket-client-impl</artifactId>
+            <version>9.4.15.v20190215</version>
         </dependency>
 
     </dependencies>
