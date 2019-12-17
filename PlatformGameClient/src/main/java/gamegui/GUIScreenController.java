@@ -11,7 +11,6 @@ import gameclient.GameClientMessageSender;
 import gamegui.Interfaces.ILobbyEventListener;
 import gamegui.Interfaces.ISpriteUpdateEventListener;
 import gamegui.enums.GUIState;
-import gameserver.GameServer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -32,7 +31,9 @@ public class GUIScreenController extends ScreenController {
 
     private GUIScreenController() {
         if(Boolean.parseBoolean(PropertiesLoader.getPropValues("gameServer.runLocally","connection.properties"))) {
-            gameServer = new GameServer();
+            //gameServer = new GameServer();
+            System.out.println("Running the game server locally is no longer supported.");
+            System.exit(-1);
         }
         else{
             gameServer = new GameClientMessageSender();

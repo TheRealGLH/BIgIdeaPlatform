@@ -57,10 +57,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>MartijnD</groupId>
-            <artifactId>PlatformGameServer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.0</version>
         </dependency>
 
     </dependencies>
