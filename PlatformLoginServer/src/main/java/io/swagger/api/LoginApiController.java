@@ -1,6 +1,7 @@
 package io.swagger.api;
 
 import DatabaseConnector.LoginDatabaseConnectorMock;
+import DatabaseConnector.LoginDatabaseJDBC;
 import PlatformGameShared.Enums.LoginState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import interfaces.ILoginDatabaseConnector;
@@ -25,7 +26,7 @@ public class LoginApiController implements LoginApi {
 
     private static final Logger log = LoggerFactory.getLogger(LoginApiController.class);
 
-    private static final ILoginDatabaseConnector databaseConnector = LoginDatabaseConnectorMock.getInstance();
+    private static final ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
 
     private final ObjectMapper objectMapper;
 

@@ -62,9 +62,9 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
     public RegisterState attemptRegistration(String username, String password) {
         HttpResponse response = null;
         try {
-            response = sendPostRequest("/login","{\n" +
-                    "  \"name\": \""+username+"\",\n" +
-                    "  \"password\": \""+password+"\"\n" +
+            response = sendPostRequest("/register", "{\n" +
+                    "  \"name\": \"" + username + "\",\n" +
+                    "  \"password\": \"" + password + "\"\n" +
                     "}");
             int status = response.getStatusLine().getStatusCode();
             switch (status){
@@ -72,7 +72,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                     return RegisterState.SUCCESS;
                 case 409:
                     return RegisterState.ALREADYEXISTS;
-                case 403:
+                case 406:
                     return RegisterState.INCORRECTDATA;
                 default:
                     System.out.println("[PlatformLoginClientREST] Unexpected HTTP response code "+status+" on login for "+username+":");
