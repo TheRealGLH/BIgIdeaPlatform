@@ -55,6 +55,10 @@ public abstract class Projectile extends MovableObject implements Cloneable {
         this.owner = owner;
     }
 
+    public Player getOwner() {
+        return owner;
+    }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

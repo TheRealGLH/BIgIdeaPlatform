@@ -144,6 +144,7 @@ public class Game implements Observer, IPlayerEventListener {
         WeaponPickup pickup = new WeaponPickup(point.getX(), point.getY(), pickRandomWeapon());
         createSprite(pickup);
         objectsToSpawn.add(pickup);
+        setNewWeaponSpawnTarget();
     }
 
     /**
