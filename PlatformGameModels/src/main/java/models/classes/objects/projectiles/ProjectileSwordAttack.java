@@ -1,8 +1,9 @@
-package models.classes.objects;
+package models.classes.objects.projectiles;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
+import models.classes.objects.Player;
 
 public class ProjectileSwordAttack extends Projectile {
 
@@ -11,7 +12,7 @@ public class ProjectileSwordAttack extends Projectile {
     Player owner;
 
     public ProjectileSwordAttack(float xPosition, float yPosition, Player owner) {
-        super(xPosition, yPosition, owner.getSize().getX() * sizeMod, owner.getSize().getY() * sizeMod, maxLife, owner);
+        super(xPosition, yPosition, sizeMod, sizeMod, maxLife, owner);
         setUseGravity(false);
         this.owner = owner;
     }

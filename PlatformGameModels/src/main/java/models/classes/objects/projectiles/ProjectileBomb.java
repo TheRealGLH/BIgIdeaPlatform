@@ -1,9 +1,10 @@
-package models.classes.objects;
+package models.classes.objects.projectiles;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
+import models.classes.objects.Player;
 
 public class ProjectileBomb extends Projectile {
     private int explodeTime = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explodeTime","weapons.properties"));;

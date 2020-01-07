@@ -3,6 +3,7 @@ package models.classes.objects;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import models.classes.MockGame;
+import models.classes.objects.projectiles.Projectile;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
