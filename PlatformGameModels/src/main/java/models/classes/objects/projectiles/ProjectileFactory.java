@@ -27,12 +27,17 @@ public class ProjectileFactory {
         WeaponType weaponType = player.getCurrentWeapon();
         Projectile projectile = null;
         Vector2 pos = player.getPosition();
-        float xfact = (player.isFacingLeft()) ? -1 : 1;
-        projectile = (Projectile) projectileMap.get(player.getCurrentWeapon()).clone();
+        float xFactor = (player.isFacingLeft()) ? -1 : 1;
+        projectile = projectileMap.get(weaponType).clone();
+        if (projectile == null) {
+            projectile = projectileMap.get(WeaponType.GUN);
+            System.out.println("[ProjectileFactory] Tried spawning a projectile for a weapon that does not yet have one: " + weaponType);
+        }
         projectile.setOwner(player);
-        projectile.setPosition(player.getPosition().getX(), player.getPosition().getY());
-        projectile.setVelocity(projectile.getVelocity(false) * xfact, projectile.getVelocity(false));
-        projectile.setAcceleration(projectile.getAcceleration(false) * xfact, projectile.getAcceleration(true));
+        projectile.setPosition(pos.getX(), pos.getY());
+        //Adjusting for players facing the left direction.
+        projectile.setVelocity(projectile.getVelocity(false) * xFactor, projectile.getVelocity(false));
+        projectile.setAcceleration(projectile.getAcceleration(false) * xFactor, projectile.getAcceleration(true));
         projectile.setFacingLeft(player.isFacingLeft());
         return projectile;
     }

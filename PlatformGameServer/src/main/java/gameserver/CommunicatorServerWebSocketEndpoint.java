@@ -68,8 +68,7 @@ public class CommunicatorServerWebSocketEndpoint {
                 gameServer.receiveInput(messageInput.getInputType(), client);
                 break;
             case StartGame:
-                PlatformGameMessageStart messageStart = gson.fromJson(jsonMessage, PlatformGameMessageStart.class);
-                gameServer.startGame(client);
+                gameServer.attemptStartGame(client);
                 break;
         }
 

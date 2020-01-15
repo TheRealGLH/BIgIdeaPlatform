@@ -68,6 +68,9 @@ public class Player extends MovableObject {
         setAcceleration(0, 0);
         setVelocity(0, 0);
         setPosition(startX, startY);
+        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+            //iPlayerEventListener.onShootEvent(this);
+        }
     }
 
     public void jump() {

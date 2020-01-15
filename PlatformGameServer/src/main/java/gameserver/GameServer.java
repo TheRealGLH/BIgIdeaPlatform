@@ -60,7 +60,7 @@ public class GameServer implements IPlatformGameServer {
     }
 
     @Override
-    public void startGame(IPlatformGameClient platformGameClient) {
+    public void attemptStartGame(IPlatformGameClient platformGameClient) {
         if (joinedClients.contains(platformGameClient)) {
             if (joinedClients.size() >= minAmountOfPlayers) {
                 int size = joinedClients.size();
@@ -70,7 +70,7 @@ public class GameServer implements IPlatformGameServer {
                     names[i] = joinedClients.get(i).getName();
                     playerNrs[i] = joinedClients.get(i).getPlayerNr();
                 }
-                GameLevel gameLevel = new Gson().fromJson(loginClient.getLevelContent("battlefield"),GameLevel.class);
+                GameLevel gameLevel = new Gson().fromJson(loginClient.getLevelContent("battlefield"), GameLevel.class);
                 gameTimerTask = new GameTimerTask(this, playerNrs, names,gameLevel);
                 for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
                 //TODO send stuff to the GameTimerTask, like the map perhaps
