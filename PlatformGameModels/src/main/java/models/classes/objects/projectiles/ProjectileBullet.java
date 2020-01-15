@@ -17,17 +17,30 @@ public class ProjectileBullet extends Projectile {
     }
 
     @Override
-    public void update(){
+    public void update() {
         super.update();
     }
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-        super.onCollide(other,collidePoint);
+        super.onCollide(other, collidePoint);
     }
 
     @Override
-    public SpriteType getSpriteType() {return SpriteType.PROJECTILEBULLET;}
+    public Projectile clone() {
+        Vector2 pos = getPosition();
+        Vector2 acc = getAcceleration();
+        Vector2 vel = getVelocity();
+        ProjectileBullet clone = new ProjectileBullet(pos.getX(), pos.getY(), getOwner());
+        clone.setAcceleration(acc.getX(), acc.getY());
+        clone.setVelocity(vel.getX(), vel.getY());
+        return clone;
+    }
+
+    @Override
+    public SpriteType getSpriteType() {
+        return SpriteType.PROJECTILEBULLET;
+    }
 
 
 }

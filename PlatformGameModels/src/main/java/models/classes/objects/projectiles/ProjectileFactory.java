@@ -28,11 +28,7 @@ public class ProjectileFactory {
         Projectile projectile = null;
         Vector2 pos = player.getPosition();
         float xfact = (player.isFacingLeft()) ? -1 : 1;
-        try {
-            projectile = (Projectile) projectileMap.get(player.getCurrentWeapon()).clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        projectile = (Projectile) projectileMap.get(player.getCurrentWeapon()).clone();
         projectile.setOwner(player);
         projectile.setPosition(player.getPosition().getX(), player.getPosition().getY());
         projectile.setVelocity(projectile.getVelocity(false) * xfact, projectile.getVelocity(false));

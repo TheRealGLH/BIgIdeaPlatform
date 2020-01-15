@@ -20,12 +20,23 @@ public class ProjectileThrowingAxe extends Projectile {
     }
 
     @Override
-    public void onCollide(GameObject other, Vector2 pos){
-        if(!isGrounded()) super.onCollide(other,pos);
+    public void onCollide(GameObject other, Vector2 pos) {
+        if (!isGrounded()) super.onCollide(other, pos);
     }
 
     @Override
     public SpriteType getSpriteType() {
         return SpriteType.AXE;
+    }
+
+    @Override
+    public Projectile clone() {
+        Vector2 pos = getPosition();
+        Vector2 acc = getAcceleration();
+        Vector2 vel = getVelocity();
+        ProjectileThrowingAxe clone = new ProjectileThrowingAxe(pos.getX(), pos.getY(), getOwner());
+        clone.setAcceleration(acc.getX(), acc.getY());
+        clone.setVelocity(vel.getX(), vel.getY());
+        return clone;
     }
 }

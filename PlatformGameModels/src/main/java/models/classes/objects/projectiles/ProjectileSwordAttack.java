@@ -27,4 +27,15 @@ public class ProjectileSwordAttack extends Projectile {
     public SpriteType getSpriteType() {
         return SpriteType.PROJECTILESWORD;
     }
+
+    @Override
+    public Projectile clone() {
+        Vector2 pos = getPosition();
+        Vector2 acc = getAcceleration();
+        Vector2 vel = getVelocity();
+        ProjectileSwordAttack clone = new ProjectileSwordAttack(pos.getX(), pos.getY(), getOwner());
+        clone.setAcceleration(acc.getX(), acc.getY());
+        clone.setVelocity(vel.getX(), vel.getY());
+        return clone;
+    }
 }

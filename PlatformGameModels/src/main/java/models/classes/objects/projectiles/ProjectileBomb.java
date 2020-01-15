@@ -36,6 +36,17 @@ public class ProjectileBomb extends Projectile {
         }
     }
 
+    @Override
+    public Projectile clone() {
+        Vector2 pos = getPosition();
+        Vector2 acc = getAcceleration();
+        Vector2 vel = getVelocity();
+        ProjectileBomb clone = new ProjectileBomb(pos.getX(), pos.getY(), getOwner());
+        clone.setAcceleration(acc.getX(), acc.getY());
+        clone.setVelocity(vel.getX(), vel.getY());
+        return clone;
+    }
+
 
     @Override
     public SpriteType getSpriteType() {

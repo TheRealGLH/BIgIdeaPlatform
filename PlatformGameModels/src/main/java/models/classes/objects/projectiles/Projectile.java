@@ -7,7 +7,7 @@ import models.classes.objects.Player;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class Projectile extends MovableObject implements Cloneable {
+public abstract class Projectile extends MovableObject {
 
     private int currentLife = 0;
     public int maxLife;
@@ -59,8 +59,6 @@ public abstract class Projectile extends MovableObject implements Cloneable {
         return owner;
     }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+
+    public abstract Projectile clone();
 }
