@@ -1,7 +1,11 @@
-package models.classes.objects;
+package models.classes.objects.projectiles;
 
 import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
+import models.classes.objects.MovableObject;
+import models.classes.objects.Player;
+
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class Projectile extends MovableObject {
 
@@ -9,6 +13,7 @@ public abstract class Projectile extends MovableObject {
     public int maxLife;
     public boolean destroyOnHit = true;
     private Player owner;
+
     public Projectile(float xPosition, float yPosition, float width, float height, int maxLife, Player owner) {
         super(xPosition, yPosition, width, height);
         this.maxLife = maxLife;
@@ -37,7 +42,7 @@ public abstract class Projectile extends MovableObject {
         }
     }
 
-    public int getCurrentLife(){
+    public int getCurrentLife() {
         return currentLife;
     }
 
@@ -45,4 +50,15 @@ public abstract class Projectile extends MovableObject {
     public String getLabel() {
         return "";
     }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+
+    public abstract Projectile clone();
 }

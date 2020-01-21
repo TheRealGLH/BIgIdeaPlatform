@@ -3,9 +3,7 @@ package models.classes;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import models.classes.objects.Player;
-import models.classes.objects.ProjectileBullet;
-import models.classes.objects.WeaponPickup;
-import models.enums.WeaponType;
+import models.classes.objects.projectiles.ProjectileBullet;
 import org.junit.Assert;
 import org.junit.Test;
 

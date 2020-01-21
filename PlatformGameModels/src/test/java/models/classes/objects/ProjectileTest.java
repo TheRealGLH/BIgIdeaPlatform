@@ -3,6 +3,7 @@ package models.classes.objects;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import models.classes.MockGame;
+import models.classes.objects.projectiles.Projectile;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +57,7 @@ public class ProjectileTest {
     }
 }
 
-class MockProjectile extends Projectile{
+class MockProjectile extends Projectile {
 
     public MockProjectile(float xPosition, float yPosition, float width, float height, int maxLife) {
         super(xPosition, yPosition, width, height, maxLife, null);
@@ -65,5 +66,10 @@ class MockProjectile extends Projectile{
     @Override
     public SpriteType getSpriteType() {
         return SpriteType.NONE;
+    }
+
+    @Override
+    public Projectile clone() {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
     }
 }

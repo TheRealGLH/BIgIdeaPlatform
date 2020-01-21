@@ -1,25 +1,24 @@
-package models.classes.objects;
+package models.classes.objects.projectiles;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
+import models.classes.objects.Player;
 
 public class ProjectileSwordAttack extends Projectile {
 
     private static float sizeMod = Float.parseFloat(PropertiesLoader.getPropValues("projectileSwordAttack.sizeMod","weapons.properties"));
     private static int maxLife = Integer.parseInt(PropertiesLoader.getPropValues("projectileSwordAttack.maxLife","weapons.properties"));
-    Player owner;
 
     public ProjectileSwordAttack(float xPosition, float yPosition, Player owner) {
-        super(xPosition, yPosition, owner.getSize().getX() * sizeMod, owner.getSize().getY() * sizeMod, maxLife, owner);
+        super(xPosition, yPosition, sizeMod, sizeMod, maxLife, owner);
         setUseGravity(false);
-        this.owner = owner;
     }
 
     @Override
     public void update() {
-        Vector2 pos = owner.getPosition();
-        Vector2 size = owner.getSize();
+        Vector2 pos = getOwner().getPosition();
+        Vector2 size = getOwner().getSize();
         this.setPosition(pos.getX() + size.getX(), pos.getY() + size.getY() / 2);
         super.update();
     }
@@ -27,5 +26,16 @@ public class ProjectileSwordAttack extends Projectile {
     @Override
     public SpriteType getSpriteType() {
         return SpriteType.PROJECTILESWORD;
+    }
+
+    @Override
+    public Projectile clone() {
+        Vector2 pos = getPosition();
+        Vector2 acc = getAcceleration();
+        Vector2 vel = getVelocity();
+        ProjectileSwordAttack clone = new ProjectileSwordAttack(pos.getX(), pos.getY(), getOwner());
+        clone.setAcceleration(acc.getX(), acc.getY());
+        clone.setVelocity(vel.getX(), vel.getY());
+        return clone;
     }
 }

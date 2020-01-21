@@ -1,7 +1,6 @@
 package models.classes;
 
 import PlatformGameShared.Enums.InputType;
-import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.GameLevelObject;
@@ -9,6 +8,8 @@ import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
 import models.classes.objects.*;
+import models.classes.objects.projectiles.Projectile;
+import models.classes.objects.projectiles.ProjectileFactory;
 import models.enums.WeaponType;
 
 import java.util.*;
@@ -143,6 +144,7 @@ public class Game implements Observer, IPlayerEventListener {
         WeaponPickup pickup = new WeaponPickup(point.getX(), point.getY(), pickRandomWeapon());
         createSprite(pickup);
         objectsToSpawn.add(pickup);
+        setNewWeaponSpawnTarget();
     }
 
     /**

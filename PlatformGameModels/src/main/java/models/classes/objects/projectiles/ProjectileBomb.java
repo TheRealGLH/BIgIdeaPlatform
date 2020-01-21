@@ -1,9 +1,10 @@
-package models.classes.objects;
+package models.classes.objects.projectiles;
 
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
+import models.classes.objects.Player;
 
 public class ProjectileBomb extends Projectile {
     private int explodeTime = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explodeTime","weapons.properties"));;
@@ -33,6 +34,17 @@ public class ProjectileBomb extends Projectile {
         if (explodeTime <= 0) {
             super.onCollide(other, collidePoint);
         }
+    }
+
+    @Override
+    public Projectile clone() {
+        Vector2 pos = getPosition();
+        Vector2 acc = getAcceleration();
+        Vector2 vel = getVelocity();
+        ProjectileBomb clone = new ProjectileBomb(pos.getX(), pos.getY(), getOwner());
+        clone.setAcceleration(acc.getX(), acc.getY());
+        clone.setVelocity(vel.getX(), vel.getY());
+        return clone;
     }
 
 
