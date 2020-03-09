@@ -51,6 +51,11 @@ public class GameClientMessageSender implements IPlatformGameServer {
     }
 
     @Override
+    public void removePlayer(IPlatformGameClient client) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
     public void sendInputRequest() {
         throw new UnsupportedOperationException("This method is not supposed to be called on the client");
     }

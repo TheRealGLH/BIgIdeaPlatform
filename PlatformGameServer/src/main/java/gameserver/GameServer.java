@@ -24,6 +24,7 @@ import java.util.Timer;
 public class GameServer implements IPlatformGameServer {
     GameTimerTask gameTimerTask;
     List<IPlatformGameClient> joinedClients;//clients which  are connected
+    IPlatformGameClient lobbyLeader;
     IPlatformLoginClient loginClient; //REST communicator
     int minAmountOfPlayers = 1;
     Timer timer = new Timer();
@@ -44,18 +45,15 @@ public class GameServer implements IPlatformGameServer {
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
         System.out.println("[GameServer.java] Logging in as " + name + " " + this.toString());
         LoginState loginState = loginClient.attemptLogin(name, password);
-
+        if (loginState != LoginState.ERROR) {
+            System.out.println("Login status for " + name + ": " + loginState);
+        }
         client.receiveLoginState(name, loginState);
         if (loginState == LoginState.SUCCESS) {
             client.setName(name);
             joinedClients.add(client);
-            String names[] = new String[joinedClients.size()];
-            for (int i = 0; i < joinedClients.size(); i++) {
-                names[i] = joinedClients.get(i).getName();
-            }
-            for (IPlatformGameClient platformGameClient : joinedClients) {
-                platformGameClient.lobbyJoinedNotify(names);
-            }
+            if (joinedClients.size() == 1) lobbyLeader = client;
+            notifyClients();
         }
     }
 
@@ -71,7 +69,7 @@ public class GameServer implements IPlatformGameServer {
                     playerNrs[i] = joinedClients.get(i).getPlayerNr();
                 }
                 GameLevel gameLevel = new Gson().fromJson(loginClient.getLevelContent("battlefield"), GameLevel.class);
-                gameTimerTask = new GameTimerTask(this, playerNrs, names,gameLevel);
+                gameTimerTask = new GameTimerTask(this, playerNrs, names, gameLevel);
                 for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
                 //TODO send stuff to the GameTimerTask, like the map perhaps
                 timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
@@ -100,9 +98,38 @@ public class GameServer implements IPlatformGameServer {
     }
 
     @Override
+    public void removePlayer(IPlatformGameClient client) {
+        if (joinedClients.contains(client)) {
+            System.out.println("[GameSever] Removing player: " + client.getName());
+            joinedClients.remove(client);
+            //TODO notify our GameTimerTask
+            if (joinedClients.size() == 1) {
+                lobbyLeader = joinedClients.get(0);
+                System.out.println("[GameServer] " + lobbyLeader + " is now the lobby leader.");
+            }
+            notifyClients();
+        }
+    }
+
+    @Override
     public void sendInputRequest() {
         for (IPlatformGameClient platformGameClient : joinedClients) {
             platformGameClient.receiveAllowInput();
+        }
+    }
+
+    void notifyClients() {
+        String names[] = new String[joinedClients.size()];
+        for (int i = 0; i < joinedClients.size(); i++) {
+            IPlatformGameClient currClient = joinedClients.get(i);
+            if (currClient.equals(lobbyLeader)) {
+                names[i] = currClient.getName() + " (Leader)";
+            } else {
+                names[i] = joinedClients.get(i).getName();
+            }
+        }
+        for (IPlatformGameClient platformGameClient : joinedClients) {
+            platformGameClient.lobbyJoinedNotify(names);
         }
     }
 }

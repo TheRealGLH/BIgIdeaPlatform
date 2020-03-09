@@ -10,6 +10,7 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 
 @ServerEndpoint(value = "/platform/")
@@ -23,8 +24,7 @@ public class CommunicatorServerWebSocketEndpoint {
 
     @OnOpen
     public void onConnect(Session session) {
-        System.out.println("[WebSocket Connected] SessionID: " + session.getId());
-        String message = String.format("[New client with client side session ID]: %s", session.getId());
+        System.out.println("[WebSocket Connected] SessionID: " + session.getId() + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         IPlatformGameClient responseClient = new GameServerMessageSender(session);
         sessionIPlatformGameClientMap.put(session, responseClient);
         responseClient.setPlayerNr(sessionIPlatformGameClientMap.size());
@@ -39,14 +39,20 @@ public class CommunicatorServerWebSocketEndpoint {
 
     @OnClose
     public void onClose(CloseReason reason, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason);
+        System.out.println("[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
+        gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
         sessionIPlatformGameClientMap.remove(session);
     }
 
     @OnError
     public void onError(Throwable cause, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + "[ERROR]: ");
-        cause.printStackTrace(System.err);
+        if (cause instanceof TimeoutException) {
+            System.out.println("[WebSocket Session ID] : " + session.getId() + " timed out. Removing from game...");
+            gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
+        } else {
+            System.out.println("[WebSocket Session ID] : " + session.getId() + "[ERROR]: ");
+            cause.printStackTrace(System.err);
+        }
     }
 
     // Handle incoming message from client

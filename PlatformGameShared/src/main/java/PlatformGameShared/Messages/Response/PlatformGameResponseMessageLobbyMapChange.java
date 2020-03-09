@@ -2,16 +2,17 @@ package PlatformGameShared.Messages.Response;
 
 import PlatformGameShared.Enums.GameResponseMessageType;
 
-public class PlatformGameResponseMessageLobbyMap extends PlatformGameResponseMessage{
+public class PlatformGameResponseMessageLobbyMapChange extends PlatformGameResponseMessage {
 
     private String mapName;
 
-    public PlatformGameResponseMessageLobbyMap(String mapName) {
+    public PlatformGameResponseMessageLobbyMapChange(String mapName) {
         this.setResponseMessageType(GameResponseMessageType.LobbyMapChange);
         this.mapName = mapName;
     }
 
-    public PlatformGameResponseMessageLobbyMap(){}
+    public PlatformGameResponseMessageLobbyMapChange() {
+    }
 
     public String getMapName() {
         return mapName;

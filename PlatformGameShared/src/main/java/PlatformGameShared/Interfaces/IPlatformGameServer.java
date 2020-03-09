@@ -17,5 +17,7 @@ public interface IPlatformGameServer {
 
     void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList);
 
+    public void removePlayer(IPlatformGameClient client);
+
     void sendInputRequest();
 }
