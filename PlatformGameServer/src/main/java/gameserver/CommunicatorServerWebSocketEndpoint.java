@@ -3,14 +3,16 @@ package gameserver;
 import PlatformGameShared.Enums.GameClientMessageType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import PlatformGameShared.Messages.Client.*;
+import PlatformGameShared.Messages.Client.PlatformGameMessage;
+import PlatformGameShared.Messages.Client.PlatformGameMessageInput;
+import PlatformGameShared.Messages.Client.PlatformGameMessageLogin;
+import PlatformGameShared.Messages.Client.PlatformGameMessageRegister;
 import com.google.gson.Gson;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeoutException;
 
 
 @ServerEndpoint(value = "/platform/")
@@ -18,7 +20,6 @@ public class CommunicatorServerWebSocketEndpoint {
 
     // All sessions
     private static Map<Session, IPlatformGameClient> sessionIPlatformGameClientMap = new HashMap<>();
-
     // Map each property to list of sessions that are subscribed to that property
     private static IPlatformGameServer gameServer = new GameServer();
 
@@ -33,7 +34,7 @@ public class CommunicatorServerWebSocketEndpoint {
 
     @OnMessage
     public void onText(String message, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " [Received] : " + message);
+        System.out.println("[WebSocket Session ID] : " + session.getId() + " sent socket message");
         handleMessageFromClient(message, session);
     }
 
@@ -46,13 +47,8 @@ public class CommunicatorServerWebSocketEndpoint {
 
     @OnError
     public void onError(Throwable cause, Session session) {
-        if (cause instanceof TimeoutException) {
-            System.out.println("[WebSocket Session ID] : " + session.getId() + " timed out. Removing from game...");
-            gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
-        } else {
-            System.out.println("[WebSocket Session ID] : " + session.getId() + "[ERROR]: ");
-            cause.printStackTrace(System.err);
-        }
+        System.out.println("[WebSocket Session ID] : " + session.getId() + " was forcefully disconnected because: " + cause.getMessage());
+        gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
     }
 
     // Handle incoming message from client
@@ -77,6 +73,5 @@ public class CommunicatorServerWebSocketEndpoint {
                 gameServer.attemptStartGame(client);
                 break;
         }
-
     }
 }

@@ -23,8 +23,8 @@ import java.util.Timer;
  */
 public class GameServer implements IPlatformGameServer {
     GameTimerTask gameTimerTask;
-    List<IPlatformGameClient> joinedClients;//clients which  are connected
-    IPlatformGameClient lobbyLeader;
+    List<IPlatformGameClient> joinedClients;//clients which are logged in
+    IPlatformGameClient lobbyLeader;//The first client to join, unless they leave, then it's whatever remaining client joined first
     IPlatformLoginClient loginClient; //REST communicator
     int minAmountOfPlayers = 1;
     Timer timer = new Timer();
@@ -36,16 +36,21 @@ public class GameServer implements IPlatformGameServer {
 
     @Override
     public void registerPlayer(String name, String password, IPlatformGameClient client) {
+        if (joinedClients.contains(client)) return;
+        System.out.println("Registering " + name);
         RegisterState registerState = loginClient.attemptRegistration(name, password);
-        System.out.println("[GameServer.java] Attempt to register " + name + ". state: " + registerState);
+        if (registerState != RegisterState.ERROR) {//We already print a rather verbose error when the RegisterState == ERROR, so there's not need to print this
+            System.out.println("[GameServer.java] Attempt to register " + name + ". state: " + registerState);
+        }
         client.receiveRegisterState(name, registerState);
     }
 
     @Override
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
+        if (joinedClients.contains(client)) return;
         System.out.println("[GameServer.java] Logging in as " + name + " " + this.toString());
         LoginState loginState = loginClient.attemptLogin(name, password);
-        if (loginState != LoginState.ERROR) {
+        if (loginState != LoginState.ERROR) { //We already print a rather verbose error when the LoginState == ERROR, so there's not need to print this
             System.out.println("Login status for " + name + ": " + loginState);
         }
         client.receiveLoginState(name, loginState);
@@ -103,7 +108,7 @@ public class GameServer implements IPlatformGameServer {
             System.out.println("[GameSever] Removing player: " + client.getName());
             joinedClients.remove(client);
             //TODO notify our GameTimerTask
-            if (joinedClients.size() == 1) {
+            if (lobbyLeader.equals(client)) {
                 lobbyLeader = joinedClients.get(0);
                 System.out.println("[GameServer] " + lobbyLeader + " is now the lobby leader.");
             }

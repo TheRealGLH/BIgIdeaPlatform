@@ -7,6 +7,7 @@ public class PlatformGameResponseMessageLobbyMapChange extends PlatformGameRespo
     private String mapName;
 
     public PlatformGameResponseMessageLobbyMapChange(String mapName) {
+        super();
         this.setResponseMessageType(GameResponseMessageType.LobbyMapChange);
         this.mapName = mapName;
     }

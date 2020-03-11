@@ -10,6 +10,7 @@ public class PlatformGameResponseMessageSpriteUpdate extends PlatformGameRespons
     private List<SpriteUpdate> spriteUpdates;
 
     public PlatformGameResponseMessageSpriteUpdate(List<SpriteUpdate> spriteUpdates) {
+        super();
         this.setResponseMessageType(GameResponseMessageType.SpriteUpdate);
         this.spriteUpdates = spriteUpdates;
     }
