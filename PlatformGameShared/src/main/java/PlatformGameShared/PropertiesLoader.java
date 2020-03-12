@@ -20,7 +20,8 @@ public class PropertiesLoader {
         try {
             Properties prop = new Properties();
             inputStream = PropertiesLoader.class.getClassLoader().getResourceAsStream(propertiesFileName);
-            //TODO make a new file when there is no file found.
+            //TODO rework this so that it loads the file from outside the built .jar, but uses the internal one
+            // to create a new file, in case the external one isn't found
             if (inputStream != null) {
                 prop.load(inputStream);
             } else {

@@ -5,6 +5,7 @@
  */
 package gameserver;
 
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -17,26 +18,27 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
 import javax.websocket.server.ServerContainer;
+import java.util.Date;
 import java.util.EnumSet;
+import java.util.logging.Level;
 
 /**
- *
  * @author Nico Kuijpers
  */
 public class CommunicatorServer {
 
-    private static final int PORT = Integer.parseInt(PropertiesLoader.getPropValues("gameServer.port","application.properties"));
-    
+    private static final int PORT = Integer.parseInt(PropertiesLoader.getPropValues("gameServer.port", "application.properties"));
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         startWebSocketServer();
     }
-    
+
     // Start the web socket server
     private static void startWebSocketServer() {
-
+        PlatformLogger.Log(Level.INFO, "Starting server at " + new Date());
         Server webSocketServer = new Server();
         ServerConnector connector = new ServerConnector(webSocketServer);
         connector.setPort(PORT);

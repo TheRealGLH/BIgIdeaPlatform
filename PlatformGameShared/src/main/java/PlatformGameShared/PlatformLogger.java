@@ -18,7 +18,7 @@ public class PlatformLogger {
         Date today = new Date();
         try {
             //TODO have the path be set in the config
-            fileHandler = new FileHandler("./" + dateFormat.format(today) + ".log");
+            fileHandler = new FileHandler("./" + System.getProperty("sun.java.command") + " " + dateFormat.format(today) + ".log");
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error initializing the logger.", e);
         }
