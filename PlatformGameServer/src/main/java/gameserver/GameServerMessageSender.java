@@ -6,11 +6,13 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Response.*;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.SpriteUpdate;
 import com.google.gson.Gson;
 
 import javax.websocket.Session;
 import java.util.List;
+import java.util.logging.Level;
 
 public class GameServerMessageSender implements IPlatformGameClient {
 
@@ -113,6 +115,9 @@ public class GameServerMessageSender implements IPlatformGameClient {
 
     private void sendMessage(PlatformGameResponseMessage responseMessage) {
         String json = gson.toJson(responseMessage);
+        PlatformLogger.Log(Level.FINEST, "Sending client: " + session.getId() + " "
+                + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress")
+                + responseMessage);
         session.getAsyncRemote().sendText(json);
     }
 

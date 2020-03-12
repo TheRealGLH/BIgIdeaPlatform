@@ -7,12 +7,14 @@ import PlatformGameShared.Messages.Client.PlatformGameMessage;
 import PlatformGameShared.Messages.Client.PlatformGameMessageInput;
 import PlatformGameShared.Messages.Client.PlatformGameMessageLogin;
 import PlatformGameShared.Messages.Client.PlatformGameMessageRegister;
+import PlatformGameShared.PlatformLogger;
 import com.google.gson.Gson;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 
 @ServerEndpoint(value = "/platform/")
@@ -25,29 +27,29 @@ public class CommunicatorServerWebSocketEndpoint {
 
     @OnOpen
     public void onConnect(Session session) {
-        System.out.println("[WebSocket Connected] SessionID: " + session.getId() + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
+        PlatformLogger.Log(Level.INFO, "[WebSocket Connected] SessionID: " + session.getId() + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         IPlatformGameClient responseClient = new GameServerMessageSender(session);
         sessionIPlatformGameClientMap.put(session, responseClient);
         responseClient.setPlayerNr(sessionIPlatformGameClientMap.size());
-        System.out.println("[#sessions]: " + sessionIPlatformGameClientMap.size());
+        PlatformLogger.Log(Level.INFO, "[#sessions]: " + sessionIPlatformGameClientMap.size());
     }
 
     @OnMessage
     public void onText(String message, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " sent socket message");
+        PlatformLogger.Log(Level.FINE, "[WebSocket Session ID] : " + session.getId() + " sent socket message");
         handleMessageFromClient(message, session);
     }
 
     @OnClose
     public void onClose(CloseReason reason, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
+        PlatformLogger.Log(Level.INFO, "[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
         sessionIPlatformGameClientMap.remove(session);
     }
 
     @OnError
     public void onError(Throwable cause, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " was forcefully disconnected because: " + cause.getMessage());
+        PlatformLogger.Log(Level.SEVERE, "[WebSocket Session ID] : " + session.getId() + " was forcefully disconnected because: " + cause.getMessage());
         gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
     }
 

@@ -5,6 +5,7 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.SpriteUpdate;
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import models.classes.GameTimerTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.logging.Level;
 
 /**
  * The Game container, will be controlled by an instance of IPlatformGameClient (later via websockets and
@@ -37,10 +39,10 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void registerPlayer(String name, String password, IPlatformGameClient client) {
         if (joinedClients.contains(client)) return;
-        System.out.println("Registering " + name);
+        PlatformLogger.Log(Level.INFO, "Registering " + name);
         RegisterState registerState = loginClient.attemptRegistration(name, password);
         if (registerState != RegisterState.ERROR) {//We already print a rather verbose error when the RegisterState == ERROR, so there's not need to print this
-            System.out.println("[GameServer.java] Attempt to register " + name + ". state: " + registerState);
+            PlatformLogger.Log(Level.INFO, "[GameServer.java] Attempt to register " + name + ". state: " + registerState);
         }
         client.receiveRegisterState(name, registerState);
     }
@@ -48,10 +50,10 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
         if (joinedClients.contains(client)) return;
-        System.out.println("[GameServer.java] Logging in as " + name + " " + this.toString());
+        PlatformLogger.Log(Level.INFO, "[GameServer.java] " + name + " attempted to log in " + this.toString());
         LoginState loginState = loginClient.attemptLogin(name, password);
         if (loginState != LoginState.ERROR) { //We already print a rather verbose error when the LoginState == ERROR, so there's not need to print this
-            System.out.println("Login status for " + name + ": " + loginState);
+            PlatformLogger.Log(Level.FINE, "Login status for " + name + ": " + loginState);
         }
         client.receiveLoginState(name, loginState);
         if (loginState == LoginState.SUCCESS) {
@@ -79,7 +81,7 @@ public class GameServer implements IPlatformGameServer {
                 //TODO send stuff to the GameTimerTask, like the map perhaps
                 timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
             } else {
-                System.out.println("[GameServer.java] A request to start the game was denied because of too few players");
+                PlatformLogger.Log(Level.FINE, "[GameServer.java] A request to start the game was denied because of too few players");
             }
         }
     }
@@ -94,7 +96,7 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList) {
         if (spriteUpdateList.size() > 0) {
-            System.out.println("[GameServer.java] Sending updates: " + spriteUpdateList);
+            PlatformLogger.Log(Level.FINER, "[GameServer.java] Sending updates: " + spriteUpdateList);
             for (IPlatformGameClient platformGameClient : joinedClients) {
                 platformGameClient.updateScreen(spriteUpdateList);
             }
@@ -105,12 +107,12 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void removePlayer(IPlatformGameClient client) {
         if (joinedClients.contains(client)) {
-            System.out.println("[GameSever] Removing player: " + client.getName());
+            PlatformLogger.Log(Level.INFO, "[GameSever] Removing player: " + client.getName());
             joinedClients.remove(client);
             //TODO notify our GameTimerTask
             if (lobbyLeader.equals(client)) {
                 lobbyLeader = joinedClients.get(0);
-                System.out.println("[GameServer] " + lobbyLeader + " is now the lobby leader.");
+                PlatformLogger.Log(Level.FINE, "[GameServer] " + lobbyLeader + " is now the lobby leader.");
             }
             notifyClients();
         }
