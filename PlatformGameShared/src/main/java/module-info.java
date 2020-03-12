@@ -1,4 +1,5 @@
 module PlatformGameShared {
+    requires java.logging;
     exports PlatformGameShared.Points;
     exports PlatformGameShared.Enums;
     exports PlatformGameShared.Interfaces;
