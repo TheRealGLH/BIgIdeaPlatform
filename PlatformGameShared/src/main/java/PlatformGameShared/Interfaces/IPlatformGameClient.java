@@ -40,6 +40,10 @@ public interface IPlatformGameClient {
 
     public void lobbyJoinedNotify(String[] playerNames);
 
+    public void lobbyMapNamesNotify(String[] mapNames);
+
+    public void lobbyNotifyNewMapChoice(String newMapName);
+
     public void receiveAllowInput();
 
 

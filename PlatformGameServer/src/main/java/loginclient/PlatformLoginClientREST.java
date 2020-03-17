@@ -92,6 +92,24 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
     }
 
     @Override
+    public String getLevelNames() {
+        try {
+            HttpResponse response = sendGetRequest("/level/");
+            PlatformLogger.Log(Level.FINE, response.getStatusLine().toString());
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line = "";
+            StringBuilder sb = new StringBuilder();
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "null";
+    }
+
+    @Override
     public String getLevelContent(String levelname) {
         try {
             HttpResponse response = sendGetRequest("/level/" + levelname);

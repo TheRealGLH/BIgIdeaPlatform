@@ -107,6 +107,18 @@ public class GameServerMessageSender implements IPlatformGameClient {
     }
 
     @Override
+    public void lobbyMapNamesNotify(String[] mapNames) {
+        PlatformGameResponseMessageLobbyMapNames responseMessageLobbyMapNames = new PlatformGameResponseMessageLobbyMapNames(mapNames);
+        sendMessage(responseMessageLobbyMapNames);
+    }
+
+    @Override
+    public void lobbyNotifyNewMapChoice(String newMapName) {
+        PlatformGameResponseMessageLobbyMapChange responseMessageLobbyMapChange = new PlatformGameResponseMessageLobbyMapChange(newMapName);
+        sendMessage(responseMessageLobbyMapChange);
+    }
+
+    @Override
     public void receiveAllowInput() {
         PlatformGameResponseMessageAllowInput responseMessageAllowInput = new PlatformGameResponseMessageAllowInput();
         sendMessage(responseMessageAllowInput);

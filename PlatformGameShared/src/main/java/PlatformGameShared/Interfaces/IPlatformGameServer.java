@@ -19,5 +19,7 @@ public interface IPlatformGameServer {
 
     public void removePlayer(IPlatformGameClient client);
 
+    public void selectLobbyMap(IPlatformGameClient client, String mapName);
+
     void sendInputRequest();
 }

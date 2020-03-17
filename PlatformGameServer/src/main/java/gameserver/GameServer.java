@@ -10,10 +10,10 @@ import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.SpriteUpdate;
 import com.google.gson.Gson;
 import loginclient.IPlatformLoginClient;
-import loginclient.PlatformLoginClientMock;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -28,12 +28,17 @@ public class GameServer implements IPlatformGameServer {
     List<IPlatformGameClient> joinedClients;//clients which are logged in
     IPlatformGameClient lobbyLeader;//The first client to join, unless they leave, then it's whatever remaining client joined first
     IPlatformLoginClient loginClient; //REST communicator
+    Gson gson = new Gson();
     int minAmountOfPlayers = 1;
     Timer timer = new Timer();
+    String[] maps;
+    String currentMap;
 
     public GameServer() {
         loginClient = new PlatformLoginClientREST();
         joinedClients = new ArrayList<>();
+        maps = gson.fromJson(loginClient.getLevelNames(), String[].class);
+        currentMap = maps[0];
     }
 
     @Override
@@ -60,7 +65,9 @@ public class GameServer implements IPlatformGameServer {
             client.setName(name);
             joinedClients.add(client);
             if (joinedClients.size() == 1) lobbyLeader = client;
-            notifyClients();
+            notifyClientsNames();
+            client.lobbyMapNamesNotify(maps);
+            client.lobbyNotifyNewMapChoice(currentMap);
         }
     }
 
@@ -75,7 +82,7 @@ public class GameServer implements IPlatformGameServer {
                     names[i] = joinedClients.get(i).getName();
                     playerNrs[i] = joinedClients.get(i).getPlayerNr();
                 }
-                GameLevel gameLevel = new Gson().fromJson(loginClient.getLevelContent("battlefield"), GameLevel.class);
+                GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent("battlefield"), GameLevel.class);
                 gameTimerTask = new GameTimerTask(this, playerNrs, names, gameLevel);
                 for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
                 //TODO send stuff to the GameTimerTask, like the map perhaps
@@ -114,7 +121,15 @@ public class GameServer implements IPlatformGameServer {
                 lobbyLeader = joinedClients.get(0);
                 PlatformLogger.Log(Level.FINE, "[GameServer] " + lobbyLeader + " is now the lobby leader.");
             }
-            notifyClients();
+            notifyClientsNames();
+        }
+    }
+
+    @Override
+    public void selectLobbyMap(IPlatformGameClient client, String mapName) {
+        if (client.equals(lobbyLeader)) {
+            currentMap = mapName;
+            notifyClientsMapSelected();
         }
     }
 
@@ -125,7 +140,7 @@ public class GameServer implements IPlatformGameServer {
         }
     }
 
-    void notifyClients() {
+    void notifyClientsNames() {
         String names[] = new String[joinedClients.size()];
         for (int i = 0; i < joinedClients.size(); i++) {
             IPlatformGameClient currClient = joinedClients.get(i);
@@ -137,6 +152,18 @@ public class GameServer implements IPlatformGameServer {
         }
         for (IPlatformGameClient platformGameClient : joinedClients) {
             platformGameClient.lobbyJoinedNotify(names);
+        }
+    }
+
+    void notifyClientsMapList() {
+        for (IPlatformGameClient client : joinedClients) {
+            client.lobbyMapNamesNotify(maps);
+        }
+    }
+
+    void notifyClientsMapSelected() {
+        for (IPlatformGameClient joinedClient : joinedClients) {
+            joinedClient.lobbyNotifyNewMapChoice(currentMap);
         }
     }
 }
