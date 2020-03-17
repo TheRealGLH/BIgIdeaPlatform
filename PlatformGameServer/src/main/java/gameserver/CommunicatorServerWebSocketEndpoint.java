@@ -4,12 +4,14 @@ import PlatformGameShared.Enums.GameClientMessageType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Messages.Client.*;
+import PlatformGameShared.PlatformLogger;
 import com.google.gson.Gson;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 
 @ServerEndpoint(value = "/platform/")
@@ -17,36 +19,36 @@ public class CommunicatorServerWebSocketEndpoint {
 
     // All sessions
     private static Map<Session, IPlatformGameClient> sessionIPlatformGameClientMap = new HashMap<>();
-
     // Map each property to list of sessions that are subscribed to that property
     private static IPlatformGameServer gameServer = new GameServer();
 
     @OnOpen
     public void onConnect(Session session) {
-        System.out.println("[WebSocket Connected] SessionID: " + session.getId());
-        String message = String.format("[New client with client side session ID]: %s", session.getId());
+        PlatformLogger.Log(Level.INFO, "[WebSocket Connected] SessionID: " + session.getId() + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         IPlatformGameClient responseClient = new GameServerMessageSender(session);
+        responseClient.setAddress(session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         sessionIPlatformGameClientMap.put(session, responseClient);
         responseClient.setPlayerNr(sessionIPlatformGameClientMap.size());
-        System.out.println("[#sessions]: " + sessionIPlatformGameClientMap.size());
+        PlatformLogger.Log(Level.INFO, "[#sessions]: " + sessionIPlatformGameClientMap.size());
     }
 
     @OnMessage
     public void onText(String message, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " [Received] : " + message);
+        PlatformLogger.Log(Level.FINE, "[WebSocket Session ID] : " + session.getId() + " sent socket message");
         handleMessageFromClient(message, session);
     }
 
     @OnClose
     public void onClose(CloseReason reason, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason);
+        PlatformLogger.Log(Level.INFO, "[WebSocket Session ID] : " + session.getId() + " [Socket Closed]: " + reason + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
+        gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
         sessionIPlatformGameClientMap.remove(session);
     }
 
     @OnError
     public void onError(Throwable cause, Session session) {
-        System.out.println("[WebSocket Session ID] : " + session.getId() + "[ERROR]: ");
-        cause.printStackTrace(System.err);
+        PlatformLogger.Log(Level.SEVERE, "[WebSocket Session ID] : " + session.getId() + " was forcefully disconnected because: " + cause.getMessage());
+        gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
     }
 
     // Handle incoming message from client
@@ -67,11 +69,13 @@ public class CommunicatorServerWebSocketEndpoint {
                 PlatformGameMessageInput messageInput = gson.fromJson(jsonMessage, PlatformGameMessageInput.class);
                 gameServer.receiveInput(messageInput.getInputType(), client);
                 break;
+            case MapChange:
+                PlatformGameMessageMapChange messageMapChange = gson.fromJson(jsonMessage, PlatformGameMessageMapChange.class);
+                gameServer.selectLobbyMap(client, messageMapChange.getMapName());
+                break;
             case StartGame:
-                PlatformGameMessageStart messageStart = gson.fromJson(jsonMessage, PlatformGameMessageStart.class);
-                gameServer.startGame(client);
+                gameServer.attemptStartGame(client);
                 break;
         }
-
     }
 }

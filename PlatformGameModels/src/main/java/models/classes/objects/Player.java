@@ -12,7 +12,7 @@ import java.util.List;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.GUN;
+    private WeaponType currentWeapon = WeaponType.NONE;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
@@ -68,6 +68,9 @@ public class Player extends MovableObject {
         setAcceleration(0, 0);
         setVelocity(0, 0);
         setPosition(startX, startY);
+        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+            //iPlayerEventListener.onShootEvent(this);
+        }
     }
 
     public void jump() {

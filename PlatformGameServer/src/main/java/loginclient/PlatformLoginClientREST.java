@@ -2,6 +2,7 @@ package loginclient;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -14,23 +15,24 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 public class PlatformLoginClientREST implements IPlatformLoginClient {
 
     HttpClient client;
-    public static final String domain = "http://"+PropertiesLoader.getPropValues("RESTClient.domain","application.properties")+":"+PropertiesLoader.getPropValues("RESTClient.port","application.properties");
-    public static final String ApiUrl = PropertiesLoader.getPropValues("RESTClient.apiURL","application.properties");
+    public static final String domain = "http://" + PropertiesLoader.getPropValues("RESTClient.domain", "application.properties") + ":" + PropertiesLoader.getPropValues("RESTClient.port", "application.properties");
+    public static final String ApiUrl = PropertiesLoader.getPropValues("RESTClient.apiURL", "application.properties");
 
     @Override
     public LoginState attemptLogin(String username, String password) {
         HttpResponse response = null;
         try {
-            response = sendPostRequest("/login","{\n" +
-                    "  \"name\": \""+username+"\",\n" +
-                    "  \"password\": \""+password+"\"\n" +
+            response = sendPostRequest("/login", "{\n" +
+                    "  \"name\": \"" + username + "\",\n" +
+                    "  \"password\": \"" + password + "\"\n" +
                     "}");
             int status = response.getStatusLine().getStatusCode();
-            switch (status){
+            switch (status) {
                 case 200:
                     return LoginState.SUCCESS;
                 case 401:
@@ -38,8 +40,8 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                 case 403:
                     return LoginState.INCORRECTDATA;
                 default:
-                    System.out.println("[PlatformLoginClientREST] Unexpected HTTP response code "+status+" on login for "+username+":");
-                    System.out.println(response.toString());
+                    PlatformLogger.Log(Level.SEVERE, "[PlatformLoginClientREST] Unexpected HTTP response code " + status + " on login for " + username + ":");
+                    PlatformLogger.Log(Level.SEVERE, response.toString());
                     BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                     String line = "";
                     while ((line = rd.readLine()) != null) {
@@ -67,7 +69,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                     "  \"password\": \"" + password + "\"\n" +
                     "}");
             int status = response.getStatusLine().getStatusCode();
-            switch (status){
+            switch (status) {
                 case 200:
                     return RegisterState.SUCCESS;
                 case 409:
@@ -75,8 +77,8 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                 case 406:
                     return RegisterState.INCORRECTDATA;
                 default:
-                    System.out.println("[PlatformLoginClientREST] Unexpected HTTP response code "+status+" on login for "+username+":");
-                    System.out.println(response.toString());
+                    PlatformLogger.Log(Level.SEVERE, "[PlatformLoginClientREST] Unexpected HTTP response code " + status + " on login for " + username + ":");
+                    PlatformLogger.Log(Level.SEVERE, response.toString());
                     BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                     String line = "";
                     while ((line = rd.readLine()) != null) {
@@ -90,10 +92,28 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
     }
 
     @Override
+    public String getLevelNames() {
+        try {
+            HttpResponse response = sendGetRequest("/level/");
+            PlatformLogger.Log(Level.FINE, response.getStatusLine().toString());
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line = "";
+            StringBuilder sb = new StringBuilder();
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "null";
+    }
+
+    @Override
     public String getLevelContent(String levelname) {
         try {
             HttpResponse response = sendGetRequest("/level/" + levelname);
-            System.out.println(response.getStatusLine());
+            PlatformLogger.Log(Level.FINE, response.getStatusLine().toString());
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String line = "";
             StringBuilder sb = new StringBuilder();
@@ -109,14 +129,14 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
 
 
     private HttpResponse sendGetRequest(String path) throws IOException {
-        client =  new DefaultHttpClient();
+        client = new DefaultHttpClient();
         HttpGet request = new HttpGet(domain + ApiUrl + path);
         request.setHeader(HttpHeaders.ACCEPT, "application/json");
         return client.execute(request);
     }
 
     private HttpResponse sendPostRequest(String path, String inputString) throws IOException {
-        client =  new DefaultHttpClient();
+        client = new DefaultHttpClient();
         HttpPost post = new HttpPost(domain + ApiUrl + path);
         post.setHeader(HttpHeaders.ACCEPT, "application/json");
         StringEntity input = new StringEntity(inputString);

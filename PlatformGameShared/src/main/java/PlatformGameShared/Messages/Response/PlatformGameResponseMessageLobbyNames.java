@@ -8,6 +8,7 @@ public class PlatformGameResponseMessageLobbyNames extends PlatformGameResponseM
 
 
     public PlatformGameResponseMessageLobbyNames(String[] names) {
+        super();
         this.setResponseMessageType(GameResponseMessageType.LobbyNameChange);
         this.names = names;
     }

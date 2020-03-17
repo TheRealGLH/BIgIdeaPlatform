@@ -3,7 +3,9 @@ package DatabaseConnector;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
+import com.mysql.jdbc.CommunicationsException;
 import interfaces.ILoginDatabaseConnector;
 
 import javax.crypto.Cipher;
@@ -17,6 +19,7 @@ import com.mysql.jdbc.Driver;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.logging.Level;
 
 public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
     private static final String hostname = PropertiesLoader.getPropValues("jdbc.hostname", "jdbc.properties");
@@ -65,7 +68,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             con.close();
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            PlatformLogger.Log(Level.SEVERE, "Error trying to log in user :" + name + " :" + e.getMessage());
             return LoginState.ERROR;
         }
         return LoginState.INCORRECTDATA;

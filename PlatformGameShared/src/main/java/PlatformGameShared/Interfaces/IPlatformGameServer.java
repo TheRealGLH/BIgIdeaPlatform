@@ -11,11 +11,15 @@ public interface IPlatformGameServer {
 
     public void loginPlayer(String name, String password, IPlatformGameClient client);
 
-    public void startGame(IPlatformGameClient client);
+    public void attemptStartGame(IPlatformGameClient client);
 
     public void receiveInput(InputType type, IPlatformGameClient client);
 
     void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList);
+
+    public void removePlayer(IPlatformGameClient client);
+
+    public void selectLobbyMap(IPlatformGameClient client, String mapName);
 
     void sendInputRequest();
 }

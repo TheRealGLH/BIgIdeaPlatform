@@ -9,6 +9,7 @@ public class PlatformGameResponseMessageLogin extends PlatformGameResponseMessag
     private String name;
 
     public PlatformGameResponseMessageLogin(LoginState loginState, String name) {
+        super();
         this.name = name;
         this.setResponseMessageType(GameResponseMessageType.LoginState);
         this.loginState = loginState;

@@ -49,6 +49,11 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
     }
 
     @Override
+    public String getLevelNames() {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
     public String getLevelContent(String levelname) {
         return "{\n" +
                 "  \"name\": \"Mock Rest Land\",\n" +

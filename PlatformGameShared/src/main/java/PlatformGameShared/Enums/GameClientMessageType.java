@@ -1,8 +1,9 @@
 package PlatformGameShared.Enums;
 
-public enum  GameClientMessageType {
+public enum GameClientMessageType {
     Login,
     Register,
     Input,
+    MapChange,
     StartGame
 }

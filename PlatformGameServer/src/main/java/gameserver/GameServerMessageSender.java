@@ -6,11 +6,13 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Response.*;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.SpriteUpdate;
 import com.google.gson.Gson;
 
 import javax.websocket.Session;
 import java.util.List;
+import java.util.logging.Level;
 
 public class GameServerMessageSender implements IPlatformGameClient {
 
@@ -18,6 +20,7 @@ public class GameServerMessageSender implements IPlatformGameClient {
     private String name;
     private Session session;
     private Gson gson = new Gson();
+    Object address;
 
     public GameServerMessageSender(Session session) {
         this.session = session;
@@ -105,15 +108,39 @@ public class GameServerMessageSender implements IPlatformGameClient {
     }
 
     @Override
+    public void lobbyMapNamesNotify(String[] mapNames) {
+        PlatformGameResponseMessageLobbyMapNames responseMessageLobbyMapNames = new PlatformGameResponseMessageLobbyMapNames(mapNames);
+        sendMessage(responseMessageLobbyMapNames);
+    }
+
+    @Override
+    public void lobbyNotifyNewMapChoice(String newMapName) {
+        PlatformGameResponseMessageLobbyMapChange responseMessageLobbyMapChange = new PlatformGameResponseMessageLobbyMapChange(newMapName);
+        sendMessage(responseMessageLobbyMapChange);
+    }
+
+    @Override
     public void receiveAllowInput() {
         PlatformGameResponseMessageAllowInput responseMessageAllowInput = new PlatformGameResponseMessageAllowInput();
         sendMessage(responseMessageAllowInput);
     }
 
+    @Override
+    public Object getAddress() {
+        return this.address;
+    }
+
+    @Override
+    public void setAddress(Object o) {
+        this.address = o;
+    }
+
 
     private void sendMessage(PlatformGameResponseMessage responseMessage) {
         String json = gson.toJson(responseMessage);
+        PlatformLogger.Log(Level.FINEST, "Sending client: " + session.getId() + " "
+                + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress")
+                + responseMessage);
         session.getAsyncRemote().sendText(json);
     }
-
 }

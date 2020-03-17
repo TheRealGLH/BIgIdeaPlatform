@@ -92,7 +92,7 @@ public class GUIScreenController extends ScreenController {
     @Override
     public void joinGame() {
         if (guiState != GUIState.Lobby) return;
-        gameServer.startGame(this);
+        gameServer.attemptStartGame(this);
     }
 
     @Override
@@ -221,11 +221,31 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
+    public void lobbyMapNamesNotify(String[] mapNames) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
+    public void lobbyNotifyNewMapChoice(String newMapName) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
     public void receiveAllowInput() {
         for (ISpriteUpdateEventListener listener : spriteUpdateEventListeners) {
             Platform.runLater(listener::allowSendInput
             );
         }
+    }
+
+    @Override
+    public Object getAddress() {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
+    public void setAddress(Object o) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
     }
 
     @Override

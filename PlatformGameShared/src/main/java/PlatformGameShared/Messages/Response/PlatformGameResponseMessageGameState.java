@@ -8,6 +8,7 @@ public class PlatformGameResponseMessageGameState extends PlatformGameResponseMe
     private GameState gameState;
 
     public PlatformGameResponseMessageGameState(GameState gameState) {
+        super();
         this.setResponseMessageType(GameResponseMessageType.GameState);
         this.gameState = gameState;
     }
