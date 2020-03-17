@@ -3,10 +3,7 @@ package gameclient;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import PlatformGameShared.Messages.Client.PlatformGameMessageInput;
-import PlatformGameShared.Messages.Client.PlatformGameMessageLogin;
-import PlatformGameShared.Messages.Client.PlatformGameMessageRegister;
-import PlatformGameShared.Messages.Client.PlatformGameMessageStart;
+import PlatformGameShared.Messages.Client.*;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
@@ -52,7 +49,13 @@ public class GameClientMessageSender implements IPlatformGameServer {
 
     @Override
     public void removePlayer(IPlatformGameClient client) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        throw new UnsupportedOperationException("This method is not supposed to be called on the client");
+    }
+
+    @Override
+    public void selectLobbyMap(IPlatformGameClient client, String mapName) {
+        PlatformGameMessageMapChange messageMapChange = new PlatformGameMessageMapChange(mapName);
+        communicator.sendMessage(messageMapChange);
     }
 
     @Override

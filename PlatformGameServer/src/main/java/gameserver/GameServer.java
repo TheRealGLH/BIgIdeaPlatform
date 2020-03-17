@@ -128,8 +128,20 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void selectLobbyMap(IPlatformGameClient client, String mapName) {
         if (client.equals(lobbyLeader)) {
-            currentMap = mapName;
-            notifyClientsMapSelected();
+            //we need to actually test if the map is in our list, don't want clients to send bogus names and mess us up
+            boolean mapExists = false;
+            for (String map : maps) {
+                if (mapName.equals(map)) mapExists = true;
+            }
+            if (mapExists) {
+                PlatformLogger.Log(Level.INFO, client.getName() + " selected the map: " + mapName);
+                currentMap = mapName;
+                notifyClientsMapSelected();
+            } else {
+                PlatformLogger.Log(Level.WARNING, "Client: " + client.getName() + " tried to select invalid map: " + mapName);
+            }
+        } else {
+            PlatformLogger.Log(Level.WARNING, "Client: " + client.getAddress() + " tried to select a map, but they are not the lobby leader!");
         }
     }
 

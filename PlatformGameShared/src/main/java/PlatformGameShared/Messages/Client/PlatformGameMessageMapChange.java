@@ -2,16 +2,16 @@ package PlatformGameShared.Messages.Client;
 
 import PlatformGameShared.Enums.GameClientMessageType;
 
-public class PlatformGameMessageMapSelect extends PlatformGameMessage {
+public class PlatformGameMessageMapChange extends PlatformGameMessage {
 
     private String mapName;
 
-    public PlatformGameMessageMapSelect(String mapName) {
-        this.setMessageType(GameClientMessageType.Input);
+    public PlatformGameMessageMapChange(String mapName) {
+        this.setMessageType(GameClientMessageType.MapChange);
         this.mapName = mapName;
     }
 
-    public PlatformGameMessageMapSelect() {
+    public PlatformGameMessageMapChange() {
     }
 
     public String getMapName() {

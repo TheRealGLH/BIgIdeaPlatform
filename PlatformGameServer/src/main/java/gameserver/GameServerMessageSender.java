@@ -20,6 +20,7 @@ public class GameServerMessageSender implements IPlatformGameClient {
     private String name;
     private Session session;
     private Gson gson = new Gson();
+    Object address;
 
     public GameServerMessageSender(Session session) {
         this.session = session;
@@ -124,6 +125,16 @@ public class GameServerMessageSender implements IPlatformGameClient {
         sendMessage(responseMessageAllowInput);
     }
 
+    @Override
+    public Object getAddress() {
+        return this.address;
+    }
+
+    @Override
+    public void setAddress(Object o) {
+        this.address = o;
+    }
+
 
     private void sendMessage(PlatformGameResponseMessage responseMessage) {
         String json = gson.toJson(responseMessage);
@@ -132,5 +143,4 @@ public class GameServerMessageSender implements IPlatformGameClient {
                 + responseMessage);
         session.getAsyncRemote().sendText(json);
     }
-
 }

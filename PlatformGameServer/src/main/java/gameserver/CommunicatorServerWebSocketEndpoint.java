@@ -3,10 +3,7 @@ package gameserver;
 import PlatformGameShared.Enums.GameClientMessageType;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
-import PlatformGameShared.Messages.Client.PlatformGameMessage;
-import PlatformGameShared.Messages.Client.PlatformGameMessageInput;
-import PlatformGameShared.Messages.Client.PlatformGameMessageLogin;
-import PlatformGameShared.Messages.Client.PlatformGameMessageRegister;
+import PlatformGameShared.Messages.Client.*;
 import PlatformGameShared.PlatformLogger;
 import com.google.gson.Gson;
 
@@ -29,6 +26,7 @@ public class CommunicatorServerWebSocketEndpoint {
     public void onConnect(Session session) {
         PlatformLogger.Log(Level.INFO, "[WebSocket Connected] SessionID: " + session.getId() + " from " + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         IPlatformGameClient responseClient = new GameServerMessageSender(session);
+        responseClient.setAddress(session.getUserProperties().get("javax.websocket.endpoint.remoteAddress"));
         sessionIPlatformGameClientMap.put(session, responseClient);
         responseClient.setPlayerNr(sessionIPlatformGameClientMap.size());
         PlatformLogger.Log(Level.INFO, "[#sessions]: " + sessionIPlatformGameClientMap.size());
@@ -70,6 +68,10 @@ public class CommunicatorServerWebSocketEndpoint {
             case Input:
                 PlatformGameMessageInput messageInput = gson.fromJson(jsonMessage, PlatformGameMessageInput.class);
                 gameServer.receiveInput(messageInput.getInputType(), client);
+                break;
+            case MapChange:
+                PlatformGameMessageMapChange messageMapChange = gson.fromJson(jsonMessage, PlatformGameMessageMapChange.class);
+                gameServer.selectLobbyMap(client, messageMapChange.getMapName());
                 break;
             case StartGame:
                 gameServer.attemptStartGame(client);
