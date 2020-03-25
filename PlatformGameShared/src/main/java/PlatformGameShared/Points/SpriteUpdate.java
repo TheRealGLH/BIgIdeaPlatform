@@ -5,6 +5,7 @@ import PlatformGameShared.Enums.SpriteUpdateType;
 
 public class SpriteUpdate {
 
+    private int objectNr;
     private Vector2 position;
     private Vector2 size;
     private SpriteUpdateType updateType;
@@ -28,7 +29,6 @@ public class SpriteUpdate {
 
     public SpriteUpdate(){}
 
-    private int objectNr;
 
     public int getObjectNr() {
         return objectNr;

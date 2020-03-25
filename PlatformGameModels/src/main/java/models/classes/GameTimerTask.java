@@ -32,7 +32,7 @@ public class GameTimerTask extends TimerTask {
     public void run() {
         game.updateState();
         gameServer.sendSpriteUpdates(game.getSpriteUpdates());
-        gameServer.sendInputRequest();
+        // gameServer.sendInputRequest();
     }
 
     public synchronized void sendInput(int playerNr, InputType inputType) {

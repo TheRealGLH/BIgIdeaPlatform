@@ -2,12 +2,14 @@ package models.classes.objects;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class Player extends MovableObject {
 
@@ -38,7 +40,7 @@ public class Player extends MovableObject {
     }
 
     public void handleInput(InputType inputType) {
-        System.out.println(this + "received input " + inputType);
+        PlatformLogger.Log(Level.FINEST, this + "received input " + inputType);
         switch (inputType) {
             case MOVELEFT:
             case MOVERIGHT:

@@ -8,8 +8,10 @@ import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.PropertiesLoader;
 import com.google.gson.Gson;
 import loginclient.IPlatformLoginClient;
+import loginclient.PlatformLoginClientMock;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
@@ -35,7 +37,11 @@ public class GameServer implements IPlatformGameServer {
     String currentMap;
 
     public GameServer() {
-        loginClient = new PlatformLoginClientREST();
+        if (PropertiesLoader.getPropValues("RESTClient.useMock", "application.properties").equals("true")) {
+            loginClient = new PlatformLoginClientMock();
+        } else {
+            loginClient = new PlatformLoginClientREST();
+        }
         joinedClients = new ArrayList<>();
         maps = gson.fromJson(loginClient.getLevelNames(), String[].class);
         currentMap = maps[0];
@@ -82,13 +88,13 @@ public class GameServer implements IPlatformGameServer {
                     names[i] = joinedClients.get(i).getName();
                     playerNrs[i] = joinedClients.get(i).getPlayerNr();
                 }
-                GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent("battlefield"), GameLevel.class);
+                GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent(currentMap), GameLevel.class);
                 gameTimerTask = new GameTimerTask(this, playerNrs, names, gameLevel);
                 for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
                 //TODO send stuff to the GameTimerTask, like the map perhaps
                 timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
             } else {
-                PlatformLogger.Log(Level.FINE, "[GameServer.java] A request to start the game was denied because of too few players");
+                PlatformLogger.Log(Level.FINE, "A request to start the game was denied because of too few players");
             }
         }
     }

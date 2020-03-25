@@ -1,5 +1,6 @@
 package models.classes.objects.projectiles;
 
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.Vector2;
 import models.classes.objects.Player;
 import models.enums.WeaponType;
@@ -7,6 +8,7 @@ import models.enums.WeaponType;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class ProjectileFactory {
 
@@ -31,7 +33,7 @@ public class ProjectileFactory {
         projectile = projectileMap.get(weaponType).clone();
         if (projectile == null) {
             projectile = projectileMap.get(WeaponType.GUN);
-            System.out.println("[ProjectileFactory] Tried spawning a projectile for a weapon that does not yet have one: " + weaponType);
+            PlatformLogger.Log(Level.SEVERE, "[ProjectileFactory] Tried spawning a projectile for a weapon that does not yet have one: " + weaponType);
         }
         projectile.setOwner(player);
         projectile.setPosition(pos.getX(), pos.getY());

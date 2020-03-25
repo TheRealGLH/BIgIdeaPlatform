@@ -1,9 +1,12 @@
 package models.classes.objects;
 
 import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
+
+import java.util.logging.Level;
 
 public abstract class MovableObject extends GameObject {
     private Vector2 acceleration;
@@ -105,7 +108,7 @@ public abstract class MovableObject extends GameObject {
 
     public void Delete() {
         shouldBeCleaned = true;
-        System.out.println("[MovableObject.java] Send event for DELETE SpriteUpdate");
+        PlatformLogger.Log(Level.FINE, "Object " + toString() + " added to delete queue");
     }
 
     public void onOutOfBounds() {
