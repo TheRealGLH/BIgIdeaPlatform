@@ -69,6 +69,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             rs.close();
         } catch (SQLException e) {
             PlatformLogger.Log(Level.SEVERE, "Error trying to log in user :" + name + " :" + e.getMessage());
+            e.printStackTrace();
             return LoginState.ERROR;
         }
         return LoginState.INCORRECTDATA;
@@ -94,6 +95,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             }
             rs.close();
         } catch (SQLException e) {
+            PlatformLogger.Log(Level.SEVERE, "Error trying to register user :" + name + " :" + e.getMessage());
             e.printStackTrace();
             return RegisterState.ERROR;
         }
@@ -112,14 +114,66 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
     }
 
     @Override
+    public void AddGame(String map, String victor, String[] players) {
+        boolean victorInNames = false;
+        for (String player : players) {
+            if (player.equals(victor)) {
+                victorInNames = true;
+                break;
+            }
+        }
+        if (!victorInNames) {
+            PlatformLogger.Log(Level.SEVERE, "Tried to add a match where the victor was not in the game!");
+            return;
+        }
+        try {
+            con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
+
+            PreparedStatement gameStatement;
+            PreparedStatement currGamePlayerStatement;
+
+            String gameQuery = "INSERT INTO `game` (`map`, `victor`)" +
+                    " VALUES (?, ?)";
+            String gamePlayerQuery = "INSERT INTO `game_player` (`player_name`, `game_id` ) " +
+                    "VALUES (?, ?)";
+            gameStatement = con.prepareStatement(gameQuery, Statement.RETURN_GENERATED_KEYS);
+            gameStatement.setString(1, map);
+            gameStatement.setString(2, victor);
+            gameStatement.addBatch();
+            gameStatement.execute();
+            ResultSet rs = gameStatement.getGeneratedKeys();
+            int gameKey = 0;
+            while (rs.next()) {
+                gameKey = rs.getInt(1);
+            }
+            for (String player : players) {
+                currGamePlayerStatement = con.prepareStatement(gamePlayerQuery);
+                currGamePlayerStatement.setString(1, player);
+                currGamePlayerStatement.setInt(2, gameKey);
+                currGamePlayerStatement.execute();
+            }
+            con.close();
+        } catch (SQLException e) {
+            PlatformLogger.Log(Level.SEVERE, "Error trying set match data: :" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void resetData() {
         try {
             DriverManager.registerDriver(new Driver());
             con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
             Statement statement = con.createStatement();
+            statement.execute("SET FOREIGN_KEY_CHECKS = 0;");
+            statement.execute("TRUNCATE TABLE game;");
+            statement.execute("TRUNCATE TABLE game_player;");
             statement.execute("TRUNCATE TABLE player;");
+            statement.execute("SET FOREIGN_KEY_CHECKS = 1;");
             con.close();
         } catch (SQLException e) {
+            PlatformLogger.Log(Level.SEVERE, "Error trying reset data: :" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -134,6 +188,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             key = Arrays.copyOf(key, 16);
             secretKey = new SecretKeySpec(key, "AES");
         } catch (NoSuchAlgorithmException e) {
+            PlatformLogger.Log(Level.SEVERE, "Error trying set encryption key: :" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -145,7 +200,8 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
-            System.out.println("Error while encrypting: " + e.toString());
+            PlatformLogger.Log(Level.SEVERE, "Error while encrypting: " + e.toString());
+            e.printStackTrace();
         }
         return null;
     }
@@ -157,7 +213,8 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
         } catch (Exception e) {
-            System.out.println("Error while decrypting: " + e.toString());
+            PlatformLogger.Log(Level.SEVERE, "Error while decrypting: " + e.toString());
+            e.printStackTrace();
         }
         return null;
     }

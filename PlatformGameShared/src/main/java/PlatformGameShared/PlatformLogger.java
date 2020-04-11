@@ -24,6 +24,7 @@ public class PlatformLogger {
         }
         formatter = new SimpleFormatter();
         LOGGER.addHandler(fileHandler);
+        LOGGER.setLevel(Level.ALL);
         fileHandler.setFormatter(formatter);
         //TODO have this be set based on the config
         fileHandler.setLevel(Level.ALL);

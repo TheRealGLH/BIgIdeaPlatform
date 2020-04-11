@@ -16,24 +16,21 @@ public class GameTimerTask extends TimerTask {
     /**
      * @param gameServer The game server that we send updates back to
      */
-    public GameTimerTask(IPlatformGameServer gameServer, int[] playerNrs, String[] names) {
-        this.gameServer = gameServer;
-        game = new Game();
-        game.setUpGame(playerNrs, names);
-    }
-
     public GameTimerTask(IPlatformGameServer gameServer, int[] playerNrs, String[] names, GameLevel gameLevel) {
         this.gameServer = gameServer;
         game = new Game();
         game.setUpGame(playerNrs, names, gameLevel);
     }
 
+
     @Override
     public void run() {
+        Thread.currentThread().setName("Game Timer");
         game.updateState();
         gameServer.sendSpriteUpdates(game.getSpriteUpdates());
         // gameServer.sendInputRequest();
     }
+
 
     public synchronized void sendInput(int playerNr, InputType inputType) {
         game.sendInput(playerNr, inputType);

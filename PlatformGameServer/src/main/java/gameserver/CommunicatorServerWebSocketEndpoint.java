@@ -49,6 +49,7 @@ public class CommunicatorServerWebSocketEndpoint {
     public void onError(Throwable cause, Session session) {
         PlatformLogger.Log(Level.SEVERE, "[WebSocket Session ID] : " + session.getId() + " was forcefully disconnected because: " + cause.getMessage());
         gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
+        sessionIPlatformGameClientMap.remove(session);
     }
 
     // Handle incoming message from client

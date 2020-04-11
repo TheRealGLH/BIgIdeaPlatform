@@ -15,12 +15,18 @@ public class LoginDatabaseJDBCTest {
 
     //Commented because we cannot reach the DB from our VCS CI
     //private ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
-    private ILoginDatabaseConnector databaseConnector = LoginDatabaseConnectorMock.getInstance();
+    private ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
 
     @Before
     public void setUp() {
         System.out.println("Resetting database...");
         databaseConnector.resetData();
+    }
+
+
+    @Test
+    public void removeData() {
+
     }
 
     @Test
@@ -81,5 +87,18 @@ public class LoginDatabaseJDBCTest {
         LoginState expectedLoginState = LoginState.INCORRECTDATA;
         LoginState actualLoginState = databaseConnector.loginPlayer(name, pwIncorrect);
         Assert.assertEquals(expectedLoginState, actualLoginState);
+    }
+
+    @Test
+    public void testPushGameEnd() {
+        String[] names = {"fred", "steve", "coolio"};
+        String victor = names[0];
+        String map = "ctf_2fort";
+        String password = "letmein123";
+        for (String name : names) {
+            databaseConnector.registerPlayer(name, password);
+        }
+        databaseConnector.AddGame(map, victor, names);
+
     }
 }
