@@ -50,7 +50,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
     @Override
     public LoginState loginPlayer(String name, String password) {
         String encryptedPassword = encrypt(password, secret);
-
+        String loginQuery = "select name, password from player where name = ?;";
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -58,8 +58,9 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
         }
         try {
             con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("select name, password from player where name = '" + name + "';");
+            PreparedStatement statement = con.prepareStatement(loginQuery);
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String pwGet = rs.getString("password");
                 if (encryptedPassword.equals(pwGet)) return LoginState.SUCCESS;
@@ -78,6 +79,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
     @Override
     public RegisterState registerPlayer(String name, String password) {
         if (name.length() <= 3 || password.length() <= 6) return RegisterState.INCORRECTDATA;
+        String nameCheckQuery = "select name from player where name = ?;";
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -85,9 +87,10 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
         }
         try {
             con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
-            Statement statement = con.createStatement();
+            PreparedStatement statement = con.prepareStatement(nameCheckQuery);
+            statement.setString(1, name);
             String encryptedPW = encrypt(password, secret);
-            ResultSet rs = statement.executeQuery("select name from player where name = '" + name + "';");
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String nameGet = rs.getString("name");
                 if (name.equals(nameGet)) return RegisterState.ALREADYEXISTS;
@@ -101,9 +104,12 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
         }
         try {
             con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
-            Statement statement = con.createStatement();
+            String registerQuery = "INSERT INTO `player` (`name`, `password`, `score`) VALUES (?, ?, '0')";
+            PreparedStatement statement = con.prepareStatement(registerQuery);
             String encryptedPW = encrypt(password, secret);
-            statement.execute("INSERT INTO `player` (`name`, `password`, `score`) VALUES ('" + name + "', '" + encryptedPW + "', '0')");
+            statement.setString(1, name);
+            statement.setString(2, encryptedPW);
+            statement.execute();
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,6 +158,12 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
                 currGamePlayerStatement.setInt(2, gameKey);
                 currGamePlayerStatement.execute();
             }
+            PreparedStatement incrScoreStatement = con.prepareStatement(
+                    "UPDATE `player` " +
+                            "SET `score` = `score` + 1 " +
+                            "WHERE `name` = ?");
+            incrScoreStatement.setString(1, victor);
+            incrScoreStatement.execute();
             con.close();
         } catch (SQLException e) {
             PlatformLogger.Log(Level.SEVERE, "Error trying set match data: :" + e.getMessage());
