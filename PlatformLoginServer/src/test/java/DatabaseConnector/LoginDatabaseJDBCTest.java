@@ -3,13 +3,11 @@ package DatabaseConnector;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import interfaces.ILoginDatabaseConnector;
-import org.apache.juli.logging.Log;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
 
 public class LoginDatabaseJDBCTest {
 
@@ -98,7 +96,83 @@ public class LoginDatabaseJDBCTest {
         for (String name : names) {
             databaseConnector.registerPlayer(name, password);
         }
-        databaseConnector.AddGame(map, victor, names);
+        databaseConnector.addGame(map, victor, names);
 
+    }
+
+    @Test
+    public void testGetPlayersFromMatch() {
+        String[] expectedNames = {"fred", "steve", "coolio"};
+        String victor = expectedNames[0];
+        String map = "ctf_2fort";
+        String password = "letmein123";
+        for (String name : expectedNames) {
+            databaseConnector.registerPlayer(name, password);
+        }
+        databaseConnector.addGame(map, victor, expectedNames);
+        String[] actualNames = databaseConnector.getPlayersInMatch(1);
+        Assert.assertEquals(expectedNames, actualNames);
+    }
+
+    @Test
+    public void testPlayerWins() {
+        int expectedWins = 1;
+        String[] names = {"fred", "steve", "coolio"};
+        String victor = names[0];
+        String map = "ctf_2fort";
+        String password = "letmein123";
+        for (String name : names) {
+            databaseConnector.registerPlayer(name, password);
+        }
+        databaseConnector.addGame(map, victor, names);
+        int actualWins = databaseConnector.getPlayerWins(names[0]);
+        Assert.assertEquals(expectedWins, actualWins);
+    }
+
+    @Test
+    public void testPlayerWinsNone() {
+        int expectedWins = 0;
+        String[] names = {"fred", "steve", "coolio"};
+        String victor = names[0];
+        String map = "ctf_2fort";
+        String password = "letmein123";
+        for (String name : names) {
+            databaseConnector.registerPlayer(name, password);
+        }
+        databaseConnector.addGame(map, victor, names);
+        int actualWins = databaseConnector.getPlayerWins(names[1]);
+        Assert.assertEquals(expectedWins, actualWins);
+    }
+
+    @Test
+    public void testPlayerMatches() {
+        String[] names = {"fred", "steve", "coolio"};
+        String victor = names[0];
+        String map = "ctf_2fort";
+        String password = "letmein123";
+        for (String name : names) {
+            databaseConnector.registerPlayer(name, password);
+        }
+        databaseConnector.addGame(map, victor, names);
+        databaseConnector.addGame(map, victor, names);
+        int[] expectedAmount = {1, 2};
+        int[] actualAmount = databaseConnector.getPlayerMatchIds(names[0]);
+        Assert.assertEquals(expectedAmount, actualAmount);
+    }
+
+    @Test
+    public void testPlayerMatchesNone() {
+        String[] names = {"fred", "steve", "coolio"};
+        String victor = names[0];
+        String map = "ctf_2fort";
+        String password = "letmein123";
+        for (String name : names) {
+            databaseConnector.registerPlayer(name, password);
+        }
+        databaseConnector.addGame(map, victor, names);
+        databaseConnector.addGame(map, victor, names);
+        int[] expectedAmount = {};
+        int[] actualAmount = databaseConnector.getPlayerMatchIds(names[0] + "2");
+        Assert.assertEquals(expectedAmount, actualAmount);
     }
 }

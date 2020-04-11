@@ -4,6 +4,7 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
+import RESTObjects.GameData;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -125,6 +126,12 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
             e.printStackTrace();
         }
         return "null";
+    }
+
+    @Override
+    public void sendGameEnd(String map, String winner, String[] players) {
+        GameData gameData = new GameData(map, winner, players);
+        //TODO send some HTTP POST request
     }
 
 
