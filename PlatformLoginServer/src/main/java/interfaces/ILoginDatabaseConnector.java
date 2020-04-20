@@ -2,6 +2,7 @@ package interfaces;
 
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
+import RESTObjects.GameData;
 
 public interface ILoginDatabaseConnector {
 
@@ -10,6 +11,8 @@ public interface ILoginDatabaseConnector {
     public RegisterState registerPlayer(String name, String password);
 
     public void addGame(String map, String victor, String[] players);
+
+    public GameData getGameData(int ID);
 
     public String[] getPlayersInMatch(int ID);
 

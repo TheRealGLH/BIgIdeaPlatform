@@ -5,6 +5,7 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
+import RESTObjects.GameData;
 import com.mysql.jdbc.CommunicationsException;
 import interfaces.ILoginDatabaseConnector;
 
@@ -170,6 +171,11 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public GameData getGameData(int ID) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
     }
 
     @Override
