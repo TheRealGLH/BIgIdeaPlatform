@@ -75,7 +75,7 @@ public class Player extends MovableObject {
         setVelocity(0, 0);
         setPosition(startX, startY);
         this.currentLives--;
-        PlatformLogger.Log(Level.INFO, name + " has " + currentLives + " lives left.");
+        PlatformLogger.Log(Level.FINE, name + " has " + currentLives + " lives left.");
         for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
             iPlayerEventListener.onDeathEvent(this);
         }

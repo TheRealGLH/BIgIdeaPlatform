@@ -248,6 +248,14 @@ public class Game implements Observer, IPlayerEventListener {
                 i.remove();
             }
         }
+        //Removing players from the playerMap
+        Iterator<Player> playerIterator = playerNrMap.values().iterator();
+        while (playerIterator.hasNext()) {
+            Player p = playerIterator.next();
+            if (p.isShouldBeCleaned()) {
+                playerNrMap.remove(p);
+            }
+        }
     }
 
     public List<SpriteUpdate> getSpriteUpdates() {
@@ -255,7 +263,8 @@ public class Game implements Observer, IPlayerEventListener {
     }
 
     public void sendInput(int playerNr, InputType inputType) {
-        playerNrMap.get(playerNr).handleInput(inputType);
+        Player p = playerNrMap.get(playerNr);
+        if (p != null) p.handleInput(inputType);
     }
 
     @Override
@@ -289,6 +298,9 @@ public class Game implements Observer, IPlayerEventListener {
 
     @Override
     public void onDeathEvent(Player deadPlayer) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        if (deadPlayer.getCurrentLives() <= 0) {
+            deadPlayer.markForDeletion();
+            //TODO game ending
+        }
     }
 }

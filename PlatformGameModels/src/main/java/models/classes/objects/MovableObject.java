@@ -106,13 +106,13 @@ public abstract class MovableObject extends GameObject {
         acceleration = new Vector2(acceleration.getX() + x, acceleration.getY() + y);
     }
 
-    public void Delete() {
+    public void markForDeletion() {
         shouldBeCleaned = true;
         PlatformLogger.Log(Level.FINE, "Object " + toString() + " added to delete queue");
     }
 
     public void onOutOfBounds() {
-        Delete();
+        markForDeletion();
     }
 
     public void setAcceleration(float x, float y) {

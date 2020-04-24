@@ -17,7 +17,7 @@ public class WeaponPickup extends MovableObject {
 
     public void pickUp(Player player){
         player.setCurrentWeapon(this.weaponType);
-        this.Delete();
+        this.markForDeletion();
     }
     public WeaponType getWeaponType() {
         return weaponType;
