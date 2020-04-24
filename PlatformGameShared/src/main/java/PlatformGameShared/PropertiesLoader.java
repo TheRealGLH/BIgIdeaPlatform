@@ -3,6 +3,7 @@ package PlatformGameShared;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,8 @@ public class PropertiesLoader {
 
             // get the property value and print it out
             result = prop.getProperty(propertyName);
+            if (result == null)
+                throw new InvalidParameterException("Property " + propertyName + " was not found in filename " + propertiesFileName);
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         } finally {

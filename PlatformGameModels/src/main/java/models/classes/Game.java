@@ -199,7 +199,7 @@ public class Game implements Observer, IPlayerEventListener {
                 if (platform.collidesWith(movableObject)) {
                     movableObject.setGrounded(true);
 
-                    //reallign if we're somewhat underneath the top of the platform
+                    //realign if we're somewhat underneath the top of the platform
                     float pY = platform.getTopRight().getY();
                     float objY = movableObject.getPosition().getY();
                     float diff = objY - pY;
