@@ -7,5 +7,6 @@ public enum WeaponType {
     THROWAXE,
     GRENADELAUNCHER,
     ROCKET,
-    FLAMETHROWER
+    FLAMETHROWER,
+    SELFDESTRUCT
 }

@@ -36,6 +36,8 @@ public class GameServer implements IPlatformGameServer {
     String[] maps;
     String currentMap;
 
+    boolean gameStarted = false;
+
     public GameServer() {
         if (PropertiesLoader.getPropValues("RESTClient.useMock", "application.properties").equals("true")) {
             loginClient = new PlatformLoginClientMock();
@@ -81,23 +83,28 @@ public class GameServer implements IPlatformGameServer {
 
     @Override
     public void attemptStartGame(IPlatformGameClient platformGameClient) {
-        if (joinedClients.contains(platformGameClient)) {
-            if (joinedClients.size() >= minAmountOfPlayers) {
-                int size = joinedClients.size();
-                String[] names = new String[size];
-                int[] playerNrs = new int[size];
-                for (int i = 0; i < size; i++) {
-                    names[i] = joinedClients.get(i).getName();
-                    playerNrs[i] = joinedClients.get(i).getPlayerNr();
+        if (!gameStarted) {
+            if (joinedClients.contains(platformGameClient)) {
+                if (joinedClients.size() >= minAmountOfPlayers) {
+                    int size = joinedClients.size();
+                    String[] names = new String[size];
+                    int[] playerNrs = new int[size];
+                    for (int i = 0; i < size; i++) {
+                        names[i] = joinedClients.get(i).getName();
+                        playerNrs[i] = joinedClients.get(i).getPlayerNr();
+                    }
+                    GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent(currentMap), GameLevel.class);
+                    gameTimerTask = new GameTimerTask(this, playerNrs, names, gameLevel);
+                    for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
+                    //TODO send stuff to the GameTimerTask, like the map perhaps
+                    timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
+                    gameStarted = true;
+                } else {
+                    PlatformLogger.Log(Level.FINE, "A request to start the game was denied because of too few players");
                 }
-                GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent(currentMap), GameLevel.class);
-                gameTimerTask = new GameTimerTask(this, playerNrs, names, gameLevel);
-                for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
-                //TODO send stuff to the GameTimerTask, like the map perhaps
-                timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
-            } else {
-                PlatformLogger.Log(Level.FINE, "A request to start the game was denied because of too few players");
             }
+        } else {
+            PlatformLogger.Log(Level.WARNING, "A game start attempt was made, but the game has already begun.", platformGameClient);
         }
     }
 
@@ -160,8 +167,15 @@ public class GameServer implements IPlatformGameServer {
 
     @Override
     public void sendGameState(GameState gameState) {
-        for(IPlatformGameClient platformGameClient : joinedClients){
+        for (IPlatformGameClient platformGameClient : joinedClients) {
             platformGameClient.receiveGameState(gameState);
+        }
+        if (gameState == GameState.GAMEOVER) {
+            gameTimerTask.cancel();
+            gameStarted = false;
+            notifyClientsNames();
+            notifyClientsMapList();
+            notifyClientsMapSelected();
         }
     }
 
