@@ -13,4 +13,5 @@ module PlatformGameServer {
     requires org.apache.httpcomponents.httpcore;
     requires org.apache.httpcomponents.httpclient;
     requires javax.servlet.api;
+    requires PlatformLoginShared;
 }

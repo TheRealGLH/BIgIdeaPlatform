@@ -15,5 +15,7 @@ public interface IPlatformLoginClient {
 
     public String getLevelContent(String levelname);
 
+    public void sendGameEnd(String map, String winner, String[] players);
+
 
 }

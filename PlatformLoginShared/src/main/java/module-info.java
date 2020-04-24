@@ -1,2 +1,3 @@
 module PlatformLoginShared {
+    exports RESTObjects;
 }

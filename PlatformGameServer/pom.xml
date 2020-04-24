@@ -81,6 +81,12 @@
             <artifactId>jetty-servlets</artifactId>
             <version>9.4.14.v20181114</version>
         </dependency>
+        <dependency>
+            <groupId>MartijnD</groupId>
+            <artifactId>PlatformLoginShared</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 

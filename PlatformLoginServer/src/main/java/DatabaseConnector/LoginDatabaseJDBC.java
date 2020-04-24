@@ -5,6 +5,7 @@ import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
+import RESTObjects.GameData;
 import com.mysql.jdbc.CommunicationsException;
 import interfaces.ILoginDatabaseConnector;
 
@@ -120,7 +121,7 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
     }
 
     @Override
-    public void AddGame(String map, String victor, String[] players) {
+    public void addGame(String map, String victor, String[] players) {
         boolean victorInNames = false;
         for (String player : players) {
             if (player.equals(victor)) {
@@ -170,6 +171,50 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public GameData getGameData(int ID) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
+    public String[] getPlayersInMatch(int ID) {
+        try {
+            String playersQuery = "SELECT `player_name` FROM `game_player` " +
+                    "WHERE `game_id` = ?";
+            PreparedStatement playerStatement;
+
+            con = DriverManager.getConnection(connectionString, dbUserName, dbPassword);
+            playerStatement = con.prepareStatement(playersQuery, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            playerStatement.setInt(1, ID);
+            ResultSet rs = playerStatement.executeQuery();
+            rs.last();
+            String[] names = new String[rs.getRow()];
+            rs.first();
+            names[0] = rs.getString("player_name");
+            int i = 1;
+            while (rs.next()) {
+                names[i] = rs.getString("player_name");
+                i++;
+            }
+            return names;
+        } catch (SQLException e) {
+            PlatformLogger.Log(Level.SEVERE, "Error getting players from match ID " + ID + ": " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int getPlayerWins(String name) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
+    public int[] getPlayerMatchIds(String name) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
     }
 
     @Override
