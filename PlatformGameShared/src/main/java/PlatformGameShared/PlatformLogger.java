@@ -29,10 +29,10 @@ public class PlatformLogger {
         }
         formatter = new SimpleFormatter();
         LOGGER.addHandler(fileHandler);
-        LOGGER.setLevel(Level.ALL);
+        Level loggingLevel = Level.parse(PropertiesLoader.getPropValues("logger.logLevel", "logger.properties"));
+        LOGGER.setLevel(loggingLevel);
         fileHandler.setFormatter(formatter);
-        //TODO have this be set based on the config
-        fileHandler.setLevel(Level.ALL);
+        fileHandler.setLevel(loggingLevel);
     }
 
 
