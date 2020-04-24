@@ -4,6 +4,7 @@ import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.Vector2;
+import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 
@@ -15,6 +16,9 @@ public class Player extends MovableObject {
 
 
     private WeaponType currentWeapon = WeaponType.NONE;
+    private static final int maxLives = Integer.parseInt(PropertiesLoader.getPropValues("game.playerMaxLives", "game.properties"));
+    ;
+    private int currentLives = maxLives;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
@@ -58,7 +62,7 @@ public class Player extends MovableObject {
     }
 
     public void useWeapon() {
-        if(!shotLastUpdate) {
+        if (!shotLastUpdate) {
             shotLastUpdate = true;
             for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
                 iPlayerEventListener.onShootEvent(this);
@@ -70,8 +74,10 @@ public class Player extends MovableObject {
         setAcceleration(0, 0);
         setVelocity(0, 0);
         setPosition(startX, startY);
+        this.currentLives--;
+        PlatformLogger.Log(Level.INFO, name + " has " + currentLives + " lives left.");
         for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
-            //iPlayerEventListener.onShootEvent(this);
+            iPlayerEventListener.onDeathEvent(this);
         }
     }
 
@@ -121,7 +127,7 @@ public class Player extends MovableObject {
     public void update() {
         if (hasInputMove) {
             float acc = walkAcceleration;
-            if(!isGrounded()) acc = walkAcceleration/2;
+            if (!isGrounded()) acc = walkAcceleration / 2;
             switch (lastMove) {
                 case MOVELEFT:
                     //setAcceleration(-acc,getAcceleration().getY());
@@ -149,8 +155,8 @@ public class Player extends MovableObject {
         willShoot = false;
         Vector2 acc = getAcceleration();
         //Cap acceleration
-        if(acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration,acc.getY());
-        if(acc.getX() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
+        if (acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration, acc.getY());
+        if (acc.getX() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration, acc.getY());
         super.update();
     }
 
@@ -161,6 +167,7 @@ public class Player extends MovableObject {
 
     @Override
     public void onOutOfBounds() {
+        PlatformLogger.Log(Level.INFO, name + "fell out of the world!");
         Kill();
     }
 
@@ -171,22 +178,29 @@ public class Player extends MovableObject {
 
     @Override
     public String toString() {
-        return "Player@" + hashCode() + " Pos " + getPosition();
+        return "Player@" + hashCode() + " Pos: " + getPosition() + " Name: " + name;
     }
 
-    /*
+
     @Override
     public String getLabel() {
-        return name + " " +currentWeapon +" G "+isGrounded() + " P: "+getPosition();
+        return name + " " + currentWeapon + " \n" +
+                "Lives: " + currentLives + " P: " + getPosition();
     }
-     */
 
+
+    /*
     @Override
     public String getLabel() {
         return name + " " + currentWeapon + " P ; " + getPosition() +
                 "\n V " + getVelocity() +
                 "\n A " + getAcceleration() +
                 "\n G " + isGrounded();
+    }
+     */
+
+    public int getCurrentLives() {
+        return currentLives;
     }
 
     public String getName() {
