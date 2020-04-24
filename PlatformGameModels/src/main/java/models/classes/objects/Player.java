@@ -43,6 +43,11 @@ public class Player extends MovableObject {
         this.startY = yPos;
     }
 
+    /**
+     * Gives the Player new inputs to use for the next game tick
+     *
+     * @param inputType The input we want the player to use
+     */
     public void handleInput(InputType inputType) {
         PlatformLogger.Log(Level.FINEST, this + "received input " + inputType);
         switch (inputType) {
@@ -61,6 +66,9 @@ public class Player extends MovableObject {
         }
     }
 
+    /**
+     * Makes the player use their weapon this tick
+     */
     public void useWeapon() {
         if (!shotLastUpdate) {
             shotLastUpdate = true;
@@ -70,6 +78,9 @@ public class Player extends MovableObject {
         }
     }
 
+    /**
+     * Kills the player and removes one life.
+     */
     public void Kill() {
         setAcceleration(0, 0);
         setVelocity(0, 0);
@@ -81,6 +92,9 @@ public class Player extends MovableObject {
         }
     }
 
+    /**
+     * Makes the player jump somewhat upwards
+     */
     public void jump() {
         if (isGrounded()) {
             addAcceleration(getAcceleration(false), 2.5f);

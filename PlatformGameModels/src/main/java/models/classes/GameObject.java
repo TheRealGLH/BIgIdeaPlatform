@@ -51,19 +51,32 @@ public abstract class GameObject extends Observable {
         return new Vector2(x, y);
     }
 
-    public void setObjectNr(int objectNr){
+    /**
+     * The Object number is used to keep track of which sprite belongs to which object, it's added to sprite updates.
+     *
+     * @param objectNr The desired number
+     */
+    public void setObjectNr(int objectNr) {
         this.objectNr = objectNr;
     }
 
-    public int getObjectNr(){return objectNr;}
+    /**
+     * @return The Object number is used to keep track of which sprite belongs to which object, it's added to sprite updates.
+     */
+    public int getObjectNr() {
+        return objectNr;
+    }
 
+    /**
+     * @return The sprite type this object should be drawn with.
+     */
     public abstract SpriteType getSpriteType();
 
     private static boolean between(Vector2 origin, Vector2 topRight, Vector2 toCompare) {
         return between(origin.getX(), topRight.getX(), toCompare.getX()) && between(origin.getY(), topRight.getY(), toCompare.getY());
     }
 
-    public  static boolean between(float min, float max, float toCompare) {
+    public static boolean between(float min, float max, float toCompare) {
         return (toCompare >= min && toCompare <= max);
     }
 }

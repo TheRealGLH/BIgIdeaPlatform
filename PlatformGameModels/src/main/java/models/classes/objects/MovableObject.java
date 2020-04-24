@@ -31,6 +31,12 @@ public abstract class MovableObject extends GameObject {
         acceleration = Vector2.Zero();
     }
 
+    /**
+     * What to do when this object collides with another one
+     *
+     * @param other        The object we collide with
+     * @param collidePoint The point where the collision took place
+     */
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
 
     public void setGrounded(boolean value) {
@@ -41,6 +47,9 @@ public abstract class MovableObject extends GameObject {
         return isGrounded;
     }
 
+    /**
+     * Applies all forces and changes that should take place this game tick
+     */
     public void update() {
         Vector2 startPos = getPosition();
         if (!isGrounded() && isUseGravity()) doGravity();

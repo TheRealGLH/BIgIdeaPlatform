@@ -7,10 +7,14 @@ import models.classes.GameObject;
 import models.classes.objects.Player;
 
 public class ProjectileBomb extends Projectile {
-    private int explodeTime = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explodeTime","weapons.properties"));;
-    private static int explosionGrowth = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explosionGrowth","weapons.properties"));;
-    private static int maxLife = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.maxLife","weapons.properties"));;
-    private static float size = Float.parseFloat(PropertiesLoader.getPropValues("projectileBomb.size","weapons.properties"));
+    //The timer to determine whether or not the bomb has already exploeded
+    private int explodeTime = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explodeTime", "weapons.properties"));
+    //We use this to determine how much an explosion should grow every game tick
+    private static int explosionGrowth = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.explosionGrowth", "weapons.properties"));
+
+    private static int maxLife = Integer.parseInt(PropertiesLoader.getPropValues("projectileBomb.maxLife", "weapons.properties"));
+
+    private static float size = Float.parseFloat(PropertiesLoader.getPropValues("projectileBomb.size", "weapons.properties"));
 
     public ProjectileBomb(float xPosition, float yPosition, Player owner) {
         super(xPosition, yPosition, size, size, maxLife, owner);
@@ -47,10 +51,17 @@ public class ProjectileBomb extends Projectile {
         return clone;
     }
 
+    /**
+     * @return Has this bomb already exploded?
+     */
+    public boolean hasExploded() {
+        return explodeTime <= 0;
+    }
+
 
     @Override
     public SpriteType getSpriteType() {
-        if (explodeTime <= 0) {
+        if (hasExploded()) {
             return SpriteType.PROJECTILEBOMBEXPLODE;
         }
         return SpriteType.PROJECTILEBOMB;

@@ -15,13 +15,17 @@ public class PlatformLogger {
 
 
     private PlatformLogger() {
+
+        //The path we'll create will have subdirectories for every executable
         String name = System.getProperty("sun.java.command").replace('/', '.');
         Date today = new Date();
         String logPath = PropertiesLoader.getPropValues("logger.logPath", "logger.properties") + name;
 
         //Check if the path exists. if not, we make it
         File dirCheck = new File(logPath);
-        dirCheck.mkdirs();
+        if (dirCheck.mkdirs()) {
+            System.out.println("Creating log directory at " + dirCheck.getAbsolutePath());
+        }
         try {
             fileHandler = new FileHandler(logPath + "\\" + dateFormat.format(today) + ".log");
         } catch (IOException e) {
@@ -36,10 +40,23 @@ public class PlatformLogger {
     }
 
 
+    /**
+     * Logs a message to the logger
+     *
+     * @param level   The level to log the message at
+     * @param message The message to log
+     */
     public static void Log(Level level, String message) {
         LOGGER.log(level, message);
     }
 
+    /**
+     * Logs a message with an object to the logger
+     *
+     * @param level   The level to log the message at
+     * @param message The message to log
+     * @param object  The object related to the message
+     */
     public static void Log(Level level, String message, Object object) {
         LOGGER.log(level, message, object);
     }
