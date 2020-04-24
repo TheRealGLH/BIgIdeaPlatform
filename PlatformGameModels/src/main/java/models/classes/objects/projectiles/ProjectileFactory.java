@@ -20,6 +20,9 @@ public class ProjectileFactory {
         put(WeaponType.GRENADELAUNCHER, new ProjectileBomb(0, 0, null) {{
             setVelocity(40, 5);
         }});
+        put(WeaponType.ROCKET, new ProjectileBombRocket(0, 0, null) {{
+            setAcceleration(rocketAcceleration, 0);
+        }});
         put(WeaponType.THROWAXE, new ProjectileThrowingAxe(0, 0, null) {{
             setVelocity(horizontalVelocity, verticalVelocity);
         }});

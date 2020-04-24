@@ -1,48 +1,62 @@
 package PlatformGameShared;
 
+import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
 
 public class PlatformLogger {
     private static Logger LOGGER = Logger.getLogger("PlatformLogger");
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MMM-dd k-m-s-S");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MMM-dd k-m-s-S");
     private static PlatformLogger instance = new PlatformLogger();
     private Handler fileHandler;
     private Formatter formatter;
 
 
     private PlatformLogger() {
+
+        //The path we'll create will have subdirectories for every executable
+        String name = System.getProperty("sun.java.command").replace('/', '.');
         Date today = new Date();
+        String logPath = PropertiesLoader.getPropValues("logger.logPath", "logger.properties") + name;
+
+        //Check if the path exists. if not, we make it
+        File dirCheck = new File(logPath);
+        if (dirCheck.mkdirs()) {
+            System.out.println("Creating log directory at " + dirCheck.getAbsolutePath());
+        }
         try {
-            //TODO have the path be set in the config
-            fileHandler = new FileHandler("./" + System.getProperty("sun.java.command") + " " + dateFormat.format(today) + ".log");
+            fileHandler = new FileHandler(logPath + "\\" + dateFormat.format(today) + ".log");
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error initializing the logger.", e);
         }
         formatter = new SimpleFormatter();
         LOGGER.addHandler(fileHandler);
-        LOGGER.setLevel(Level.ALL);
+        Level loggingLevel = Level.parse(PropertiesLoader.getPropValues("logger.logLevel", "logger.properties"));
+        LOGGER.setLevel(loggingLevel);
         fileHandler.setFormatter(formatter);
-        //TODO have this be set based on the config
-        fileHandler.setLevel(Level.ALL);
+        fileHandler.setLevel(loggingLevel);
     }
 
-    /*
-    public static PlatformLogger instance() {
-        if (instance == null) {
-            instance = new PlatformLogger();
-        }
-        return instance;
-    }
+
+    /**
+     * Logs a message to the logger
+     *
+     * @param level   The level to log the message at
+     * @param message The message to log
      */
-
     public static void Log(Level level, String message) {
         LOGGER.log(level, message);
     }
 
+    /**
+     * Logs a message with an object to the logger
+     *
+     * @param level   The level to log the message at
+     * @param message The message to log
+     * @param object  The object related to the message
+     */
     public static void Log(Level level, String message, Object object) {
         LOGGER.log(level, message, object);
     }

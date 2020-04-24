@@ -31,6 +31,12 @@ public abstract class MovableObject extends GameObject {
         acceleration = Vector2.Zero();
     }
 
+    /**
+     * What to do when this object collides with another one
+     *
+     * @param other        The object we collide with
+     * @param collidePoint The point where the collision took place
+     */
     public abstract void onCollide(GameObject other, Vector2 collidePoint);
 
     public void setGrounded(boolean value) {
@@ -41,6 +47,9 @@ public abstract class MovableObject extends GameObject {
         return isGrounded;
     }
 
+    /**
+     * Applies all forces and changes that should take place this game tick
+     */
     public void update() {
         Vector2 startPos = getPosition();
         if (!isGrounded() && isUseGravity()) doGravity();
@@ -98,21 +107,23 @@ public abstract class MovableObject extends GameObject {
     }
 
     private void doGravity() {
-        if (timeInAir < maxTimeInAir) timeInAir++;
-        addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
+        if (useGravity) {
+            if (timeInAir < maxTimeInAir) timeInAir++;
+            addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
+        }
     }
 
     public void addAcceleration(float x, float y) {
         acceleration = new Vector2(acceleration.getX() + x, acceleration.getY() + y);
     }
 
-    public void Delete() {
+    public void markForDeletion() {
         shouldBeCleaned = true;
         PlatformLogger.Log(Level.FINE, "Object " + toString() + " added to delete queue");
     }
 
     public void onOutOfBounds() {
-        Delete();
+        markForDeletion();
     }
 
     public void setAcceleration(float x, float y) {

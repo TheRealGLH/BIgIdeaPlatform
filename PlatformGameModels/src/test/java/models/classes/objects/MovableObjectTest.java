@@ -194,7 +194,7 @@ public class MovableObjectTest {
         System.out.println("Testing MovableObject deletion");
         MockGame game = new MockGame();
         game.addObject(movableObject);
-        movableObject.Delete();
+        movableObject.markForDeletion();
         game.update();
         Assert.assertFalse(game.objectStillInList(movableObject));
     }
@@ -202,7 +202,7 @@ public class MovableObjectTest {
     @Test
     public void isShouldBeCleaned() {
         System.out.println("Testing MovableObject marking for cleaning.");
-        movableObject.Delete();
+        movableObject.markForDeletion();
         Assert.assertTrue(movableObject.isShouldBeCleaned());
     }
 

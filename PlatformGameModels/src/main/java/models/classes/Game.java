@@ -1,5 +1,6 @@
 package models.classes;
 
+import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.PlatformLogger;
@@ -29,6 +30,8 @@ public class Game implements Observer, IPlayerEventListener {
     private boolean firstUpdateComplete = false;
     private float levelWidth = 600;//these are default values for when we start a game without a GameLevel loaded
     private float levelHeight = 600;
+
+    private GameState gameState = GameState.STARTED;
 
     //keeping track of weapon spawning stuff
     private final static int maxTimeBetweenWeaponSpawns = Integer.parseInt(PropertiesLoader.getPropValues("game.maxTimeBetweenWeaponSpawns", "game.properties"));
@@ -199,7 +202,7 @@ public class Game implements Observer, IPlayerEventListener {
                 if (platform.collidesWith(movableObject)) {
                     movableObject.setGrounded(true);
 
-                    //reallign if we're somewhat underneath the top of the platform
+                    //realign if we're somewhat underneath the top of the platform
                     float pY = platform.getTopRight().getY();
                     float objY = movableObject.getPosition().getY();
                     float diff = objY - pY;
@@ -248,6 +251,14 @@ public class Game implements Observer, IPlayerEventListener {
                 i.remove();
             }
         }
+        //Removing players from the playerMap
+        Iterator<Player> playerIterator = playerNrMap.values().iterator();
+        while (playerIterator.hasNext()) {
+            Player p = playerIterator.next();
+            if (p.isShouldBeCleaned()) {
+                playerNrMap.remove(p);
+            }
+        }
     }
 
     public List<SpriteUpdate> getSpriteUpdates() {
@@ -255,7 +266,8 @@ public class Game implements Observer, IPlayerEventListener {
     }
 
     public void sendInput(int playerNr, InputType inputType) {
-        playerNrMap.get(playerNr).handleInput(inputType);
+        Player p = playerNrMap.get(playerNr);
+        if (p != null) p.handleInput(inputType);
     }
 
     @Override
@@ -289,6 +301,15 @@ public class Game implements Observer, IPlayerEventListener {
 
     @Override
     public void onDeathEvent(Player deadPlayer) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        if (deadPlayer.getCurrentLives() <= 0) {
+            deadPlayer.markForDeletion();
+            if(playerNrMap.values().size()<=1){
+                gameState = GameState.GAMEOVER;
+            }
+        }
+    }
+
+    public GameState getGameState(){
+        return gameState;
     }
 }

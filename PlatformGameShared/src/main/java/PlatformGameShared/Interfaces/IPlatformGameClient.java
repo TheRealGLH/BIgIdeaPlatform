@@ -46,6 +46,7 @@ public interface IPlatformGameClient {
 
     public void receiveAllowInput();
 
+
     public Object getAddress();
 
     void setAddress(Object o);

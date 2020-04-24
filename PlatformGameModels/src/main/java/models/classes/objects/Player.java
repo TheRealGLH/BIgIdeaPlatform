@@ -4,6 +4,7 @@ import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteType;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.Vector2;
+import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
 import models.enums.WeaponType;
 
@@ -14,7 +15,10 @@ import java.util.logging.Level;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.NONE;
+    private WeaponType currentWeapon = WeaponType.ROCKET;
+    private static final int maxLives = Integer.parseInt(PropertiesLoader.getPropValues("game.playerMaxLives", "game.properties"));
+    ;
+    private int currentLives = maxLives;
     private boolean hasInputMove = false;
     private boolean willJump = false;
     private boolean willShoot = false;
@@ -39,6 +43,11 @@ public class Player extends MovableObject {
         this.startY = yPos;
     }
 
+    /**
+     * Gives the Player new inputs to use for the next game tick
+     *
+     * @param inputType The input we want the player to use
+     */
     public void handleInput(InputType inputType) {
         PlatformLogger.Log(Level.FINEST, this + "received input " + inputType);
         switch (inputType) {
@@ -57,8 +66,11 @@ public class Player extends MovableObject {
         }
     }
 
+    /**
+     * Makes the player use their weapon this tick
+     */
     public void useWeapon() {
-        if(!shotLastUpdate) {
+        if (!shotLastUpdate) {
             shotLastUpdate = true;
             for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
                 iPlayerEventListener.onShootEvent(this);
@@ -66,15 +78,23 @@ public class Player extends MovableObject {
         }
     }
 
+    /**
+     * Kills the player and removes one life.
+     */
     public void Kill() {
         setAcceleration(0, 0);
         setVelocity(0, 0);
         setPosition(startX, startY);
+        this.currentLives--;
+        PlatformLogger.Log(Level.FINE, name + " has " + currentLives + " lives left.");
         for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
-            //iPlayerEventListener.onShootEvent(this);
+            iPlayerEventListener.onDeathEvent(this);
         }
     }
 
+    /**
+     * Makes the player jump somewhat upwards
+     */
     public void jump() {
         if (isGrounded()) {
             addAcceleration(getAcceleration(false), 2.5f);
@@ -121,7 +141,7 @@ public class Player extends MovableObject {
     public void update() {
         if (hasInputMove) {
             float acc = walkAcceleration;
-            if(!isGrounded()) acc = walkAcceleration/2;
+            if (!isGrounded()) acc = walkAcceleration / 2;
             switch (lastMove) {
                 case MOVELEFT:
                     //setAcceleration(-acc,getAcceleration().getY());
@@ -149,8 +169,8 @@ public class Player extends MovableObject {
         willShoot = false;
         Vector2 acc = getAcceleration();
         //Cap acceleration
-        if(acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration,acc.getY());
-        if(acc.getX() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration,acc.getY());
+        if (acc.getX() > maxHorizontalAcceleration) setAcceleration(maxHorizontalAcceleration, acc.getY());
+        if (acc.getX() < -maxHorizontalAcceleration) setAcceleration(-maxHorizontalAcceleration, acc.getY());
         super.update();
     }
 
@@ -161,6 +181,7 @@ public class Player extends MovableObject {
 
     @Override
     public void onOutOfBounds() {
+        PlatformLogger.Log(Level.INFO, name + "fell out of the world!");
         Kill();
     }
 
@@ -171,22 +192,29 @@ public class Player extends MovableObject {
 
     @Override
     public String toString() {
-        return "Player@" + hashCode() + " Pos " + getPosition();
+        return "Player@" + hashCode() + " Pos: " + getPosition() + " Name: " + name;
     }
 
-    /*
+
     @Override
     public String getLabel() {
-        return name + " " +currentWeapon +" G "+isGrounded() + " P: "+getPosition();
+        return name + " " + currentWeapon + " \n" +
+                "Lives: " + currentLives + " P: " + getPosition();
     }
-     */
 
+
+    /*
     @Override
     public String getLabel() {
         return name + " " + currentWeapon + " P ; " + getPosition() +
                 "\n V " + getVelocity() +
                 "\n A " + getAcceleration() +
                 "\n G " + isGrounded();
+    }
+     */
+
+    public int getCurrentLives() {
+        return currentLives;
     }
 
     public String getName() {

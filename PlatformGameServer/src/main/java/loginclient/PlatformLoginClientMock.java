@@ -105,4 +105,9 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
                 "  ]\n" +
                 "}";
     }
+
+    @Override
+    public void sendGameEnd(String map, String winner, String[] players) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
 }

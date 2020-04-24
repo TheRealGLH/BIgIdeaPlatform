@@ -1,5 +1,6 @@
 package PlatformGameShared.Interfaces;
 
+import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Points.SpriteUpdate;
 
@@ -20,6 +21,8 @@ public interface IPlatformGameServer {
     public void removePlayer(IPlatformGameClient client);
 
     public void selectLobbyMap(IPlatformGameClient client, String mapName);
+
+    public void sendGameState(GameState gameState);
 
     void sendInputRequest();
 }
