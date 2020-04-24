@@ -16,26 +16,34 @@ public class ProjectileBomb extends Projectile {
 
     private static float size = Float.parseFloat(PropertiesLoader.getPropValues("projectileBomb.size", "weapons.properties"));
 
+    private boolean hasExploded = false;
+
     public ProjectileBomb(float xPosition, float yPosition, Player owner) {
         super(xPosition, yPosition, size, size, maxLife, owner);
         explodeTime = maxLife - explodeTime;
         destroyOnHit = false;
     }
 
+    public void explode() {
+        setUseGravity(false);
+        hasExploded = true;
+    }
+
     @Override
     public void update() {
         explodeTime--;
-        if (explodeTime <= 0) {
-            setUseGravity(false);
+        if (hasExploded) {
             Vector2 size = getSize();
             setSize(size.getX() + explosionGrowth, size.getY() + explosionGrowth);
+        } else if (explodeTime <= 0) {
+            explode();
         }
         super.update();
     }
 
     @Override
     public void onCollide(GameObject other, Vector2 collidePoint) {
-        if (explodeTime <= 0) {
+        if (hasExploded) {
             super.onCollide(other, collidePoint);
         }
     }
@@ -55,7 +63,7 @@ public class ProjectileBomb extends Projectile {
      * @return Has this bomb already exploded?
      */
     public boolean hasExploded() {
-        return explodeTime <= 0;
+        return hasExploded;
     }
 
 

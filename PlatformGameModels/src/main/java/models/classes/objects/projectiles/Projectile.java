@@ -62,6 +62,13 @@ public abstract class Projectile extends MovableObject {
         return owner;
     }
 
+    public boolean isAllowsSelfHarm() {
+        return allowsSelfHarm;
+    }
+
+    public void setAllowsSelfHarm(boolean allowsSelfHarm) {
+        this.allowsSelfHarm = allowsSelfHarm;
+    }
 
     public abstract Projectile clone();
 }

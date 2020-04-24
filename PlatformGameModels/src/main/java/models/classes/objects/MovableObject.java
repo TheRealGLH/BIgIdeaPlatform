@@ -107,8 +107,10 @@ public abstract class MovableObject extends GameObject {
     }
 
     private void doGravity() {
-        if (timeInAir < maxTimeInAir) timeInAir++;
-        addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
+        if (useGravity) {
+            if (timeInAir < maxTimeInAir) timeInAir++;
+            addAcceleration(0, weight + timeInAir * gravity);//make this increase or something
+        }
     }
 
     public void addAcceleration(float x, float y) {

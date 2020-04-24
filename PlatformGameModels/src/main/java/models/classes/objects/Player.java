@@ -15,7 +15,7 @@ import java.util.logging.Level;
 public class Player extends MovableObject {
 
 
-    private WeaponType currentWeapon = WeaponType.NONE;
+    private WeaponType currentWeapon = WeaponType.ROCKET;
     private static final int maxLives = Integer.parseInt(PropertiesLoader.getPropValues("game.playerMaxLives", "game.properties"));
     ;
     private int currentLives = maxLives;
