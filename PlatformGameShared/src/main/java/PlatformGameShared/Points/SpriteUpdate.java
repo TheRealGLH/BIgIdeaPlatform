@@ -94,7 +94,7 @@ public class SpriteUpdate {
 
     @Override
     public String toString(){
-        return "SpriteUpdate: "+updateType+" "+spriteType;
+        return "SpriteUpdate: "+updateType+" "+spriteType + " nr" + objectNr;
     }
 
 }

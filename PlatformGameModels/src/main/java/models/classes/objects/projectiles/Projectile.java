@@ -71,4 +71,9 @@ public abstract class Projectile extends MovableObject {
     }
 
     public abstract Projectile clone();
+
+    @Override
+    public String toString() {
+        return getClass().getName() + " owned by " + owner.getName() + " @" + this.getClass().hashCode();
+    }
 }

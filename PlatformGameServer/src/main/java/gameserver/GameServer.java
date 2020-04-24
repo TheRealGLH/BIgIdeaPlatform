@@ -1,5 +1,6 @@
 package gameserver;
 
+import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
@@ -15,7 +16,6 @@ import loginclient.PlatformLoginClientMock;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -155,6 +155,13 @@ public class GameServer implements IPlatformGameServer {
             }
         } else {
             PlatformLogger.Log(Level.WARNING, "Client: " + client.getAddress() + " tried to select a map, but they are not the lobby leader!");
+        }
+    }
+
+    @Override
+    public void sendGameState(GameState gameState) {
+        for(IPlatformGameClient platformGameClient : joinedClients){
+            platformGameClient.receiveGameState(gameState);
         }
     }
 

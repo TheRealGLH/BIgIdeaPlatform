@@ -1,5 +1,6 @@
 package models.classes;
 
+import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.PlatformLogger;
@@ -29,6 +30,8 @@ public class Game implements Observer, IPlayerEventListener {
     private boolean firstUpdateComplete = false;
     private float levelWidth = 600;//these are default values for when we start a game without a GameLevel loaded
     private float levelHeight = 600;
+
+    private GameState gameState = GameState.STARTED;
 
     //keeping track of weapon spawning stuff
     private final static int maxTimeBetweenWeaponSpawns = Integer.parseInt(PropertiesLoader.getPropValues("game.maxTimeBetweenWeaponSpawns", "game.properties"));
@@ -300,7 +303,13 @@ public class Game implements Observer, IPlayerEventListener {
     public void onDeathEvent(Player deadPlayer) {
         if (deadPlayer.getCurrentLives() <= 0) {
             deadPlayer.markForDeletion();
-            //TODO game ending
+            if(playerNrMap.values().size()<=1){
+                gameState = GameState.GAMEOVER;
+            }
         }
+    }
+
+    public GameState getGameState(){
+        return gameState;
     }
 }
