@@ -2,6 +2,7 @@ package models.classes;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.GameLevelObject;
 import PlatformGameShared.Points.SpriteUpdate;
@@ -13,6 +14,7 @@ import models.classes.objects.projectiles.ProjectileFactory;
 import models.enums.WeaponType;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class Game implements Observer, IPlayerEventListener {
 
@@ -29,7 +31,8 @@ public class Game implements Observer, IPlayerEventListener {
     private float levelHeight = 600;
 
     //keeping track of weapon spawning stuff
-    private final static int maxTimeBetweenWeaponSpawns = Integer.parseInt(PropertiesLoader.getPropValues("game.maxTimeBetweenWeaponSpawns","game.properties"));;
+    private final static int maxTimeBetweenWeaponSpawns = Integer.parseInt(PropertiesLoader.getPropValues("game.maxTimeBetweenWeaponSpawns", "game.properties"));
+    ;
     private int currentWeaponSpawnTarget;//once we reach this amount, we spawn a new weapon
     private int currentWeaponSpawnTime = 0;
 
@@ -118,7 +121,7 @@ public class Game implements Observer, IPlayerEventListener {
 
         int j = 0;
         if (playerspawnobjects.size() < 1) {
-            System.out.println("[Game.java] The map " + gameLevel.getName() + " doesn't seem to have any player spawn points!! Adding one on (100,100).");
+            PlatformLogger.Log(Level.WARNING, "The map " + gameLevel.getName() + " doesn't seem to have any player spawn points!! Adding one on (100,100).");
             playerspawnobjects.add(new GameLevelObject(GameLevelObject.KindEnum.playerspawn, 100, 100, 100, 100, false));
         }
         for (int i = 0; i < playerNrs.length; i++) {
@@ -132,7 +135,7 @@ public class Game implements Observer, IPlayerEventListener {
             j++;
         }
         if (weaponSpawnPoints.size() < 1) {
-            System.out.println("[Game.java] The map " + gameLevel.getName() + " doesn't seem to have any weapon spawn points!! Adding one on (100,100).");
+            PlatformLogger.Log(Level.WARNING, "The map " + gameLevel.getName() + " doesn't seem to have any weapon spawn points!! Adding one on (100,100).");
             weaponSpawnPoints.add(new Vector2(100, 100));
         }
 
@@ -162,12 +165,12 @@ public class Game implements Observer, IPlayerEventListener {
 
     private void setNewWeaponSpawnTarget() {
         currentWeaponSpawnTarget = new Random().nextInt(maxTimeBetweenWeaponSpawns);
-        System.out.println("{Game.java] Current weapon spawn target is " + currentWeaponSpawnTarget);
+        PlatformLogger.Log(Level.FINE, "Current weapon spawn target is " + currentWeaponSpawnTarget);
     }
 
 
     public void updateState() {
-        //System.out.println("[Game.java] Update cycle: " + new java.util.Date());
+        PlatformLogger.Log(Level.FINER, "New update cycle started.");
 
         //Moving
         if (firstUpdateComplete) {
@@ -176,6 +179,7 @@ public class Game implements Observer, IPlayerEventListener {
         firstUpdateComplete = true;
         //we loop through all of our movables and then do our update things
         for (MovableObject movableObject : movableObjects) {
+            PlatformLogger.Log(Level.FINEST, "Updating object: " + movableObject);
             movableObject.update();
         }
 
@@ -200,7 +204,7 @@ public class Game implements Observer, IPlayerEventListener {
                     float objY = movableObject.getPosition().getY();
                     float diff = objY - pY;
                     if (diff < -0.1f) {//can't seemingly compare exact float values
-                        System.out.println(movableObject + " Diff: " + diff + " platform y " + pY + " obj " + objY);
+                        PlatformLogger.Log(Level.FINEST, movableObject + " Diff: " + diff + " platform y " + pY + " obj " + objY);
                         movableObject.setPosition(movableObject.getPosition().getX(), pY, true);
                         movableObject.setAcceleration(movableObject.getAcceleration().getX(), 0);
                         movableObject.setVelocity(movableObject.getVelocity().getX(), 0);

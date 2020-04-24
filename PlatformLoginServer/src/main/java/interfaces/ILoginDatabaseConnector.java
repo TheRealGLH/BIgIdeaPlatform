@@ -9,6 +9,8 @@ public interface ILoginDatabaseConnector {
 
     public RegisterState registerPlayer(String name, String password);
 
+    public void AddGame(String map, String victor, String[] players);
+
     public void resetData();
 
 

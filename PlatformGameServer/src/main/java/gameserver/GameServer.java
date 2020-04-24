@@ -8,8 +8,10 @@ import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.SpriteUpdate;
+import PlatformGameShared.PropertiesLoader;
 import com.google.gson.Gson;
 import loginclient.IPlatformLoginClient;
+import loginclient.PlatformLoginClientMock;
 import loginclient.PlatformLoginClientREST;
 import models.classes.GameTimerTask;
 
@@ -35,7 +37,11 @@ public class GameServer implements IPlatformGameServer {
     String currentMap;
 
     public GameServer() {
-        loginClient = new PlatformLoginClientREST();
+        if (PropertiesLoader.getPropValues("RESTClient.useMock", "application.properties").equals("true")) {
+            loginClient = new PlatformLoginClientMock();
+        } else {
+            loginClient = new PlatformLoginClientREST();
+        }
         joinedClients = new ArrayList<>();
         maps = gson.fromJson(loginClient.getLevelNames(), String[].class);
         currentMap = maps[0];
@@ -47,7 +53,7 @@ public class GameServer implements IPlatformGameServer {
         PlatformLogger.Log(Level.INFO, "Registering " + name);
         RegisterState registerState = loginClient.attemptRegistration(name, password);
         if (registerState != RegisterState.ERROR) {//We already print a rather verbose error when the RegisterState == ERROR, so there's not need to print this
-            PlatformLogger.Log(Level.INFO, "[GameServer.java] Attempt to register " + name + ". state: " + registerState);
+            PlatformLogger.Log(Level.INFO, "Attempt to register " + name + ". state: " + registerState);
         }
         client.receiveRegisterState(name, registerState);
     }
@@ -55,10 +61,12 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void loginPlayer(String name, String password, IPlatformGameClient client) {
         if (joinedClients.contains(client)) return;
-        PlatformLogger.Log(Level.INFO, "[GameServer.java] " + name + " attempted to log in " + this.toString());
+        PlatformLogger.Log(Level.INFO, name + " attempted to log in " + this.toString());
         LoginState loginState = loginClient.attemptLogin(name, password);
         if (loginState != LoginState.ERROR) { //We already print a rather verbose error when the LoginState == ERROR, so there's not need to print this
-            PlatformLogger.Log(Level.FINE, "Login status for " + name + ": " + loginState);
+            Level loginStateLoggingLevel = Level.FINE;
+            if (loginState == LoginState.SUCCESS) loginStateLoggingLevel = Level.INFO;
+            PlatformLogger.Log(loginStateLoggingLevel, "Login status for " + name + ": " + loginState);
         }
         client.receiveLoginState(name, loginState);
         if (loginState == LoginState.SUCCESS) {
@@ -82,13 +90,13 @@ public class GameServer implements IPlatformGameServer {
                     names[i] = joinedClients.get(i).getName();
                     playerNrs[i] = joinedClients.get(i).getPlayerNr();
                 }
-                GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent("battlefield"), GameLevel.class);
+                GameLevel gameLevel = gson.fromJson(loginClient.getLevelContent(currentMap), GameLevel.class);
                 gameTimerTask = new GameTimerTask(this, playerNrs, names, gameLevel);
                 for (IPlatformGameClient joinedClient : joinedClients) joinedClient.gameStartNotification();
                 //TODO send stuff to the GameTimerTask, like the map perhaps
                 timer.schedule(gameTimerTask, 1000, GameTimerTask.tickRate);
             } else {
-                PlatformLogger.Log(Level.FINE, "[GameServer.java] A request to start the game was denied because of too few players");
+                PlatformLogger.Log(Level.FINE, "A request to start the game was denied because of too few players");
             }
         }
     }
@@ -103,7 +111,7 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void sendSpriteUpdates(List<SpriteUpdate> spriteUpdateList) {
         if (spriteUpdateList.size() > 0) {
-            PlatformLogger.Log(Level.FINER, "[GameServer.java] Sending updates: " + spriteUpdateList);
+            PlatformLogger.Log(Level.FINER, "Sending updates: " + spriteUpdateList);
             for (IPlatformGameClient platformGameClient : joinedClients) {
                 platformGameClient.updateScreen(spriteUpdateList);
             }
@@ -114,14 +122,19 @@ public class GameServer implements IPlatformGameServer {
     @Override
     public void removePlayer(IPlatformGameClient client) {
         if (joinedClients.contains(client)) {
-            PlatformLogger.Log(Level.INFO, "[GameSever] Removing player: " + client.getName());
+            PlatformLogger.Log(Level.INFO, "Removing player: " + client.getName());
             joinedClients.remove(client);
             //TODO notify our GameTimerTask
             if (lobbyLeader.equals(client)) {
                 lobbyLeader = joinedClients.get(0);
-                PlatformLogger.Log(Level.FINE, "[GameServer] " + lobbyLeader + " is now the lobby leader.");
+                PlatformLogger.Log(Level.FINE, lobbyLeader + " is now the lobby leader.");
             }
-            notifyClientsNames();
+            if (joinedClients.size() > 0) {
+                notifyClientsNames();
+            } else {
+                PlatformLogger.Log(Level.INFO, "The game was cancelled, because there are no players left.");
+                gameTimerTask.cancel();
+            }
         }
     }
 
@@ -162,6 +175,7 @@ public class GameServer implements IPlatformGameServer {
                 names[i] = joinedClients.get(i).getName();
             }
         }
+        PlatformLogger.Log(Level.INFO, "There are currently " + joinedClients.size() + " players left.");
         for (IPlatformGameClient platformGameClient : joinedClients) {
             platformGameClient.lobbyJoinedNotify(names);
         }

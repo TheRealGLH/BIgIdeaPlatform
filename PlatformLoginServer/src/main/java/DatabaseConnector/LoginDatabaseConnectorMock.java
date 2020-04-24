@@ -49,6 +49,11 @@ public class LoginDatabaseConnectorMock implements ILoginDatabaseConnector {
     }
 
     @Override
+    public void AddGame(String map, String victor, String[] players) {
+        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+    }
+
+    @Override
     public void resetData() {
         usernamePasswordMap.clear();
     }

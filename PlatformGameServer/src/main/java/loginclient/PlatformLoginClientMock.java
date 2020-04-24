@@ -50,7 +50,7 @@ public class PlatformLoginClientMock implements IPlatformLoginClient {
 
     @Override
     public String getLevelNames() {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        return "[\"2fort\",\"dustbowl\"]";
     }
 
     @Override

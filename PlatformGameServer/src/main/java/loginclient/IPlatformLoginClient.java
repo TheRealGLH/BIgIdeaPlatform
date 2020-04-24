@@ -15,4 +15,5 @@ public interface IPlatformLoginClient {
 
     public String getLevelContent(String levelname);
 
+
 }

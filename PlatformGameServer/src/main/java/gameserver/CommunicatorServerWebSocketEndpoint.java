@@ -49,6 +49,7 @@ public class CommunicatorServerWebSocketEndpoint {
     public void onError(Throwable cause, Session session) {
         PlatformLogger.Log(Level.SEVERE, "[WebSocket Session ID] : " + session.getId() + " was forcefully disconnected because: " + cause.getMessage());
         gameServer.removePlayer(sessionIPlatformGameClientMap.get(session));
+        sessionIPlatformGameClientMap.remove(session);
     }
 
     // Handle incoming message from client
@@ -56,26 +57,30 @@ public class CommunicatorServerWebSocketEndpoint {
         Gson gson = new Gson();
         GameClientMessageType messageType = gson.fromJson(jsonMessage, PlatformGameMessage.class).getMessageType();
         IPlatformGameClient client = sessionIPlatformGameClientMap.get(session);
-        switch (messageType) {
-            case Login:
-                PlatformGameMessageLogin messageLogin = gson.fromJson(jsonMessage, PlatformGameMessageLogin.class);
-                gameServer.loginPlayer(messageLogin.getName(), messageLogin.getPassword(), client);
-                break;
-            case Register:
-                PlatformGameMessageRegister messageRegister = gson.fromJson(jsonMessage, PlatformGameMessageRegister.class);
-                gameServer.registerPlayer(messageRegister.getName(), messageRegister.getPassword(), client);
-                break;
-            case Input:
-                PlatformGameMessageInput messageInput = gson.fromJson(jsonMessage, PlatformGameMessageInput.class);
-                gameServer.receiveInput(messageInput.getInputType(), client);
-                break;
-            case MapChange:
-                PlatformGameMessageMapChange messageMapChange = gson.fromJson(jsonMessage, PlatformGameMessageMapChange.class);
-                gameServer.selectLobbyMap(client, messageMapChange.getMapName());
-                break;
-            case StartGame:
-                gameServer.attemptStartGame(client);
-                break;
+        if (messageType != null) {
+            switch (messageType) {
+                case Login:
+                    PlatformGameMessageLogin messageLogin = gson.fromJson(jsonMessage, PlatformGameMessageLogin.class);
+                    gameServer.loginPlayer(messageLogin.getName(), messageLogin.getPassword(), client);
+                    break;
+                case Register:
+                    PlatformGameMessageRegister messageRegister = gson.fromJson(jsonMessage, PlatformGameMessageRegister.class);
+                    gameServer.registerPlayer(messageRegister.getName(), messageRegister.getPassword(), client);
+                    break;
+                case Input:
+                    PlatformGameMessageInput messageInput = gson.fromJson(jsonMessage, PlatformGameMessageInput.class);
+                    gameServer.receiveInput(messageInput.getInputType(), client);
+                    break;
+                case MapChange:
+                    PlatformGameMessageMapChange messageMapChange = gson.fromJson(jsonMessage, PlatformGameMessageMapChange.class);
+                    gameServer.selectLobbyMap(client, messageMapChange.getMapName());
+                    break;
+                case StartGame:
+                    gameServer.attemptStartGame(client);
+                    break;
+            }
+        } else {
+            PlatformLogger.Log(Level.SEVERE, "Malformed message received from " + client.getAddress());
         }
     }
 }

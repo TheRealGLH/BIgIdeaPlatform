@@ -22,9 +22,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.logging.Level;
 
-/**
- * @author Nico Kuijpers
- */
 public class CommunicatorServer {
 
     private static final int PORT = Integer.parseInt(PropertiesLoader.getPropValues("gameServer.port", "application.properties"));

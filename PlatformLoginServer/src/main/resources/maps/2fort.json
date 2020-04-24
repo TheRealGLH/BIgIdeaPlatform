@@ -7,43 +7,40 @@
       "kind": "platform",
       "xpos": 100,
       "ypos": 50,
-      "width": 600,
+      "width": 500,
       "height": 50,
       "solid": true
     },
     {
       "kind": "platform",
       "xpos": 350,
-      "ypos": 300,
-      "width": 100,
-      "height": 20,
-      "solid": false
+      "ypos": 110,
+      "width": 75,
+      "height": 230,
+      "solid": true
     },
     {
       "kind": "platform",
-      "xpos": 600,
-      "ypos": 200,
-      "width": 100,
-      "height": 20,
-      "solid": false
-    },
-    {
-      "kind": "platform",
-      "xpos": 100,
-      "ypos": 200,
-      "width": 100,
-      "height": 20,
-      "solid": false
+      "xpos": 675,
+      "ypos": 110,
+      "width": 75,
+      "height": 230,
+      "solid": true
     },
     {
       "kind": "playerspawn",
       "xpos": 250,
-      "ypos": 210
+      "ypos": 215
     },
     {
       "kind": "playerspawn",
-      "xpos": 150,
-      "ypos": 210
+      "xpos": 180,
+      "ypos": 215
+    },
+    {
+      "kind": "weaponspawn",
+      "xpos": 200,
+      "ypos": 200
     }
   ]
 }
