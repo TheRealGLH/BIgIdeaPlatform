@@ -84,8 +84,22 @@ public class Player extends MovableObject {
     /**
      * Kills the player and removes one life.
      */
-    public void Kill(boolean forceKill) {
-        if(forceKill | invulnerableTimer<= 0) {
+    public void Kill(boolean forceKill, GameObject origin) {
+        if (forceKill | invulnerableTimer <= 0) {
+            String deathMessage = this.name + " died in an unusual way";
+            Level loglevel = Level.SEVERE;
+            if (origin.equals(this)) {
+                loglevel = Level.INFO;
+                deathMessage = this.name + "suicided";
+            } else if (origin instanceof Player) {
+                loglevel = Level.INFO;
+                Player other = (Player) origin;
+                deathMessage = other.name + " killed " + name + " with " + other.getCurrentWeapon();
+            } else {
+                loglevel = Level.INFO;
+                deathMessage = this.name + " was killed by " + origin.getClass().getName();
+            }
+            PlatformLogger.Log(loglevel, deathMessage);
             setAcceleration(0, 0);
             setVelocity(0, 0);
             setPosition(startX, startY);
@@ -98,8 +112,8 @@ public class Player extends MovableObject {
         }
     }
 
-    public void Kill(){
-        Kill(false);
+    public void Kill() {
+        Kill(false, this);
     }
 
     /**
@@ -150,7 +164,7 @@ public class Player extends MovableObject {
     @Override
     public void update() {
 
-        if(invulnerableTimer>0){
+        if (invulnerableTimer > 0) {
             invulnerableTimer--;
         }
 
@@ -197,7 +211,7 @@ public class Player extends MovableObject {
     @Override
     public void onOutOfBounds() {
         PlatformLogger.Log(Level.INFO, name + "fell out of the world!");
-        Kill(true);
+        Kill(true,this);
     }
 
     @Override
@@ -232,7 +246,7 @@ public class Player extends MovableObject {
         return currentLives;
     }
 
-    public boolean isInvulnerable(){
+    public boolean isInvulnerable() {
         return invulnerableTimer > 0;
     }
 

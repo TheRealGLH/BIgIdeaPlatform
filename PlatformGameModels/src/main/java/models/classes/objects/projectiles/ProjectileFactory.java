@@ -48,7 +48,7 @@ public class ProjectileFactory {
         catch (NullPointerException e) {
             //fallback for projectiles that somehow spawned but don't have an entry in the map
             projectile = projectileMap.get(WeaponType.GUN);
-            PlatformLogger.Log(Level.SEVERE, "Tried spawning a projectile for a weapon that does not yet have one: " + weaponType);
+            PlatformLogger.Log(Level.SEVERE, "Tried spawning a projectile for a weapon that does not yet have one: ", weaponType);
         }
         //now we assign or overwrite data for our newly cloned projectile.
         projectile.setOwner(player);
