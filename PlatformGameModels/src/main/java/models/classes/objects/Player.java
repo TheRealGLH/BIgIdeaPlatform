@@ -25,12 +25,15 @@ public class Player extends MovableObject {
     private boolean shotLastUpdate = false;
     private InputType lastMove;
     private float startX, startY;
-    private String name = "undefinedplayer";
+    private String name = "-";
     private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
     private static float baseSize = 40;
     private float standingHeight = baseSize;
     private float width;
     private boolean ducked = false;
+
+    private int invulnerableTimer = 0;
+    private static final int maxInvulnerableTimer = 30;
 
 
     private float walkAcceleration = 1;
@@ -81,15 +84,22 @@ public class Player extends MovableObject {
     /**
      * Kills the player and removes one life.
      */
-    public void Kill() {
-        setAcceleration(0, 0);
-        setVelocity(0, 0);
-        setPosition(startX, startY);
-        this.currentLives--;
-        PlatformLogger.Log(Level.FINE, name + " has " + currentLives + " lives left.");
-        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
-            iPlayerEventListener.onDeathEvent(this);
+    public void Kill(boolean forceKill) {
+        if(forceKill | invulnerableTimer<= 0) {
+            setAcceleration(0, 0);
+            setVelocity(0, 0);
+            setPosition(startX, startY);
+            this.currentLives--;
+            this.invulnerableTimer = maxInvulnerableTimer;
+            PlatformLogger.Log(Level.FINE, name + " has " + currentLives + " lives left.");
+            for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+                iPlayerEventListener.onDeathEvent(this);
+            }
         }
+    }
+
+    public void Kill(){
+        Kill(false);
     }
 
     /**
@@ -139,6 +149,11 @@ public class Player extends MovableObject {
 
     @Override
     public void update() {
+
+        if(invulnerableTimer>0){
+            invulnerableTimer--;
+        }
+
         if (hasInputMove) {
             float acc = walkAcceleration;
             if (!isGrounded()) acc = walkAcceleration / 2;
@@ -182,12 +197,12 @@ public class Player extends MovableObject {
     @Override
     public void onOutOfBounds() {
         PlatformLogger.Log(Level.INFO, name + "fell out of the world!");
-        Kill();
+        Kill(true);
     }
 
     @Override
     public SpriteType getSpriteType() {
-        return SpriteType.PLAYER;
+        return isInvulnerable() ? SpriteType.PLAYERINVULN : SpriteType.PLAYER;
     }
 
     @Override
@@ -215,6 +230,10 @@ public class Player extends MovableObject {
 
     public int getCurrentLives() {
         return currentLives;
+    }
+
+    public boolean isInvulnerable(){
+        return invulnerableTimer > 0;
     }
 
     public String getName() {
