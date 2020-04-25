@@ -19,6 +19,11 @@ public class ProjectileFactory {
         put(WeaponType.GRENADELAUNCHER, new ProjectileBomb(0, 0, null) {{
             setVelocity(40, 5);
         }});
+        put(WeaponType.SELFDESTRUCT, new ProjectileBomb(0, 0, null) {{
+            setUseGravity(false);
+            setAllowsSelfHarm(true);
+            explode();
+        }});
         put(WeaponType.ROCKET, new ProjectileBombRocket(0, 0, null) {{
             setAcceleration(rocketAcceleration, 0);
         }});

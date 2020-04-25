@@ -210,7 +210,7 @@ public class Player extends MovableObject {
 
     @Override
     public void onOutOfBounds() {
-        PlatformLogger.Log(Level.INFO, name + "fell out of the world!");
+        PlatformLogger.Log(Level.FINE, name + "fell out of the world!");
         Kill(true,this);
     }
 
