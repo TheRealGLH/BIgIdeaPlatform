@@ -26,6 +26,9 @@ public class ProjectileBomb extends Projectile {
 
     public void explode() {
         setUseGravity(false);
+        //explosions do not move, even if the projectile itself does
+        setVelocity(0,0);
+        setAcceleration(0,0);
         hasExploded = true;
     }
 
