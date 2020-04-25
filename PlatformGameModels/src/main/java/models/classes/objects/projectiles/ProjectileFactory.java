@@ -42,8 +42,10 @@ public class ProjectileFactory {
         float movementXFactor = player.isFacingLeft() ? -1 : 1;
 
         //now we attempt to get the projectile from our nice little map
-        projectile = projectileMap.get(weaponType).clone();
-        if (projectile == null) {
+        try {
+            projectile = projectileMap.get(weaponType).clone();
+        }
+        catch (NullPointerException e) {
             //fallback for projectiles that somehow spawned but don't have an entry in the map
             projectile = projectileMap.get(WeaponType.GUN);
             PlatformLogger.Log(Level.SEVERE, "Tried spawning a projectile for a weapon that does not yet have one: " + weaponType);
