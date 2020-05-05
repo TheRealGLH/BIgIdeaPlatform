@@ -2,7 +2,9 @@ package models.classes.objects;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.PlatformLogger;
+import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
@@ -166,6 +168,10 @@ public class Player extends MovableObject {
 
         if (invulnerableTimer > 0) {
             invulnerableTimer--;
+            if(invulnerableTimer<1){
+                setChanged();
+                notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft(), getLabel()));
+            }
         }
 
         if (hasInputMove) {
