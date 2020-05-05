@@ -254,9 +254,11 @@ public class Game implements Observer, IPlayerEventListener {
         }
         //Removing players from the playerMap
         int iPlayer = 0;
-        for (Player p : playerNrMap.values()) {
+        Iterator<Player> iP = playerNrMap.values().iterator();
+        while(iP.hasNext()) {
+            Player player = iP.next();
             iPlayer++;
-            if (p.isShouldBeCleaned()) {
+            if (player.isShouldBeCleaned()) {
                 playerNrMap.remove(iPlayer);
             }
         }
