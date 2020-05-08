@@ -34,7 +34,7 @@ public class CommunicatorServerWebSocketEndpoint {
 
     @OnMessage
     public void onText(String message, Session session) {
-        PlatformLogger.Log(Level.FINE, "[WebSocket Session ID] : " + session.getId() + " sent socket message");
+        PlatformLogger.Log(Level.FINER, "[WebSocket Session ID] : " + session.getId() + " sent socket message");
         handleMessageFromClient(message, session);
     }
 
@@ -80,7 +80,7 @@ public class CommunicatorServerWebSocketEndpoint {
                     break;
             }
         } else {
-            PlatformLogger.Log(Level.SEVERE, "Malformed message received from " + client.getAddress());
+            PlatformLogger.Log(Level.SEVERE, "Malformed message received from " + client.getAddress(), jsonMessage);
         }
     }
 }

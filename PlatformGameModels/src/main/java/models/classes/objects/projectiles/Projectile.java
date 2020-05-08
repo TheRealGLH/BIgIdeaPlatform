@@ -1,12 +1,9 @@
 package models.classes.objects.projectiles;
 
-import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.classes.objects.MovableObject;
 import models.classes.objects.Player;
-
-import java.util.logging.Level;
 
 public abstract class Projectile extends MovableObject {
 
@@ -37,8 +34,7 @@ public abstract class Projectile extends MovableObject {
         if (other instanceof Player) {
             Player player = (Player) other;
             if (player != owner | this.allowsSelfHarm) {
-                PlatformLogger.Log(Level.INFO, owner.getName() + " killed " + player.getName() + " with " + owner.getCurrentWeapon());
-                player.Kill();
+                player.Kill(false, owner);
                 if (destroyOnHit) markForDeletion();
                 return;
             }

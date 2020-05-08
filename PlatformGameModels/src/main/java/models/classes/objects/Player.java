@@ -2,7 +2,9 @@ package models.classes.objects;
 
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.PlatformLogger;
+import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
 import PlatformGameShared.PropertiesLoader;
 import models.classes.GameObject;
@@ -25,12 +27,15 @@ public class Player extends MovableObject {
     private boolean shotLastUpdate = false;
     private InputType lastMove;
     private float startX, startY;
-    private String name = "undefinedplayer";
+    private String name = "-";
     private List<IPlayerEventListener> shootEventListenerList = new ArrayList<>();
     private static float baseSize = 40;
     private float standingHeight = baseSize;
     private float width;
     private boolean ducked = false;
+
+    private int invulnerableTimer = 0;
+    private static final int maxInvulnerableTimer = 30;
 
 
     private float walkAcceleration = 1;
@@ -81,15 +86,36 @@ public class Player extends MovableObject {
     /**
      * Kills the player and removes one life.
      */
-    public void Kill() {
-        setAcceleration(0, 0);
-        setVelocity(0, 0);
-        setPosition(startX, startY);
-        this.currentLives--;
-        PlatformLogger.Log(Level.FINE, name + " has " + currentLives + " lives left.");
-        for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
-            iPlayerEventListener.onDeathEvent(this);
+    public void Kill(boolean forceKill, GameObject origin) {
+        if (forceKill | invulnerableTimer <= 0) {
+            String deathMessage = this.name + " died in an unusual way";
+            Level loglevel = Level.SEVERE;
+            if (origin.equals(this)) {
+                loglevel = Level.INFO;
+                deathMessage = this.name + "suicided";
+            } else if (origin instanceof Player) {
+                loglevel = Level.INFO;
+                Player other = (Player) origin;
+                deathMessage = other.name + " killed " + name + " with " + other.getCurrentWeapon();
+            } else {
+                loglevel = Level.INFO;
+                deathMessage = this.name + " was killed by " + origin.getClass().getName();
+            }
+            PlatformLogger.Log(loglevel, deathMessage);
+            setAcceleration(0, 0);
+            setVelocity(0, 0);
+            setPosition(startX, startY);
+            this.currentLives--;
+            this.invulnerableTimer = maxInvulnerableTimer;
+            PlatformLogger.Log(Level.FINE, name + " has " + currentLives + " lives left.");
+            for (IPlayerEventListener iPlayerEventListener : shootEventListenerList) {
+                iPlayerEventListener.onDeathEvent(this);
+            }
         }
+    }
+
+    public void Kill() {
+        Kill(false, this);
     }
 
     /**
@@ -139,6 +165,15 @@ public class Player extends MovableObject {
 
     @Override
     public void update() {
+
+        if (invulnerableTimer > 0) {
+            invulnerableTimer--;
+            if(invulnerableTimer<1){
+                setChanged();
+                notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft(), getLabel()));
+            }
+        }
+
         if (hasInputMove) {
             float acc = walkAcceleration;
             if (!isGrounded()) acc = walkAcceleration / 2;
@@ -181,13 +216,13 @@ public class Player extends MovableObject {
 
     @Override
     public void onOutOfBounds() {
-        PlatformLogger.Log(Level.INFO, name + "fell out of the world!");
-        Kill();
+        PlatformLogger.Log(Level.FINE, name + "fell out of the world!");
+        Kill(true,this);
     }
 
     @Override
     public SpriteType getSpriteType() {
-        return SpriteType.PLAYER;
+        return isInvulnerable() ? SpriteType.PLAYERINVULN : SpriteType.PLAYER;
     }
 
     @Override
@@ -215,6 +250,10 @@ public class Player extends MovableObject {
 
     public int getCurrentLives() {
         return currentLives;
+    }
+
+    public boolean isInvulnerable() {
+        return invulnerableTimer > 0;
     }
 
     public String getName() {

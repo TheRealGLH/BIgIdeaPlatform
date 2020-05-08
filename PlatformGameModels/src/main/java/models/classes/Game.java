@@ -25,6 +25,7 @@ public class Game implements Observer, IPlayerEventListener {
     private List<Platform> platforms = new ArrayList<>();
     private List<Vector2> weaponSpawnPoints;
     private Map<Integer, Player> playerNrMap;
+    private boolean playerDiedThisTick = false;
     private List<SpriteUpdate> spriteUpdates;
     private int spriteCount = 0;
     private boolean firstUpdateComplete = false;
@@ -252,12 +253,19 @@ public class Game implements Observer, IPlayerEventListener {
             }
         }
         //Removing players from the playerMap
-        Iterator<Player> playerIterator = playerNrMap.values().iterator();
-        while (playerIterator.hasNext()) {
-            Player p = playerIterator.next();
-            if (p.isShouldBeCleaned()) {
-                playerNrMap.remove(p);
+        int iPlayer = 0;
+        Iterator<Player> iP = playerNrMap.values().iterator();
+        while(iP.hasNext()) {
+            Player player = iP.next();
+            iPlayer++;
+            if (player.isShouldBeCleaned()) {
+                playerNrMap.remove(iPlayer);
             }
+        }
+        //Now we check if we need to check if we end the game.
+        //This has a seperate check to see if a player even died this tick, because otherwise we'd have to do that slightly more expensive check every tickd
+        if(playerDiedThisTick) {
+            playerDeathEndGameCheck();
         }
     }
 
@@ -303,13 +311,19 @@ public class Game implements Observer, IPlayerEventListener {
     public void onDeathEvent(Player deadPlayer) {
         if (deadPlayer.getCurrentLives() <= 0) {
             deadPlayer.markForDeletion();
-            if(playerNrMap.values().size()<=1){
-                gameState = GameState.GAMEOVER;
-            }
+            playerDiedThisTick = true;
         }
     }
 
-    public GameState getGameState(){
+    private void playerDeathEndGameCheck(){
+        PlatformLogger.Log(Level.FINE, "There are currently " + playerNrMap.values().size() + " players left.");
+        if (playerNrMap.values().size() <= 1) {
+            gameState = GameState.GAMEOVER;
+        }
+        playerDiedThisTick = false;
+    }
+
+    public GameState getGameState() {
         return gameState;
     }
 }

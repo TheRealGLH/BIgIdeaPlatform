@@ -1,6 +1,8 @@
 package models.classes.objects.obstacles;
 
 import PlatformGameShared.Enums.SpriteType;
+import PlatformGameShared.Enums.SpriteUpdateType;
+import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.Points.Vector2;
 import models.classes.GameObject;
 import models.classes.objects.MovableObject;
@@ -28,8 +30,10 @@ public class ObstacleShockBall extends MovableObject {
         floatTimer++;
         if (floatTimer >= floatMaxTime) {
             movingUp = !movingUp;
+            floatTimer = 0;
         }
-
+        setChanged();
+        notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), false, getLabel()));
     }
 
     @Override
