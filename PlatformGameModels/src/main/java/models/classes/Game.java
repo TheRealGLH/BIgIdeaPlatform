@@ -4,10 +4,7 @@ import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.SpriteUpdateType;
 import PlatformGameShared.PlatformLogger;
-import PlatformGameShared.Points.GameLevel;
-import PlatformGameShared.Points.GameLevelObject;
-import PlatformGameShared.Points.SpriteUpdate;
-import PlatformGameShared.Points.Vector2;
+import PlatformGameShared.Points.*;
 import PlatformGameShared.PropertiesLoader;
 import models.classes.objects.*;
 import models.classes.objects.projectiles.Projectile;
@@ -32,7 +29,7 @@ public class Game implements Observer, IPlayerEventListener {
     private float levelWidth = 600;//these are default values for when we start a game without a GameLevel loaded
     private float levelHeight = 600;
 
-    private GameState gameState = GameState.STARTED;
+    private GameStateEvent gameState;
 
     //keeping track of weapon spawning stuff
     private final static int maxTimeBetweenWeaponSpawns = Integer.parseInt(PropertiesLoader.getPropValues("game.maxTimeBetweenWeaponSpawns", "game.properties"));
@@ -316,14 +313,16 @@ public class Game implements Observer, IPlayerEventListener {
     }
 
     private void playerDeathEndGameCheck(){
-        PlatformLogger.Log(Level.FINE, "There are currently " + playerNrMap.values().size() + " players left.");
+        PlatformLogger.Log(Level.INFO, "There are currently " + playerNrMap.values().size() + " players left.");
         if (playerNrMap.values().size() <= 1) {
-            gameState = GameState.GAMEOVER;
+            Map.Entry<Integer,Player> entry = playerNrMap.entrySet().iterator().next();
+            Player winner = entry.getValue();
+            gameState = new GameStateEvent(GameState.GAMEOVER,winner.getName());
         }
         playerDiedThisTick = false;
     }
 
-    public GameState getGameState() {
+    public GameStateEvent getGameStateEvent() {
         return gameState;
     }
 }

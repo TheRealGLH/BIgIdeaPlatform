@@ -8,6 +8,7 @@ import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.GameLevel;
+import PlatformGameShared.Points.GameStateEvent;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.PropertiesLoader;
 import com.google.gson.Gson;
@@ -166,16 +167,17 @@ public class GameServer implements IPlatformGameServer {
     }
 
     @Override
-    public void sendGameState(GameState gameState) {
+    public void sendGameStateEvent(GameStateEvent gameState) {
         for (IPlatformGameClient platformGameClient : joinedClients) {
             platformGameClient.receiveGameState(gameState);
         }
-        if (gameState == GameState.GAMEOVER) {
+        if (gameState.getState() == GameState.GAMEOVER) {
             gameTimerTask.cancel();
             gameStarted = false;
             notifyClientsNames();
             notifyClientsMapList();
             notifyClientsMapSelected();
+            loginClient.sendGameEnd(currentMap, gameState.getName(), getJoinedClientNamesAsArray());
         }
     }
 
@@ -212,5 +214,15 @@ public class GameServer implements IPlatformGameServer {
         for (IPlatformGameClient joinedClient : joinedClients) {
             joinedClient.lobbyNotifyNewMapChoice(currentMap);
         }
+    }
+
+    String[] getJoinedClientNamesAsArray() {
+        String names[] = new String[joinedClients.size()];
+        for (int i = 0; i < joinedClients.size(); i++) {
+            IPlatformGameClient currClient = joinedClients.get(i);
+            names[i] = joinedClients.get(i).getName();
+
+        }
+        return names;
     }
 }

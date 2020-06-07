@@ -1,7 +1,7 @@
 package PlatformGameShared.Interfaces;
 
-import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
+import PlatformGameShared.Points.GameStateEvent;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface IPlatformGameServer {
 
     public void selectLobbyMap(IPlatformGameClient client, String mapName);
 
-    public void sendGameState(GameState gameState);
+    public void sendGameStateEvent(GameStateEvent gameState);
 
     void sendInputRequest();
 }

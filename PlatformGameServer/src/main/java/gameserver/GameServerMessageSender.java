@@ -1,12 +1,12 @@
 package gameserver;
 
-import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameClient;
 import PlatformGameShared.Messages.Response.*;
 import PlatformGameShared.PlatformLogger;
+import PlatformGameShared.Points.GameStateEvent;
 import PlatformGameShared.Points.SpriteUpdate;
 import com.google.gson.Gson;
 
@@ -38,7 +38,7 @@ public class GameServerMessageSender implements IPlatformGameClient {
     }
 
     @Override
-    public void receiveGameState(GameState gameState) {
+    public void receiveGameState(GameStateEvent gameState) {
         PlatformGameResponseMessageGameState messageGameState = new PlatformGameResponseMessageGameState(gameState);
         sendMessage(messageGameState);
     }
