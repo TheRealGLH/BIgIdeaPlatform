@@ -1,25 +1,25 @@
 package PlatformGameShared.Messages.Response;
 
 import PlatformGameShared.Enums.GameResponseMessageType;
-import PlatformGameShared.Enums.GameState;
+import PlatformGameShared.Points.GameStateEvent;
 
 public class PlatformGameResponseMessageGameState extends PlatformGameResponseMessage {
 
-    private GameState gameState;
+    private GameStateEvent gameStateEvent;
 
-    public PlatformGameResponseMessageGameState(GameState gameState) {
+    public PlatformGameResponseMessageGameState(GameStateEvent gameStateEvent) {
         super();
         this.setResponseMessageType(GameResponseMessageType.GameState);
-        this.gameState = gameState;
+        this.gameStateEvent = gameStateEvent;
     }
 
     public PlatformGameResponseMessageGameState(){}
 
-    public GameState getGameState() {
-        return gameState;
+    public GameStateEvent getGameStateEvent() {
+        return gameStateEvent;
     }
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
+    public void setGameStateEvent(GameStateEvent gameStateEvent) {
+        this.gameStateEvent = gameStateEvent;
     }
 }

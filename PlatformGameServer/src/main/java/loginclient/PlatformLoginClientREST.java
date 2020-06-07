@@ -5,6 +5,7 @@ import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
 import RESTObjects.GameData;
+import com.google.gson.Gson;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -23,6 +24,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
     HttpClient client;
     public static final String domain = "http://" + PropertiesLoader.getPropValues("RESTClient.domain", "application.properties") + ":" + PropertiesLoader.getPropValues("RESTClient.port", "application.properties");
     public static final String ApiUrl = PropertiesLoader.getPropValues("RESTClient.apiURL", "application.properties");
+    private Gson gson = new Gson();
 
     @Override
     public LoginState attemptLogin(String username, String password) {
@@ -51,7 +53,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                     return LoginState.ERROR;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            PlatformLogger.Log(Level.SEVERE,e.getMessage(),e);
             return LoginState.ERROR;
         }
     }
@@ -87,7 +89,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
                     }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            PlatformLogger.Log(Level.SEVERE,e.getMessage(),e);
         }
         return RegisterState.ERROR;
     }
@@ -105,7 +107,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
             }
             return sb.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            PlatformLogger.Log(Level.SEVERE,e.getMessage(),e);
         }
         return "null";
     }
@@ -123,7 +125,7 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
             }
             return sb.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            PlatformLogger.Log(Level.SEVERE,e.getMessage(),e);
         }
         return "null";
     }
@@ -131,7 +133,12 @@ public class PlatformLoginClientREST implements IPlatformLoginClient {
     @Override
     public void sendGameEnd(String map, String winner, String[] players) {
         GameData gameData = new GameData(map, winner, players);
-        //TODO send some HTTP POST request
+        String json = gson.toJson(gameData);
+        try {
+            sendPostRequest("/game",json);
+        } catch (IOException e) {
+            PlatformLogger.Log(Level.SEVERE,e.getMessage(),e);
+        }
     }
 
 

@@ -207,7 +207,7 @@ public class CommunicatorClientWebSocketEndpoint implements ICommunicator {
                     break;
                 case GameState:
                     PlatformGameResponseMessageGameState messageGameState = gson.fromJson(jsonMessage, PlatformGameResponseMessageGameState.class);
-                    platformGameClient.receiveGameState(messageGameState.getGameState());
+                    platformGameClient.receiveGameState(messageGameState.getGameStateEvent());
                     break;
                 case NotifyStart:
                     platformGameClient.gameStartNotification();

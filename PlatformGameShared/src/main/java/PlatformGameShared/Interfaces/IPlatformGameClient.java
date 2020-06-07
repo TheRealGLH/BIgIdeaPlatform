@@ -1,9 +1,9 @@
 package PlatformGameShared.Interfaces;
 
-import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
+import PlatformGameShared.Points.GameStateEvent;
 import PlatformGameShared.Points.SpriteUpdate;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface IPlatformGameClient {
 
     public void joinGame();
 
-    public void receiveGameState(GameState gameState);
+    public void receiveGameState(GameStateEvent gameState);
 
     public void sendInput(InputType inputType);
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
 
 @Controller
 public class GameApiController {
@@ -39,7 +38,7 @@ public class GameApiController {
     @PostMapping(value = "/game",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public ResponseEntity<String> tryCall(@RequestBody GameData JSON, HttpServletRequest servletRequest) {
+    public ResponseEntity<String> submitGameStats(@RequestBody GameData JSON, HttpServletRequest servletRequest) {
         if (GameData.isValid(JSON)) return new ResponseEntity<String>("Invalid gamedata sent", HttpStatus.BAD_REQUEST);
         //TODO a more intelligent system to determine post statuses or something?
         databaseConnector.addGame(JSON.getMapName(), JSON.getWinnerName(), JSON.getPlayerNames());
