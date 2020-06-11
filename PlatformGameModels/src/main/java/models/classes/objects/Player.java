@@ -88,9 +88,13 @@ public class Player extends MovableObject {
      */
     public void Kill(boolean forceKill, GameObject origin) {
         if (forceKill | invulnerableTimer <= 0) {
-            String deathMessage = this.name + " died in an unusual way";
-            Level loglevel = Level.SEVERE;
-            if (origin.equals(this)) {
+            String deathMessage;
+
+            Level loglevel;
+            if (origin == null) {
+                deathMessage = this.name + " died in an unusual way. There was no origin.";
+                loglevel = Level.SEVERE;
+            } else if (origin.equals(this)) {
                 loglevel = Level.INFO;
                 deathMessage = this.name + "suicided";
             } else if (origin instanceof Player) {
@@ -168,7 +172,7 @@ public class Player extends MovableObject {
 
         if (invulnerableTimer > 0) {
             invulnerableTimer--;
-            if(invulnerableTimer<1){
+            if (invulnerableTimer < 1) {
                 setChanged();
                 notifyObservers(new SpriteUpdate(getObjectNr(), getPosition(), getSize(), SpriteUpdateType.MOVE, getSpriteType(), isFacingLeft(), getLabel()));
             }
@@ -217,7 +221,7 @@ public class Player extends MovableObject {
     @Override
     public void onOutOfBounds() {
         PlatformLogger.Log(Level.FINE, name + "fell out of the world!");
-        Kill(true,this);
+        Kill(true, this);
     }
 
     @Override

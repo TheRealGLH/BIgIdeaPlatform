@@ -16,10 +16,10 @@ public class ProjectileTest {
     int maxLife = 30;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         System.out.println("Setting up a Projectile test");
         game.reset();
-        projectile = new MockProjectile(10,10,10,10,maxLife);
+        projectile = new MockProjectile(10, 10, 10, 10, maxLife);
         game.addObject(projectile);
     }
 
@@ -29,11 +29,11 @@ public class ProjectileTest {
         int expectedLife = 1;
         game.update();
         int actualLife = projectile.getCurrentLife();
-        Assert.assertEquals(expectedLife,actualLife);
+        Assert.assertEquals(expectedLife, actualLife);
     }
 
     @Test
-    public void updateExceedMaxLife(){
+    public void updateExceedMaxLife() {
         System.out.println("Testing Projectile reaching its max life");
         for (int i = 0; i <= maxLife; i++) {
             game.update();
@@ -46,14 +46,15 @@ public class ProjectileTest {
         System.out.println("Testing Projectile killing player on contact");
         //using these positions will ensure that we dont start by hitting the projectile
         Vector2 playerStartPoint = new Vector2(projectile.getPosition().getX() + 20, projectile.getPosition().getY() + 20);
-        Player player = new Player(playerStartPoint.getX(),playerStartPoint.getY());
+        Player player = new Player(playerStartPoint.getX(), playerStartPoint.getY());
+        int expectedLives = player.getCurrentLives() - 1;
         player.setUseGravity(false);
         game.addObject(player);
         Vector2 projPos = projectile.getPosition();
-        player.setPosition(projPos.getX(),projPos.getY());
+        player.setPosition(projPos.getX(), projPos.getY());
         game.update();
-        Vector2 actual = player.getPosition();
-        Assert.assertEquals(playerStartPoint,actual);
+        int actualLives = player.getCurrentLives();
+        Assert.assertEquals(expectedLives, actualLives);
     }
 }
 
