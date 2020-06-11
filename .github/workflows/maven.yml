@@ -18,5 +18,7 @@ jobs:
     - name: Test with Maven
       run: mvn -pl "!PlatformGameClient" -q verify
     - name: Deploy with Maven
-      run: mvn -pl "!PlatformGameClient" -q deploy -DaltDeploymentRepository=internal.repo::default::file://out/
+      run: 
+          mkdir out/
+          mvn -pl "!PlatformGameClient" -q deploy -DaltDeploymentRepository=internal.repo::default::file://out/
 
