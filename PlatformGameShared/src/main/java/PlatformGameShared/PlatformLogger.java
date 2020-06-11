@@ -1,7 +1,6 @@
 package PlatformGameShared;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,16 +32,17 @@ public class PlatformLogger {
                 }
                 try {
                     fileHandler = new FileHandler(logPath + "\\" + dateFormat.format(today) + ".log");
-                } catch (IOException e) {
+                    LOGGER.addHandler(fileHandler);
+                    fileHandler.setFormatter(formatter);
+                    fileHandler.setLevel(loggingLevel);
+                } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Error initializing the logger.", e);
                 }
             }
 
-            LOGGER.addHandler(fileHandler);
-            fileHandler.setFormatter(formatter);
-            fileHandler.setLevel(loggingLevel);
+
         } catch (
-                InvalidPathException e) {
+                InvalidPathException  e) {
             LOGGER.log(Level.SEVERE, "The specified file path was invalid. Not writing to file for this " +
                     "session: " + e.getMessage());
         }
