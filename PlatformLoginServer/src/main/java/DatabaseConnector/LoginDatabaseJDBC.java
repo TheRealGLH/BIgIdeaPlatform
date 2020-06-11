@@ -6,7 +6,7 @@ import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.PropertiesLoader;
 import RESTObjects.GameData;
-import com.mysql.jdbc.CommunicationsException;
+import com.mysql.jdbc.Driver;
 import interfaces.ILoginDatabaseConnector;
 
 import javax.crypto.Cipher;
@@ -14,9 +14,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import com.mysql.jdbc.Driver;
-
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Base64;
@@ -209,12 +206,14 @@ public class LoginDatabaseJDBC implements ILoginDatabaseConnector {
 
     @Override
     public int getPlayerWins(String name) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        PlatformLogger.Log(Level.SEVERE, "This has yet to be implemented on a DB level!");
+        return 0;
     }
 
     @Override
     public int[] getPlayerMatchIds(String name) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        PlatformLogger.Log(Level.SEVERE, "This has yet to be implemented on a DB level!");
+        return new int[]{1, 0};
     }
 
     @Override
