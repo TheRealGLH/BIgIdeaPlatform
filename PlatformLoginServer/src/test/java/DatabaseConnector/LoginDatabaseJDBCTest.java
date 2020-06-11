@@ -7,13 +7,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 public class LoginDatabaseJDBCTest {
 
     //Commented because we cannot reach the DB from our VCS CI
+    //As far as I'm aware, there is no way to not run a specific test with Maven.
     //private ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
-    private ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
+    private ILoginDatabaseConnector databaseConnector = LoginDatabaseConnectorMock.getInstance();
 
     @Before
     public void setUp() {
@@ -157,7 +156,7 @@ public class LoginDatabaseJDBCTest {
         databaseConnector.addGame(map, victor, names);
         int[] expectedAmount = {1, 2};
         int[] actualAmount = databaseConnector.getPlayerMatchIds(names[0]);
-        Assert.assertEquals(expectedAmount, actualAmount);
+        Assert.assertArrayEquals(expectedAmount, actualAmount);
     }
 
     @Test
@@ -173,6 +172,6 @@ public class LoginDatabaseJDBCTest {
         databaseConnector.addGame(map, victor, names);
         int[] expectedAmount = {};
         int[] actualAmount = databaseConnector.getPlayerMatchIds(names[0] + "2");
-        Assert.assertEquals(expectedAmount, actualAmount);
+        Assert.assertArrayEquals(expectedAmount, actualAmount);
     }
 }

@@ -12,11 +12,14 @@ public abstract class Projectile extends MovableObject {
     public boolean destroyOnHit = true;
     public boolean allowsSelfHarm = false;
     private Player owner;
+    String ownerName;
 
     public Projectile(float xPosition, float yPosition, float width, float height, int maxLife, Player owner) {
         super(xPosition, yPosition, width, height);
         this.maxLife = maxLife;
         this.owner = owner;
+
+        ownerName =  (owner == null) ? "nobody" : owner.getName();
     }
 
     @Override
@@ -70,6 +73,6 @@ public abstract class Projectile extends MovableObject {
 
     @Override
     public String toString() {
-        return getClass().getName() + " owned by " + owner.getName() + " @" + this.getClass().hashCode();
+        return getClass().getName() + " owned by " + ownerName + " @" + this.getClass().hashCode();
     }
 }

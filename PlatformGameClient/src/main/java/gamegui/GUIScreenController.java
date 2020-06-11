@@ -1,10 +1,10 @@
 package gamegui;
 
-import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.Points.GameStateEvent;
 import PlatformGameShared.Points.SpriteUpdate;
 import PlatformGameShared.PropertiesLoader;
 import gameclient.GameClientMessageSender;
@@ -96,10 +96,11 @@ public class GUIScreenController extends ScreenController {
     }
 
     @Override
-    public void receiveGameState(GameState gameState) {
+    public void receiveGameState(GameStateEvent gameState) {
         if (guiState != GUIState.Game) return;
         throw new UnsupportedOperationException("receiveGameState has not yet been implemented.");
     }
+
 
     @Override
     public void sendInput(InputType inputType) {

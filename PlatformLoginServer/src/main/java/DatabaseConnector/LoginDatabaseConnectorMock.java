@@ -5,18 +5,30 @@ import PlatformGameShared.Enums.RegisterState;
 import RESTObjects.GameData;
 import interfaces.ILoginDatabaseConnector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LoginDatabaseConnectorMock implements ILoginDatabaseConnector {
 
+    List<MockGameStorage> mockGameStorageList;
     Map<String, String> usernamePasswordMap;
-    static LoginDatabaseConnectorMock  instance = null;
+    static LoginDatabaseConnectorMock instance = null;
+    static GameData dummyGameData = new GameData();
 
-    private LoginDatabaseConnectorMock(){
+    private LoginDatabaseConnectorMock() {
         usernamePasswordMap = new HashMap<>();
         usernamePasswordMap.put("test", "letmein123");
-        usernamePasswordMap.put("fred","letmein123");
+        usernamePasswordMap.put("fred", "letmein123");
+
+        mockGameStorageList = new ArrayList<>();
+        //We add this because our DB starts counting at 1, so this is effectively dummy data and we want our tests to
+        //work with both the DB and our mock implementation.
+        dummyGameData.setMapName("a");
+        dummyGameData.setPlayerNames(new String[]{"a", "b"});
+        dummyGameData.setWinnerName("a");
+        mockGameStorageList.add(new MockGameStorage(dummyGameData));
     }
 
     public static LoginDatabaseConnectorMock getInstance() {
@@ -28,7 +40,7 @@ public class LoginDatabaseConnectorMock implements ILoginDatabaseConnector {
     public LoginState loginPlayer(String name, String password) {
         LoginState loginState = LoginState.INCORRECTDATA;
         String pw = usernamePasswordMap.get(name);
-        if(pw == null) return loginState;
+        if (pw == null) return loginState;
         if (pw.equals(password)) {
             loginState = LoginState.SUCCESS;
         }
@@ -51,31 +63,63 @@ public class LoginDatabaseConnectorMock implements ILoginDatabaseConnector {
 
     @Override
     public void addGame(String map, String victor, String[] players) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        mockGameStorageList.add(new MockGameStorage(map, players, victor));
     }
 
     @Override
     public GameData getGameData(int ID) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        return mockGameStorageList.get(ID).gameData;
     }
 
     @Override
     public String[] getPlayersInMatch(int ID) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        return mockGameStorageList.get(ID).gameData.getPlayerNames();
     }
 
     @Override
     public int getPlayerWins(String name) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        int count = 0;
+        for (MockGameStorage mockGameStorage : mockGameStorageList) {
+            if (mockGameStorage.gameData.getWinnerName().equals(name)) count++;
+        }
+        return count;
     }
 
     @Override
     public int[] getPlayerMatchIds(String name) {
-        throw new UnsupportedOperationException("The method <> has not yet been implemented");
+        List<Integer> matchIDs = new ArrayList<>();
+        for (MockGameStorage mockGameStorage : mockGameStorageList) {
+            for (String playerName : mockGameStorage.gameData.getPlayerNames()) {
+                if (playerName == name) matchIDs.add(mockGameStorageList.indexOf(mockGameStorage));
+            }
+        }
+        int[] array = new int[matchIDs.size()];
+        for (Integer matchID : matchIDs) {
+            array[matchIDs.indexOf(matchID)] = matchID;
+        }
+        return array;
     }
 
     @Override
     public void resetData() {
         usernamePasswordMap.clear();
+        mockGameStorageList.clear();
+        //We add this because our DB starts counting at 1, so this is effectively dummy data and we want our tests to
+        //work with both the DB and our mock implementation.
+        mockGameStorageList.add(new MockGameStorage(dummyGameData));
+    }
+}
+
+
+class MockGameStorage {
+
+    GameData gameData;
+
+    public MockGameStorage(String map, String[] players, String victor) {
+        gameData = new GameData(map, victor, players);
+    }
+
+    public MockGameStorage(GameData gameData) {
+        this.gameData = gameData;
     }
 }
