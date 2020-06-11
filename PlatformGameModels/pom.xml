@@ -24,6 +24,11 @@
                 <version>0.8.5</version>
             </plugin>
         </plugins>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
     </build>
     <dependencies>
         <dependency>
