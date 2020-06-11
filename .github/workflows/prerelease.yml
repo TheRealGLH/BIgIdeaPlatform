@@ -15,7 +15,9 @@ jobs:
       # ...
       - name: "Build & test"
         run: |
-          mvn -B deploy
+          mkdir ~/.m2
+          echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+          mvn -pl "!PlatformGameClient" deploy
           echo "done!"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
