@@ -18,7 +18,7 @@ jobs:
           cd ../
           mkdir ~/.m2
           echo "<settings><servers><server><id>github</id><username>OWNER</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-          mvn deploy
+          mvn deploy --file pom.xml
           echo "done!"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
