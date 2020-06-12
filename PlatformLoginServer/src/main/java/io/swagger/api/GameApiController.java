@@ -26,13 +26,21 @@ public class GameApiController {
     }
 
 
-    @RequestMapping(value = "game/players/{matchId}",
+    @RequestMapping(value = "game/{matchId}/players/",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<String[]> getPlayersFromMatch(@PathVariable(name = "matchID") Integer matchID) {
         String[] names = databaseConnector.getPlayersInMatch(matchID);
         if (names.length == 0) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(names, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "game/players/{playerName}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<Integer> getWinnerFromMatch(@PathVariable(name = "playerName") String playerName) {
+        int wins = databaseConnector.getPlayerWins(playerName);
+        return new ResponseEntity<>(wins, HttpStatus.OK);
     }
 
     @PostMapping(value = "/game",
