@@ -2,10 +2,8 @@ name: Java CI JUnit Test
 
 on:
   push:
-    branches:
-      except:
-        - "master"
-
+      branches-ignore:
+        - master
 
 jobs:
   build:
