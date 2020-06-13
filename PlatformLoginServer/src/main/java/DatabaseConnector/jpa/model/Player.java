@@ -7,19 +7,23 @@ import javax.persistence.Id;
 public class Player {
 
     private @Id String name;
-    private String passWord;
+    private String password;
     private Long score;
 
-    public Player(String name, String passWord, Long score) {
+    public Player(String name, String password, Long score) {
         this.name = name;
-        this.passWord = passWord;
+        this.password = password;
         this.score = score;
     }
 
-    public Player(String name, String passWord) {
+    public Player(String name, String password) {
         this.name = name;
-        this.passWord = passWord;
+        this.password = password;
         this.score = 0L;
+    }
+
+    public Player(){
+
     }
 
     public String getName() {
@@ -30,12 +34,12 @@ public class Player {
         this.name = name;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getScore() {
