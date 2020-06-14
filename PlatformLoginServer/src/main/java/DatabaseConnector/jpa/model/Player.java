@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -11,8 +12,9 @@ public class Player {
 
     private @Id
     String name;
+    @NotNull
     private String password;
-    private Long score;
+    private Long score = 0L;
 
     @ManyToMany
     @JoinTable(name = "game_player")

@@ -1,6 +1,7 @@
 package DatabaseConnector.jpa.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -12,16 +13,20 @@ public class Game {
     int id;
     @Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     Timestamp timestamp;
+    @NotNull
     String map;
     @ManyToMany
     @JoinTable(name = "game_player")
     Set<Player> players;
+    @NotNull
+    String victor;
 
-    public Game(int id, Timestamp timestamp, String map, Set<Player> players) {
+    public Game(int id, Timestamp timestamp, String map, Set<Player> players, String victor) {
         this.id = id;
         this.timestamp = timestamp;
         this.map = map;
         this.players = players;
+        this.victor = victor;
     }
 
     public Game() {
@@ -57,5 +62,13 @@ public class Game {
 
     public void setPlayers(Set<Player> players) {
         this.players = players;
+    }
+
+    public String getVictor() {
+        return victor;
+    }
+
+    public void setVictor(String victor) {
+        this.victor = victor;
     }
 }
