@@ -20,6 +20,7 @@ public class LoadDatabase {
             for (Player player : repository.findAll()) {
                 System.out.println("Player: " + player.getName());
             }
+
         };
     }
 

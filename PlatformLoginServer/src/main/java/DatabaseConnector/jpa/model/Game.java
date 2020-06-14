@@ -29,6 +29,12 @@ public class Game {
         this.victor = victor;
     }
 
+    public Game(String map, Set<Player> players, String victor) {
+        this.map = map;
+        this.players = players;
+        this.victor = victor;
+    }
+
     public Game() {
     }
 
