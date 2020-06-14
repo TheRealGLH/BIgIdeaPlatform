@@ -1,6 +1,8 @@
 package io.swagger.api;
 
-import DatabaseConnector.LoginDatabaseJDBC;
+import DatabaseConnector.LoginDatabaseJPA;
+import DatabaseConnector.jpa.GameRepository;
+import DatabaseConnector.jpa.PlayerRepository;
 import RESTObjects.GameData;
 import interfaces.ILoginDatabaseConnector;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class GameApiController {
 
-    private ILoginDatabaseConnector databaseConnector = LoginDatabaseJDBC.getInstance();
+    private ILoginDatabaseConnector databaseConnector;
+
+    public GameApiController(PlayerRepository playerRepository, GameRepository gameRepository) {
+        databaseConnector = LoginDatabaseJPA.getInstance(playerRepository, gameRepository);
+    }
 
 
     @RequestMapping(value = "game/{matchId}",

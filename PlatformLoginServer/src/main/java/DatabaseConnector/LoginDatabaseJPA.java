@@ -34,7 +34,7 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
     public LoginState loginPlayer(String name, String password) {
         try {
             Player player = playerRepository.getOne(name);
-            if (playerRepository.existsById(name) | !player.getPassword().equals(password)) {
+            if (!playerRepository.existsById(name) | !player.getPassword().equals(password)) {
                 return LoginState.INCORRECTDATA;
             }
             if (player.isBanned()) return LoginState.BANNED;
@@ -54,6 +54,7 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
                 return RegisterState.ALREADYEXISTS;
             }
             player = new Player(name, password);
+            playerRepository.save(player);
             return RegisterState.SUCCESS;
         } catch (Exception e) {
             PlatformLogger.Log(Level.WARNING, "Error registering: " + name + " " + e.getClass().getName() + ":" + e.getMessage());
@@ -84,6 +85,7 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
             players[i] = player.getName();
             i++;
         }
+        gameData.setPlayerNames(players);
         return gameData;
     }
 
