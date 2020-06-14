@@ -53,7 +53,7 @@ public class GameApiController {
             produces = {"application/json"},
             consumes = {"application/json"})
     public ResponseEntity<String> submitGameStats(@RequestBody GameData JSON, HttpServletRequest servletRequest) {
-        if (GameData.isValid(JSON)) return new ResponseEntity<String>("Invalid gamedata sent", HttpStatus.BAD_REQUEST);
+        if (!GameData.isValid(JSON)) return new ResponseEntity<String>("Invalid gamedata sent", HttpStatus.BAD_REQUEST);
         //TODO a more intelligent system to determine post statuses or something?
         databaseConnector.addGame(JSON.getMapName(), JSON.getWinnerName(), JSON.getPlayerNames());
         return new ResponseEntity<>(HttpStatus.OK);

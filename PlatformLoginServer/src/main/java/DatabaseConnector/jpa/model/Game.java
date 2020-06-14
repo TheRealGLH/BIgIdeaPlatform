@@ -9,7 +9,7 @@ import java.util.Set;
 public class Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     Timestamp timestamp;
@@ -17,21 +17,21 @@ public class Game {
     String map;
     @ManyToMany
     @JoinTable(name = "game_player")
-    Set<Player> players;
+    Set<Player> player;
     @NotNull
     String victor;
 
-    public Game(int id, Timestamp timestamp, String map, Set<Player> players, String victor) {
+    public Game(int id, Timestamp timestamp, String map, Set<Player> player, String victor) {
         this.id = id;
         this.timestamp = timestamp;
         this.map = map;
-        this.players = players;
+        this.player = player;
         this.victor = victor;
     }
 
-    public Game(String map, Set<Player> players, String victor) {
+    public Game(String map, Set<Player> player, String victor) {
         this.map = map;
-        this.players = players;
+        this.player = player;
         this.victor = victor;
     }
 
@@ -62,12 +62,12 @@ public class Game {
         this.map = map;
     }
 
-    public Set<Player> getPlayers() {
-        return players;
+    public Set<Player> getPlayer() {
+        return player;
     }
 
-    public void setPlayers(Set<Player> players) {
-        this.players = players;
+    public void setPlayer(Set<Player> player) {
+        this.player = player;
     }
 
     public String getVictor() {

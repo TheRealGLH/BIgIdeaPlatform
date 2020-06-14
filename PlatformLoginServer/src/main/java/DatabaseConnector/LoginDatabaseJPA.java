@@ -78,10 +78,10 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
         Game game = gameRepository.getOne(ID);
         gameData.setWinnerName(game.getVictor());
         gameData.setMapName(game.getMap());
-        int arraySize = game.getPlayers().size();
+        int arraySize = game.getPlayer().size();
         String[] players = new String[arraySize];
         int i = 0;
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getPlayer()) {
             players[i] = player.getName();
             i++;
         }
@@ -92,9 +92,9 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
     @Override
     public String[] getPlayersInMatch(int ID) {
         Game game = gameRepository.getOne(ID);
-        String[] players = new String[game.getPlayers().size()];
+        String[] players = new String[game.getPlayer().size()];
         int i = 0;
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getPlayer()) {
             players[i] = player.getName();
             i++;
         }

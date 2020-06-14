@@ -18,7 +18,7 @@ public class Player {
 
     @ManyToMany
     @JoinTable(name = "game_player")
-    private Set<Game> games;
+    private Set<Game> game;
     private boolean banned = false;
 
     public Player(String name, String password, Long score) {
@@ -61,12 +61,12 @@ public class Player {
         this.score = score;
     }
 
-    public Set<Game> getGames() {
-        return games;
+    public Set<Game> getGame() {
+        return game;
     }
 
-    public void setGames(Set<Game> games) {
-        this.games = games;
+    public void setGame(Set<Game> game) {
+        this.game = game;
     }
 
     public boolean isBanned() {
