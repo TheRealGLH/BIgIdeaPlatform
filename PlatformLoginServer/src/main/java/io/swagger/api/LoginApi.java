@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-12-10T09:24:57.661Z")
 
@@ -28,6 +29,6 @@ public interface LoginApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<PlayerLoginResponse> loginPlayer(@ApiParam(value = "Login data to check"  )  @Valid @RequestBody PlayerLoginData playerLogin);
+    ResponseEntity<PlayerLoginResponse> loginPlayer(@ApiParam(value = "Login data to check"  )  @Valid @RequestBody PlayerLoginData playerLogin, HttpServletRequest request);
 
 }

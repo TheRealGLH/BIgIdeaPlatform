@@ -13,22 +13,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-12-10T09:24:57.661Z")
 
 @Api(value = "register", description = "the register API")
 public interface RegisterApi {
 
-    @ApiOperation(value = "registers a player", nickname = "registerPlayer", notes = "Adds player login data to the system", response = PlayerLoginResponse.class, tags={ "serverapp", })
+    @ApiOperation(value = "registers a player", nickname = "registerPlayer", notes = "Adds player login data to the system", response = PlayerLoginResponse.class, tags = {"serverapp",})
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "player created", response = PlayerLoginResponse.class),
             @ApiResponse(code = 400, message = "invalid input, object invalid"),
             @ApiResponse(code = 406, message = "invalid input, credentials do not match specificiations (too short)"),
             @ApiResponse(code = 409, message = "player already registered")})
     @RequestMapping(value = "/register",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<PlayerLoginResponse> registerPlayer(@ApiParam(value = "Login data to add"  )  @Valid @RequestBody PlayerLoginData playerLogin);
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<PlayerLoginResponse> registerPlayer(@ApiParam(value = "Login data to add") @Valid @RequestBody PlayerLoginData playerLogin, HttpServletRequest request);
 
 }

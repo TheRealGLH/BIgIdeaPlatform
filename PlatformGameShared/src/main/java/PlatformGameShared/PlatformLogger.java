@@ -33,6 +33,7 @@ public class PlatformLogger {
                 try {
                     fileHandler = new FileHandler(logPath + "\\" + dateFormat.format(today) + ".log");
                     LOGGER.addHandler(fileHandler);
+                    formatter = new SimpleFormatter();
                     fileHandler.setFormatter(formatter);
                     fileHandler.setLevel(loggingLevel);
                 } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PlatformLogger {
             LOGGER.log(Level.SEVERE, "The specified file path was invalid. Not writing to file for this " +
                     "session: " + e.getMessage());
         }
-        formatter = new SimpleFormatter();
+
     }
 
 
