@@ -2,13 +2,21 @@ package DatabaseConnector.jpa.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class Player {
 
-    private @Id String name;
+    private @Id
+    String name;
     private String password;
     private Long score;
+
+    @ManyToMany
+    @JoinTable(name = "game_player")
+    private Set<Game> games;
 
     public Player(String name, String password, Long score) {
         this.name = name;
@@ -22,7 +30,7 @@ public class Player {
         this.score = 0L;
     }
 
-    public Player(){
+    public Player() {
 
     }
 
