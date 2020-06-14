@@ -249,16 +249,18 @@ public class Game implements Observer, IPlayerEventListener {
                 i.remove();
             }
         }
+
+        Iterator<Map.Entry<Integer, Player>> ip = playerNrMap.entrySet().iterator();
+        while (ip.hasNext()) {
+            Player object = ip.next().getValue();
+            if (object.isShouldBeCleaned()) {
+                ip.remove();
+            }
+        }
         //Removing players from the playerMap
         int iPlayer = 0;
         Iterator<Player> iP = playerNrMap.values().iterator();
-        while(iP.hasNext()) {
-            Player player = iP.next();
-            iPlayer++;
-            if (player.isShouldBeCleaned()) {
-                playerNrMap.remove(iPlayer);
-            }
-        }
+
         //Now we check if we need to check if we end the game.
         //This has a seperate check to see if a player even died this tick, because otherwise we'd have to do that slightly more expensive check every tickd
         if(playerDiedThisTick) {
