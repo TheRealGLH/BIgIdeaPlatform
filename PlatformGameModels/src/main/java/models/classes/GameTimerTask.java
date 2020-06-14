@@ -1,5 +1,6 @@
 package models.classes;
 
+import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
 import PlatformGameShared.Points.GameLevel;
@@ -13,7 +14,7 @@ public class GameTimerTask extends TimerTask {
     public static final int tickRate = Integer.parseInt(PropertiesLoader.getPropValues("game.tickrate", "game.properties"));
     Game game;
     IPlatformGameServer gameServer;
-    private GameStateEvent mostRecentGameState;
+    private GameStateEvent mostRecentGameState = new GameStateEvent(GameState.STARTED,"server");
 
     /**
      * @param gameServer The game server that we send updates back to
@@ -32,9 +33,10 @@ public class GameTimerTask extends TimerTask {
         gameServer.sendSpriteUpdates(game.getSpriteUpdates());
         // gameServer.sendInputRequest();
         GameStateEvent currentGameState = game.getGameStateEvent();
-        if (!currentGameState.equals(mostRecentGameState)) {
+        //TODO this ought to be done with an update interface of some sorts.
+        if (currentGameState != null && !currentGameState.equals(mostRecentGameState)) {
             mostRecentGameState = currentGameState;
-                    gameServer.sendGameStateEvent(mostRecentGameState);
+            gameServer.sendGameStateEvent(mostRecentGameState);
         }
     }
 

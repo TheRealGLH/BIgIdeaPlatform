@@ -46,7 +46,8 @@ public class GameServer implements IPlatformGameServer {
             loginClient = new PlatformLoginClientREST();
         }
         joinedClients = new ArrayList<>();
-        maps = gson.fromJson(loginClient.getLevelNames(), String[].class);
+        String json = loginClient.getLevelNames();
+        maps = gson.fromJson(json, String[].class);
         currentMap = maps[0];
     }
 

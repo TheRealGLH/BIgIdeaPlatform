@@ -33,14 +33,16 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
     @Override
     public LoginState loginPlayer(String name, String password) {
         try {
+            if(!playerRepository.existsById(name)) return LoginState.INCORRECTDATA;
             Player player = playerRepository.getOne(name);
-            if (!playerRepository.existsById(name) | !player.getPassword().equals(password)) {
+            if ( !player.getPassword().equals(password)) {
                 return LoginState.INCORRECTDATA;
             }
             if (player.isBanned()) return LoginState.BANNED;
             else return LoginState.SUCCESS;
         } catch (Exception e) {
             PlatformLogger.Log(Level.WARNING, "Error logging in: " + name + " " + e.getClass().getName() + ":" + e.getMessage());
+            e.printStackTrace();
             return LoginState.ERROR;
         }
     }
@@ -78,10 +80,10 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
         Game game = gameRepository.getOne(ID);
         gameData.setWinnerName(game.getVictor());
         gameData.setMapName(game.getMap());
-        int arraySize = game.getPlayers().size();
+        int arraySize = game.getPlayer().size();
         String[] players = new String[arraySize];
         int i = 0;
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getPlayer()) {
             players[i] = player.getName();
             i++;
         }
@@ -92,9 +94,9 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
     @Override
     public String[] getPlayersInMatch(int ID) {
         Game game = gameRepository.getOne(ID);
-        String[] players = new String[game.getPlayers().size()];
+        String[] players = new String[game.getPlayer().size()];
         int i = 0;
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getPlayer()) {
             players[i] = player.getName();
             i++;
         }
