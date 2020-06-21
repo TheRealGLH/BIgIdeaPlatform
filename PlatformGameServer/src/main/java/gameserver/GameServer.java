@@ -32,7 +32,7 @@ public class GameServer implements IPlatformGameServer {
     IPlatformGameClient lobbyLeader;//The first client to join, unless they leave, then it's whatever remaining client joined first
     IPlatformLoginClient loginClient; //REST communicator
     Gson gson = new Gson();
-    int minAmountOfPlayers = 1;
+    int minAmountOfPlayers = Integer.parseInt(PropertiesLoader.getPropValues("gameServer.minPlayers","application.properties"));
     Timer timer = new Timer();
     String[] maps;
     String currentMap;
