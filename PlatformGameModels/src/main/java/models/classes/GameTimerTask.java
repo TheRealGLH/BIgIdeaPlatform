@@ -3,18 +3,21 @@ package models.classes;
 import PlatformGameShared.Enums.GameState;
 import PlatformGameShared.Enums.InputType;
 import PlatformGameShared.Interfaces.IPlatformGameServer;
+import PlatformGameShared.PlatformLogger;
 import PlatformGameShared.Points.GameLevel;
 import PlatformGameShared.Points.GameStateEvent;
 import PlatformGameShared.PropertiesLoader;
 
+import java.util.Date;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 public class GameTimerTask extends TimerTask {
 
     public static final int tickRate = Integer.parseInt(PropertiesLoader.getPropValues("game.tickrate", "game.properties"));
     Game game;
     IPlatformGameServer gameServer;
-    private GameStateEvent mostRecentGameState = new GameStateEvent(GameState.STARTED,"server");
+    private GameStateEvent mostRecentGameState = new GameStateEvent(GameState.STARTED, "server");
 
     /**
      * @param gameServer The game server that we send updates back to
@@ -28,7 +31,8 @@ public class GameTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        Thread.currentThread().setName("Game Timer");
+        Date beginTick = new Date();
+        Date endTick;
         game.updateState();
         gameServer.sendSpriteUpdates(game.getSpriteUpdates());
         // gameServer.sendInputRequest();
@@ -38,6 +42,8 @@ public class GameTimerTask extends TimerTask {
             mostRecentGameState = currentGameState;
             gameServer.sendGameStateEvent(mostRecentGameState);
         }
+        endTick = new Date();
+        PlatformLogger.Log(Level.FINEST, "Tick took " + (endTick.getTime() - beginTick.getTime()), endTick);
     }
 
 
