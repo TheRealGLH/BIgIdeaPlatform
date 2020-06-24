@@ -7,6 +7,7 @@ import DatabaseConnector.jpa.model.Player;
 import PlatformGameShared.Enums.LoginState;
 import PlatformGameShared.Enums.RegisterState;
 import PlatformGameShared.PlatformLogger;
+import PlatformGameShared.PropertiesLoader;
 import RESTObjects.GameData;
 import interfaces.ILoginDatabaseConnector;
 
@@ -19,6 +20,7 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
     private PlayerRepository playerRepository;
     private GameRepository gameRepository;
     private static LoginDatabaseJPA instance;
+    private static final String secret = PropertiesLoader.getPropValues("jdbc.secret", "jdbc.properties");
 
     LoginDatabaseJPA(PlayerRepository playerRepository, GameRepository gameRepository) {
         this.playerRepository = playerRepository;
@@ -32,10 +34,11 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
 
     @Override
     public LoginState loginPlayer(String name, String password) {
+        password = LoginDatabaseJDBC.encrypt(password, secret);
         try {
-            if(!playerRepository.existsById(name)) return LoginState.INCORRECTDATA;
+            if (!playerRepository.existsById(name)) return LoginState.INCORRECTDATA;
             Player player = playerRepository.getOne(name);
-            if ( !player.getPassword().equals(password)) {
+            if (!player.getPassword().equals(password)) {
                 return LoginState.INCORRECTDATA;
             }
             if (player.isBanned()) return LoginState.BANNED;
@@ -55,6 +58,7 @@ public class LoginDatabaseJPA implements ILoginDatabaseConnector {
             if (playerRepository.existsById(name)) {
                 return RegisterState.ALREADYEXISTS;
             }
+            password = LoginDatabaseJDBC.encrypt(password, secret);
             player = new Player(name, password);
             playerRepository.save(player);
             return RegisterState.SUCCESS;
